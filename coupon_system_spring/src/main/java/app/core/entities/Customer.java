@@ -3,12 +3,14 @@ package app.core.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Customer {
@@ -17,12 +19,14 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String firstName;
-	private String lastName; 
+	private String lastName;
 	private String email;
 	private String password;
-	@OneToMany
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinTable(name = "customer_vc_coupons", joinColumns = {
+			@JoinColumn( name = "customer_id") }, inverseJoinColumns = { @JoinColumn(name = "coupon_id") })
 	private List<Coupon> coupons;
-	
+
 	public Customer() {
 		super();
 	}
@@ -82,17 +86,17 @@ public class Customer {
 	public void setCoupons(List<Coupon> coupons) {
 		this.coupons = coupons;
 	}
-	
+
 	public void addCoupn(Coupon coupon) {
-		if(coupons == null) {
+		if (coupons == null) {
 			coupons = new ArrayList<Coupon>();
 		}
 		coupons.add(coupon);
 		System.out.println("addCoupon: coupon - " + coupon.getId() + " was added");
 	}
-	
+
 	public void deleteCoupon(Coupon coupon) {
-		if(coupons != null && coupons.contains(coupon)) {
+		if (coupons != null && coupons.contains(coupon)) {
 			coupons.remove(coupon);
 		} else {
 			System.out.println("deleteCoupon: coupon - " + coupon.getId() + "not found");
@@ -104,6 +108,5 @@ public class Customer {
 		return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", password=" + password + "]";
 	}
-	
-	
+
 }
