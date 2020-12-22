@@ -40,7 +40,7 @@ public class CustomerService {
 		return false;
 	}
 	
-	//TODO: 
+	//TODO: implement method
 	public void purchaseCoupon(Long couponId) {
 		
 	}
@@ -58,8 +58,20 @@ public class CustomerService {
 		return null;
 	}
 	
+	//TODO: implement method
 	public List<Coupon> getCoupons(Category category) {
 		System.out.println("Customer getCoupons(Category)");
 		
+		
 	}
+	
+	//TODO: implement method
+	public List<Coupon> getCoupons(double maxPrice) {
+		
+	}
+	
+	public void name() {
+		
+	}
+	
 }
