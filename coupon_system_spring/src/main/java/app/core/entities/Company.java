@@ -20,8 +20,7 @@ public class Company {
 	private String name;
 	private String email;
 	private String password;
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "compsny_id")
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
 	private List<Coupon> coupons;
 	
 	public Company() {

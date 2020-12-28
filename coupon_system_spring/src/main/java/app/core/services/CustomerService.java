@@ -7,25 +7,27 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import app.core.entities.Category;
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
 import app.core.repositories.CouponRepository;
 import app.core.repositories.CustomerRepository;
-
+//TODO: make prototype
 @Service
 @Transactional
+@Scope()
 public class CustomerService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
 	@Autowired
 	private CouponRepository couponRepository;
-	private long id;
+	private Customer customer;
 	
 	public long getId() {
-		return id;
+		return customer.getId();
 	}
 
 	/**
@@ -34,9 +36,9 @@ public class CustomerService {
 	 * @return true if customer with given email and password is in database
 	 */
 	public boolean login(String email, String password) {
-		List<Long> ids = customerRepository.findIdByEmailAndPassword(email, password);
-		if(ids != null && !ids.isEmpty()) {
-			this.id = ids.get(0);
+		Optional<Customer> optCustomer = customerRepository.findByEmailAndPassword(email, password);
+		if(optCustomer.isPresent()) {
+			this.customer = optCustomer.get();
 			System.out.println("login success :)");
 			return true;
 		}
@@ -54,29 +56,25 @@ public class CustomerService {
 	 */
 	public List<Coupon> getCoupons() {
 		System.out.println("Customer getCoupons");
-		Optional<Customer> optCustomer = customerRepository.findById(id);
-		if(optCustomer.isPresent()) {
-			return optCustomer.get().getCoupons();
-		}
-		System.out.println("NO coupns for customer " + id);
-		return null;
+		List<Coupon> coupons = customerRepository.findAllCouponsById(getId());
+		return coupons;
 	}
 	
-	//TODO: implement method
-	public List<Coupon> getCoupons(Category category) {
-		System.out.println("Customer getCoupons(Category)");
-		
-		
-	}
+//	public List<Coupon> getCoupons(Category category) {
+//		System.out.println("Customer getCoupons(Category)");
+//		List<Coupon> coupons = customerRepository.findAllCouponsByCategory(category);
+//		return coupons;
+//	}
 	
-	//TODO: implement method
-	public List<Coupon> getCoupons(double maxPrice) {
-		
-	}
+//	public List<Coupon> getCoupons(double maxPrice) {
+//		System.out.println("Customer getCoupons(double)");
+//		List<Coupon> coupons = customerRepository.findAllCouponsByPriceLowerThen(maxPrice);
+//		return coupons;
+//	}
 	
 	public Customer getCustomerDetails() {
 		System.out.println("Customer getCustomerDetails()");
-		Optional<Customer> optCustomer = customerRepository.findById(id);
+		Optional<Customer> optCustomer = customerRepository.findById(getId());
 		if(optCustomer.isPresent()) {
 			return optCustomer.get();
 		}

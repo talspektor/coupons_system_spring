@@ -1,8 +1,5 @@
 package app.core.entities;
 
-import javax.persistence.Entity;
-
-@Entity
 public enum Category {
 	FOOD(1), VACATION(2), SPORTS(3), ELECTRICITY(4);
 	

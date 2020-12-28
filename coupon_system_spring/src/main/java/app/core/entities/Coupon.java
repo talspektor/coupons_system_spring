@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 @Entity(name = "coupon")
@@ -16,12 +19,10 @@ public class Coupon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	//TODO: JoinColumn?
-	private Long companyId;
-	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	//TODO: JoinColumn?
-	private Long categoryId;
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "company_id")
+	private Company company;
+	private Category category;
 	private String title;
 	private String description;
 	private Date startDate;
@@ -34,11 +35,11 @@ public class Coupon {
 		super();
 	}
 
-	public Coupon(Long companyId, Long categoryId, String title, String description, Date startDate, Date endDate,
+	public Coupon(Company company, Category category, String title, String description, Date startDate, Date endDate,
 			int amount, double price, String imageUrl) {
 		super();
-		this.companyId = companyId;
-		this.categoryId = categoryId;
+		this.company = company;
+		this.category = category;
 		this.title = title;
 		this.description = description;
 		this.startDate = startDate;
@@ -64,20 +65,20 @@ public class Coupon {
 		this.id = id;
 	}
 
-	public Long getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
-	public Long getCategoryId() {
-		return categoryId;
+	public Category getCategoryId() {
+		return category;
 	}
 
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public String getTitle() {
@@ -130,7 +131,7 @@ public class Coupon {
 
 	@Override
 	public String toString() {
-		return "Coupon [id=" + id + ", companyId=" + companyId + ", categoryId=" + categoryId + ", title=" + title
+		return "Coupon [id=" + id + ", company=" + company + ", category=" + category + ", title=" + title
 				+ ", description=" + description + ", startDate=" + startDate + ", endDate=" + endDate + ", amount="
 				+ amount + ", price=" + price + ", imageUrl=" + imageUrl + "]";
 	}
