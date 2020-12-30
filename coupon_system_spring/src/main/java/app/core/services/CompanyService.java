@@ -19,13 +19,17 @@ import app.core.exceptions.CouponSystemException;
 @Service
 @Transactional
 @Scope(value = "prototype")
-public class CompanyService {
+public class CompanyService implements ClientService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
 	@Autowired
 	private CouponRepository couponRepository;
 	
+	public CompanyService() {
+		super();
+	}
+
 	private Long id;
 
 	public Long getId() {

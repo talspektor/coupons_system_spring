@@ -19,13 +19,17 @@ import app.core.exceptions.CouponSystemException;
 @Transactional
 @Service
 @Scope(value = "prototype")
-public class AdminService {
+public class AdminService implements ClientService {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
 	
+	public AdminService() {
+		super();
+	}
+
 	/**
 	 * @param email
 	 * @param password

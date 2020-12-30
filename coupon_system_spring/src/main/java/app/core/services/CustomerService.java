@@ -19,7 +19,7 @@ import app.core.repositories.CustomerRepository;
 @Service
 @Transactional
 @Scope(value = "prototype")
-public class CustomerService {
+public class CustomerService implements ClientService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -27,6 +27,10 @@ public class CustomerService {
 	private CouponRepository couponRepository;
 	private Customer customer;
 	
+	public CustomerService() {
+		super();
+	}
+
 	public long getId() {
 		return customer.getId();
 	}
@@ -81,22 +85,59 @@ public class CustomerService {
 	public List<Coupon> getCoupons() throws CouponSystemException {
 		System.out.println("Customer getCoupons");
 		try {
-			List<Coupon> coupons = customerRepository.findAllCouponsById(getId());
-			return coupons;
+			return customerRepository.findAllCouponsById(getId());
 		} catch (Exception e) {
 			throw new CouponSystemException("getCoupons fail :(", e);
 		}
 	}
 	
-	public Customer getCustomerDetails() {
+	/**
+	 * @param category
+	 * @return all customer coupon for given category
+	 * @throws CouponSystemException
+	 */
+//	public List<Coupon> getCouponsByCategory(Category category) throws CouponSystemException {
+//		System.out.println("Customer getCouponsByCategory");
+//		try {
+//			return customerRepository.findAllCouponsByCategury(category);
+//		} catch (Exception e) {
+//			throw new CouponSystemException("getCoupons fail getCouponsByCategory :(", e);
+//		}
+//		
+//	}
+	
+	/**
+	 * @param maxPrice
+	 * @return all customer coupons where price < maxPrice
+	 * @throws CouponSystemException
+	 */
+//	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) throws CouponSystemException {
+//		System.out.println("Customer getCouponsByPriceLessThen");
+//		try {
+//			return customerRepository.findAllCouponsByPriceLessThen(maxPrice);
+//		} catch (Exception e) {
+//			throw new CouponSystemException("getCoupons fail getCouponsByPriceLessThen :(", e);
+//		}
+//	}
+	
+	/**
+	 * @return customer by id
+	 * @throws CouponSystemException
+	 */
+	public Customer getCustomerDetails() throws CouponSystemException {
 		System.out.println("Customer getCustomerDetails()");
-		Optional<Customer> optCustomer = customerRepository.findById(getId());
-		if(optCustomer.isPresent()) {
-			return optCustomer.get();
+		try {
+			Optional<Customer> optCustomer = customerRepository.findById(getId());
+			if(optCustomer.isPresent()) {
+				return optCustomer.get();
+			}
+			return null;
+		} catch (Exception e) {
+			throw new CouponSystemException("getCustomerDetails fail :(", e);
 		}
-		// should not happen
-		return null;
 	}
+	
+	// ---------COUPON VALIDATION --------------
 	
 	// TODO: implememnt method
 	private boolean isCouponNotPurchased(Long couponId) {
