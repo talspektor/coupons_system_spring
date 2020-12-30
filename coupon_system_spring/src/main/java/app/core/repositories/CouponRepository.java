@@ -8,6 +8,8 @@ import app.core.entities.Category;
 import app.core.entities.Coupon;
 
 public interface CouponRepository extends CrudRepository<Coupon, Long> {
+	
+	boolean existsByTitleAndCompanyId(String title, Long companyId);
 
 	List<Coupon> findAllByAndCategory(Category category);
 	

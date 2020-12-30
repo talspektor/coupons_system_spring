@@ -81,6 +81,16 @@ public class Company {
 		System.out.println("addCoupon: coupon - " + coupon.getId() + " was added");
 	}
 	
+	public void removeCoupon(Long couponId) {
+		if(couponId == null) { return; }
+		for (Coupon coupon : coupons) {
+			if (couponId == coupon.getId()) {
+				coupons.remove(coupon);
+				return;
+			}
+		}
+	}
+	
 	public void deleteCoupon(Coupon coupon) {
 		if(coupons != null && coupons.contains(coupon)) {
 			coupons.remove(coupon);

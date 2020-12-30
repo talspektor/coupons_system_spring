@@ -97,6 +97,16 @@ public class Customer {
 		coupons.add(coupon);
 		System.out.println("addCoupon: coupon - " + coupon.getId() + " was added");
 	}
+	
+	public void deleteCouponById(Long couponId) {
+		if (couponId == null) { return; }
+		for (Coupon coupon : coupons) {
+			if (coupon.getId() == couponId) {
+				coupons.remove(coupon);
+				return;
+			}
+		}
+	}
 
 	public void deleteCoupon(Coupon coupon) {
 		if (coupons != null && coupons.contains(coupon)) {

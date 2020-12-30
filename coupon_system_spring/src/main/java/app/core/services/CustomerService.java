@@ -12,12 +12,13 @@ import org.springframework.stereotype.Service;
 import app.core.entities.Category;
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
+import app.core.exceptions.CouponSystemException;
 import app.core.repositories.CouponRepository;
 import app.core.repositories.CustomerRepository;
-//TODO: make prototype
+
 @Service
 @Transactional
-@Scope()
+@Scope(value = "prototype")
 public class CustomerService {
 	
 	@Autowired
@@ -35,42 +36,57 @@ public class CustomerService {
 	 * @param password - login password
 	 * @return true if customer with given email and password is in database
 	 */
-	public boolean login(String email, String password) {
-		Optional<Customer> optCustomer = customerRepository.findByEmailAndPassword(email, password);
-		if(optCustomer.isPresent()) {
-			this.customer = optCustomer.get();
-			System.out.println("login success :)");
-			return true;
+	public boolean login(String email, String password) throws CouponSystemException {
+		try {
+			Optional<Customer> optCustomer = customerRepository.findByEmailAndPassword(email, password);
+			if(optCustomer.isPresent()) {
+				this.customer = optCustomer.get();
+				System.out.println("login success :)");
+				return true;
+			}
+			System.out.println("login fail :(");
+			return false;
+		} catch (Exception e) {
+			throw new CouponSystemException("login fail :(", e); 
 		}
-		System.out.println("customer fail to login :(");
-		return false;
 	}
 	
-	//TODO: implement method
-	public void purchaseCoupon(Long couponId) {
+	public void purchaseCoupon(Long couponId) throws CouponSystemException {
+		System.out.println("Customer purchaseCoupon");
+		try {
+			if (!isCouponNotPurchased(couponId)) { return; }
+			
+			Optional<Coupon> optCoupon = couponRepository.findById(couponId);
+			if (!optCoupon.isPresent()) { return; }
+			
+			Coupon coupon = optCoupon.get(); 
+			
+			if (!isCouponAvailable(coupon)) { return; }
+			
+			if (!isCouponValid(coupon)) { return; }
+			
+			int amount = coupon.getAmount();
+			coupon.setAmount(amount--);
+			customer.addCoupn(coupon);
+			customerRepository.save(customer);
+			System.out.println("purchaseCoupon success :)");
+		} catch (Exception e) {
+			throw new CouponSystemException("purchaseCoupon fail :(", e); 
+		}
+	}
 		
-	}
-	
 	/**
 	 * @return all customer coupons
 	 */
-	public List<Coupon> getCoupons() {
+	public List<Coupon> getCoupons() throws CouponSystemException {
 		System.out.println("Customer getCoupons");
-		List<Coupon> coupons = customerRepository.findAllCouponsById(getId());
-		return coupons;
+		try {
+			List<Coupon> coupons = customerRepository.findAllCouponsById(getId());
+			return coupons;
+		} catch (Exception e) {
+			throw new CouponSystemException("getCoupons fail :(", e);
+		}
 	}
-	
-//	public List<Coupon> getCoupons(Category category) {
-//		System.out.println("Customer getCoupons(Category)");
-//		List<Coupon> coupons = customerRepository.findAllCouponsByCategory(category);
-//		return coupons;
-//	}
-	
-//	public List<Coupon> getCoupons(double maxPrice) {
-//		System.out.println("Customer getCoupons(double)");
-//		List<Coupon> coupons = customerRepository.findAllCouponsByPriceLowerThen(maxPrice);
-//		return coupons;
-//	}
 	
 	public Customer getCustomerDetails() {
 		System.out.println("Customer getCustomerDetails()");
@@ -83,8 +99,10 @@ public class CustomerService {
 	}
 	
 	// TODO: implememnt method
-	private boolean isCoupnNotPurchaseAlready(long couponId) {
-//		System.out.println("customer already purchase this coupon");
+	private boolean isCouponNotPurchased(Long couponId) {
+		System.out.println("customer already purchase this coupon");
+		
+		System.out.println("coupon is already purchased");
 		return false;
 	}
 	
@@ -108,6 +126,7 @@ public class CustomerService {
 		if (coupon.getEndDate().compareTo(new Date()) > 0) {
 			return true;
 		}
+		System.out.println("coupon is expiered");
 		return false;
 	}
 }
