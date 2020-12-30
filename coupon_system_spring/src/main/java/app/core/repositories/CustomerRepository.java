@@ -23,14 +23,5 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
 	
 	@Query(value = "select c.coupon_id from Customer c where c.id = :id", nativeQuery = true)
 	List<Coupon> findAllCouponsById(Long id);
-	
-	//TODO: 
-//	@Query
-//	boolean isCouponAlreadyPurchased(Long customerId, Long couponId);
-	
-	//TODO: Get all coupons
-	
-	//TODO: Get all coupons for category
-	
-	//TODO: isCouponAlredyPurchased
+
 }

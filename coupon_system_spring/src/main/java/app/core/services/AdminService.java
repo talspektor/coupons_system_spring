@@ -24,6 +24,11 @@ public class AdminService {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
+	/**
+	 * @param email
+	 * @param password
+	 * @return true if email and password are correct
+	 */
 	public boolean login(String email, String password) {
 		System.out.println("Admin login");
 		if (email == "com.admin@admin" && password == "admin") {
@@ -51,7 +56,14 @@ public class AdminService {
 	 */
 	public void updateCompany(Company company) {
 		System.out.println("Admin updateCompany");
-		companyRepository.save(company);
+		Optional<Company> companyToUpdate = companyRepository.findById(company.getId());
+		if (companyToUpdate.isPresent()) {
+			company.setName(companyToUpdate.get().getName());
+			companyRepository.save(company);
+			System.out.println("updateCompany: " + company);
+		} else {
+			System.out.println("company: " + company + " is not found is database");
+		}
 	}
 	
 	/**
@@ -83,8 +95,10 @@ public class AdminService {
 		System.out.println("Admin getCompany");
 		Optional<Company> optCompany = companyRepository.findById(companyId);
 		if (optCompany.isPresent()) {
+			System.out.println("getCompany success");
 			return optCompany.get();
 		}
+		System.out.println("getCompany fail");
 		return null;
 	}
 	
