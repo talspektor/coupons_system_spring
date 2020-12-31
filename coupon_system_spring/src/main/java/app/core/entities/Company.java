@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-@Entity(name = "company")
+@Entity
 public class Company {
 
 	@Id
@@ -21,6 +21,7 @@ public class Company {
 	private String email;
 	private String password;
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+	@JoinColumn(name = "company_id")
 	private List<Coupon> coupons;
 	
 	public Company() {
