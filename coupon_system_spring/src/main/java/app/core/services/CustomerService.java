@@ -81,6 +81,7 @@ public class CustomerService implements ClientService {
 		
 	/**
 	 * @return all customer coupons
+	 * @throws CouponSystemException
 	 */
 	public List<Coupon> getCoupons() throws CouponSystemException {
 		System.out.println("Customer getCoupons");
