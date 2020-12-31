@@ -53,6 +53,7 @@ public class AdminService implements ClientService {
 	public void addCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin addCompany");
 		try {
+			//TODO: get all companies and validate name, email and password are unique
 			companyRepository.save(company);
 		} catch (Exception e) {
 			throw new CouponSystemException("addCompany fail " + e.getMessage(), e);
@@ -148,6 +149,7 @@ public class AdminService implements ClientService {
 	public void updateCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin updateCustomer");
 		try {
+			//TODO: get all customers for validate unique email and password
 			customerRepository.save(customer);
 		} catch (Exception e) {
 			throw new CouponSystemException("updateCustomer fail " + e.getMessage(), e);
