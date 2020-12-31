@@ -27,7 +27,8 @@ public class DailyJob implements Runnable {
 			System.out.println("CouponExpirationDailyJob run");
 			while (!quit) {
 				//TODO: delete expired coupons
-				couponRepository.removeByEndDateLessThen((Date) new java.util.Date());
+				Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+//				couponRepository.removeByEndDateLessThen(sqlDate);
 				System.out.println("CouponExpirationDailyJob deleteExpierdCoupons");
 				Thread.sleep(daysInMilliseconds);
 			}

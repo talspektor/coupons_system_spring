@@ -1,5 +1,7 @@
 package app.core.test;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -21,7 +23,7 @@ public class Test {
 	public Test() {
 		super();
 	}
-	
+	@Transactional
 	public void testAll() throws CouponSystemException {
 		// Start the daily job
 		DailyJob job = context.getBean(DailyJob.class);

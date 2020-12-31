@@ -50,9 +50,13 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 * add company to database not allow email and password duplication
 	 */
-	public void addCompany(Company company) {
+	public void addCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin addCompany");
-		companyRepository.save(company);
+		try {
+			companyRepository.save(company);
+		} catch (Exception e) {
+			throw new CouponSystemException("addCompany fail " + e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -60,15 +64,19 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 * update company in database (don't change company name) 
 	 */
-	public void updateCompany(Company company) {
+	public void updateCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin updateCompany");
-		Optional<Company> companyToUpdate = companyRepository.findById(company.getId());
-		if (companyToUpdate.isPresent()) {
-			company.setName(companyToUpdate.get().getName());
-			companyRepository.save(company);
-			System.out.println("updateCompany: " + company);
-		} else {
+		try {
+			Optional<Company> companyToUpdate = companyRepository.findById(company.getId());
+			if (companyToUpdate.isPresent()) {
+				company.setName(companyToUpdate.get().getName());
+				companyRepository.save(company);
+				System.out.println("updateCompany: " + company);
+				return;
+			} 
 			System.out.println("company: " + company + " is not found is database");
+		} catch (Exception e) {
+			throw new CouponSystemException("updateCompany fail " + e.getMessage(), e);
 		}
 	}
 	
@@ -77,19 +85,26 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 * delete all company coupon and then delete the company
 	 */ 
-	public void deleteCoumpany(Long companyId) {
+	public void deleteCoumpany(Long companyId) throws CouponSystemException {
 		System.out.println("Admin deleteCompany");
-		companyRepository.deleteById(companyId);
+		try {
+			companyRepository.deleteById(companyId);
+		} catch (Exception e) {
+			throw new CouponSystemException("deleteCoumpany fail " + e.getMessage(), e);
+		}
 	}
 	
 	/**
 	 * @return all companies from database
 	 * @throws CouponSystemException
 	 */
-	public List<Company> getAllCompanies() {
+	public List<Company> getAllCompanies() throws CouponSystemException {
 		System.out.println("Admin getAllCompanies");
-		Iterable<Company> companies = companyRepository.findAll();
-		return (List<Company>) companies;
+		try {
+			return (List<Company>) companyRepository.findAll();
+		} catch (Exception e) {
+			throw new CouponSystemException("getAllCompanies fail " + e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -97,15 +112,18 @@ public class AdminService implements ClientService {
 	 * @return the company with that id
 	 * @throws CouponSystemException
 	 */
-	public Company getCompany(Long companyId) {
+	public Company getCompany(Long companyId) throws CouponSystemException {
 		System.out.println("Admin getCompany");
-		Optional<Company> optCompany = companyRepository.findById(companyId);
-		if (optCompany.isPresent()) {
-			System.out.println("getCompany success");
-			return optCompany.get();
+		try {
+			Optional<Company> optCompany = companyRepository.findById(companyId);
+			if (optCompany.isPresent()) {
+				return optCompany.get();
+			}
+			System.out.println("getCompany fail");
+			return null;
+		} catch (Exception e) {
+			throw new CouponSystemException("getCompany fail " + e.getMessage(), e);
 		}
-		System.out.println("getCompany fail");
-		return null;
 	}
 	
 	/**
@@ -113,9 +131,13 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 * add customer to database if email is unique
 	 */
-	public void addCustomer(Customer customer) {
+	public void addCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin addCustomer");
-		customerRepository.save(customer);
+		try {
+			customerRepository.save(customer);
+		} catch (Exception e) {
+			throw new CouponSystemException("addCustomer fail " + e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -123,9 +145,13 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 * update customer in database 
 	 */
-	public void updateCustomer(Customer customer) {
+	public void updateCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin updateCustomer");
-		customerRepository.save(customer);
+		try {
+			customerRepository.save(customer);
+		} catch (Exception e) {
+			throw new CouponSystemException("updateCustomer fail " + e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -135,7 +161,11 @@ public class AdminService implements ClientService {
 	 */
 	public void deleteCustomer(Long customerId) throws CouponSystemException {
 		System.out.println("Admin deleteCustomer");
-		customerRepository.deleteById(customerId);
+		try {
+			customerRepository.deleteById(customerId);
+		} catch (Exception e) {
+			throw new CouponSystemException("deleteCustomer fail " + e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -144,8 +174,11 @@ public class AdminService implements ClientService {
 	 */
 	public List<Customer> getAllCustomer() throws CouponSystemException {
 		System.out.println("Admin getAllCustomer");
-		Iterable<Customer> customers = customerRepository.findAll();
-		return (List<Customer>) customers;
+		try {
+			return (List<Customer>) customerRepository.findAll();
+		} catch (Exception e) {
+			throw new CouponSystemException("getAllCustomer fail " + e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -155,10 +188,14 @@ public class AdminService implements ClientService {
 	 */
 	public Customer getCustomer(Long customerId) throws CouponSystemException {
 		System.out.println("Admin getCustomer");
-		Optional<Customer> optCustomer = customerRepository.findById(customerId);
-		if(optCustomer.isPresent()) {
-			return optCustomer.get();
+		try {
+			Optional<Customer> optCustomer = customerRepository.findById(customerId);
+			if(optCustomer.isPresent()) {
+				return optCustomer.get();
+			}
+			return null;
+		} catch (Exception e) {
+			throw new CouponSystemException("getCustomer fail " + e.getMessage(), e);
 		}
-		return null;
 	}
 }
