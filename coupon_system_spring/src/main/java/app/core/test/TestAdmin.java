@@ -37,7 +37,7 @@ public class TestAdmin implements TestClient {
 			System.out.println(adminService.getCustomer(2L));
 			System.out.println(adminService.getAllCustomer());
 			
-			adminService.deleteCustomer(1L);
+//			adminService.deleteCustomer(1L);
 		} catch (Exception e) {
 			throw new CouponSystemException("test " + e.getMessage(), e);
 		}
