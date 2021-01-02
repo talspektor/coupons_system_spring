@@ -27,6 +27,7 @@ public class TestCompany implements TestClient {
 			String imageUrl = "some_url";
 			Coupon coupon1 = new Coupon(company, Category.ELECTRICITY, "coupon_1", "coupon_1_desc", startDate, endDate, amount, price, imageUrl);
 			companyService.addCoupon(coupon1);
+			companyService.deleteCoupon(coupon1.getId());
 		} catch (Exception e) {
 			throw new CouponSystemException("test " + e.getMessage(), e);
 		}

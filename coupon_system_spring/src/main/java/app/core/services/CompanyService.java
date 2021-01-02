@@ -132,6 +132,7 @@ public class CompanyService implements ClientService {
 			if (optCompany.isPresent()) {
 				optCompany.get().removeCoupon(couponId);
 				companyRepository.save(optCompany.get());
+				System.out.println("success");
 			}
 		} catch (Exception e) {
 			throw new CouponSystemException("deleteCoupon fail :(" + e.getMessage(), e);
