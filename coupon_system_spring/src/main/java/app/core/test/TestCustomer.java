@@ -30,22 +30,22 @@ public class TestCustomer implements TestClient {
 		System.out.println("==================");
 		System.out.println("Test Customer");
 		try {
-			Company company = adminService.getCompany(2L);
-			Customer customer = new Customer("customer_1", "customer_1_lastName", "1@email.com", "pass_1");
-			adminService.addCustomer(customer);
-			
-			customerService.login("1@email.com", "pass_1");
-			
-			Date startDate = new Date(2018, 1, 10);
-			Date endDate = new Date(2021, 1, 10);
-			int amount = 5;
-			double price = 10.5;
-			String imageUrl = "some_url";
-			Coupon coupon1 = new Coupon(company, Category.ELECTRICITY, "coupon_1", "coupon_1_desc", startDate, endDate, amount, price, imageUrl);
-			
-			customerService.purchaseCoupon(1L);
-			customerService.getCoupons();
-			customerService.getCustomerDetails();
+//			Company company = adminService.getCompany(2L);
+//			Customer customer = new Customer("customer_1", "customer_1_lastName", "1@email.com", "pass_1");
+//			adminService.addCustomer(customer);
+//			
+//			customerService.login("1@email.com", "pass_1");
+//			
+//			Date startDate = new Date(2018, 1, 10);
+//			Date endDate = new Date(2021, 1, 10);
+//			int amount = 5;
+//			double price = 10.5;
+//			String imageUrl = "some_url";
+//			Coupon coupon1 = new Coupon(company, Category.ELECTRICITY, "coupon_1", "coupon_1_desc", startDate, endDate, amount, price, imageUrl);
+//			
+//			customerService.purchaseCoupon(1L);
+//			customerService.getCoupons();
+//			customerService.getCustomerDetails();
 		} catch (Exception e) {
 			throw new CouponSystemException("test " + e.getMessage(), e);
 		}

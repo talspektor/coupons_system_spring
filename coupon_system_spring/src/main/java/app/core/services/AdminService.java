@@ -55,7 +55,7 @@ public class AdminService implements ClientService {
 	public void addCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin addCompany");
 		try {
-			if(!isCompanyNameUnique(company.getName()) || !isCompanyEmailUnique(company.getEmail())) {
+			if(isCompanyNameExists(company.getName()) || isCompanyEmailExists(company.getEmail())) {
 				System.out.println("cant add company name and email must by unique");
 				return;
 			}
@@ -142,7 +142,7 @@ public class AdminService implements ClientService {
 	public void addCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin addCustomer");
 		try {
-			if(!isCustomerEmailUniqiue(customer.getEmail())) {
+			if(isCustomerEmailExists(customer.getEmail())) {
 				System.out.println("You can't add customer email and password most be unique");
 				return;
 			}
@@ -160,7 +160,7 @@ public class AdminService implements ClientService {
 	public void updateCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin updateCustomer");
 		try {
-			if(!isCustomerEmailUniqiue(customer.getEmail())) {
+			if(isCustomerEmailExists(customer.getEmail())) {
 				System.out.println("You can't update customer email and password most be unique");
 				return;
 			}
@@ -217,7 +217,7 @@ public class AdminService implements ClientService {
 	
 	//************** Company Unique check  Methods ********************* //
 	
-	private boolean isCompanyNameUnique(String name) throws CouponSystemException {
+	private boolean isCompanyNameExists(String name) throws CouponSystemException {
 		try {
 			return companyRepository.existsByName(name);
 		} catch (Exception e) {
@@ -225,7 +225,7 @@ public class AdminService implements ClientService {
 		}
 	}
 	
-	private boolean isCompanyEmailUnique(String email) throws CouponSystemException {
+	private boolean isCompanyEmailExists(String email) throws CouponSystemException {
 		try {
 			return companyRepository.existsByEmail(email);
 		} catch (Exception e) {
@@ -237,10 +237,10 @@ public class AdminService implements ClientService {
 	
 	/**
 	 * @param email
-	 * @return true if customer email is unique
+	 * @return true if customer with email is exist is database
 	 * @throws CouponSystemException
 	 */
-	private boolean isCustomerEmailUniqiue(String email) throws CouponSystemException {
+	private boolean isCustomerEmailExists(String email) throws CouponSystemException {
 		try {
 			return customerRepository.existsByEmail(email);
 		} catch (Exception e) {

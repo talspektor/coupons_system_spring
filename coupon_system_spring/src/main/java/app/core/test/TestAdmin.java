@@ -22,19 +22,19 @@ public class TestAdmin implements TestClient {
 		System.out.println("==================");
 		System.out.println("Test Admin");
 		try {
-//			adminService.login("wronrEmail", "wrongPassword");
-//			adminService.login("com.admin@admin", "admin");
+			adminService.login("wronrEmail", "wrongPassword");
+			adminService.login("com.admin@admin", "admin");
 			
 //			Company company = new Company("company_1", "company_1@mail.com", "pass_1");
 //			adminService.addCompany(company);
-//			System.out.println(adminService.getCompany(1L));
-//			System.out.println(adminService.getAllCompanies());
+			System.out.println(adminService.getCompany(1L));
+			System.out.println(adminService.getAllCompanies());
 //			
 //			adminService.deleteCoumpany(1L);
 			
-			Customer customer = new Customer("customer_name_1", "customer_lastName_1", "customer_1@email.com", "pass_1");
-			adminService.addCustomer(customer);
-			System.out.println(adminService.getCustomer(2L));
+//			Customer customer = new Customer("customer_name_1", "customer_lastName_1", "customer_1@email.com", "pass_1");
+//			adminService.addCustomer(customer);
+			System.out.println(adminService.getCustomer(6L));
 			System.out.println(adminService.getAllCustomer());
 			
 //			adminService.deleteCustomer(1L);
