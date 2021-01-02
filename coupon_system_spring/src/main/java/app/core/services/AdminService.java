@@ -15,7 +15,6 @@ import app.core.repositories.CompanyRepository;
 import app.core.repositories.CustomerRepository;
 import app.core.exceptions.CouponSystemException;
 
-//TODO: make prototype
 @Transactional
 @Service
 @Scope(value = "prototype")
@@ -217,6 +216,11 @@ public class AdminService implements ClientService {
 	
 	//************** Company Unique check  Methods ********************* //
 	
+	/**
+	 * @param name
+	 * @return true if company with given name is in database
+	 * @throws CouponSystemException
+	 */
 	private boolean isCompanyNameExists(String name) throws CouponSystemException {
 		try {
 			return companyRepository.existsByName(name);
@@ -225,6 +229,11 @@ public class AdminService implements ClientService {
 		}
 	}
 	
+	/**
+	 * @param email
+	 * @return true if company with given email is in database
+	 * @throws CouponSystemException
+	 */
 	private boolean isCompanyEmailExists(String email) throws CouponSystemException {
 		try {
 			return companyRepository.existsByEmail(email);

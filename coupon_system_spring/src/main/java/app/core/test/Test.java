@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import app.core.entities.Customer;
 import app.core.exceptions.CouponSystemException;
 import app.core.job.DailyJob;
 import app.core.login.ClientType;
 import app.core.login.LoginManager;
 import app.core.services.AdminService;
-import app.core.services.ClientService;
 import app.core.services.CompanyService;
 import app.core.services.CustomerService;
 
@@ -51,8 +49,5 @@ public class Test {
 	private void cleenClose(DailyJob job) throws CouponSystemException {
 		// Stop the daily job
 		job.stop();
-		// Close all connections
-		System.out.println("closeAllConnections");
-		//TODO: close all
 	}
 }

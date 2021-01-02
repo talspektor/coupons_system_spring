@@ -17,17 +17,20 @@ public class TestCompany implements TestClient {
 
 	@Override
 	public void test(AdminService adminService, CompanyService companyService, CustomerService customerService) throws CouponSystemException {
+		System.out.println("==================");
+		System.out.println("Test Company");
 		try {
 			Company company = adminService.getAllCompanies().get(0);
 			
-			Date startDate = new Date(2018, 1, 10);
-			Date endDate = new Date(2021, 1, 10);
-			int amount = 5;
-			double price = 10.5;
-			String imageUrl = "some_url";
-			Coupon coupon1 = new Coupon(company, Category.ELECTRICITY, "coupon_1", "coupon_1_desc", startDate, endDate, amount, price, imageUrl);
-			companyService.addCoupon(coupon1);
-			companyService.deleteCoupon(coupon1.getId());
+//			Date startDate = new Date(2018, 1, 10);
+//			Date endDate = new Date(2021, 1, 10);
+//			int amount = 5;
+//			double price = 10.5;
+//			String imageUrl = "some_url";
+//			Coupon coupon1 = new Coupon(company, Category.ELECTRICITY, "coupon_1", "coupon_1_desc", startDate, endDate, amount, price, imageUrl);
+//			companyService.addCoupon(coupon1);
+//			companyService.deleteCoupon(coupon1.getId());
+			companyService.getCompanyCoupons();
 		} catch (Exception e) {
 			throw new CouponSystemException("test " + e.getMessage(), e);
 		}
