@@ -79,24 +79,30 @@ public class CompanyService implements ClientService {
 	/**
 	 * @param coupon
 	 * @throws CouponSystemException
-	 * add new coupon of the company to database
+	 * add new coupon of the company to database - couopn's title most by unique
 	 */
-	public void addCoupon(Coupon coupon) throws CouponSystemException {
+	public void addCoupon(Coupon couponToAdd) throws CouponSystemException {
 		System.out.println("Company addCoupon");
 		try {
-			if (couponRepository.existsByTitleAndCompanyId(coupon.getTitle(), id)) {
+			if (couponRepository.existsByTitleAndCompanyId(couponToAdd.getTitle(), id)) {
 				System.out.println("coupon is already in database.");
 				return;
 			}
 			Optional<Company> optCompany = companyRepository.findById(id);
-			if (optCompany.isPresent()) {
-				optCompany.get().addCoupon(coupon);
-				companyRepository.save(optCompany.get());
+			if (!optCompany.isPresent()) { return; }
+				
+			List<Coupon> coupons = optCompany.get().getCoupons();
+			for (Coupon coupon : coupons) {
+				if(coupon.getTitle() == couponToAdd.getTitle()) {
+					System.out.println("can't add coupon's title most by unique");
+					return;
+				}
 			}
+			optCompany.get().addCoupon(couponToAdd);
+			companyRepository.save(optCompany.get());
 		} catch (Exception e) {
 			throw new CouponSystemException("addCoupon fail :(" + e.getMessage(), e);
 		}
-		
 	}
 	
 	/**
@@ -154,17 +160,22 @@ public class CompanyService implements ClientService {
 	 * @return list of company coupons where price less then maxPrice
 	 * @throws CouponSystemException
 	 */
-	public ArrayList<Coupon> getCompanyCoupons(double maxPrice) throws CouponSystemException {
+	public List<Coupon> getCompanyCoupons(double maxPrice) throws CouponSystemException {
 		System.out.println("Company getCompanyCoupons(maxPrice)");
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
-			if (optCompany.isPresent()) {
-				//TODO: get coupons less then maxPrice
+			if (!optCompany.isPresent()) { return null; }
+			List<Coupon> coupons = optCompany.get().getCoupons();
+			List<Coupon> couponsToReturn = new ArrayList<Coupon>();
+			for (Coupon coupon : coupons) {
+				if (coupon.getPrice() < maxPrice) {
+					couponsToReturn.add(coupon);
+				}
 			}
+			return couponsToReturn;
 		} catch (Exception e) {
 			throw new CouponSystemException("getCompanyCoupons(maxPrice) fail :(" + e.getMessage(), e);
 		}
-		return null;
 	}
 	
 	/**

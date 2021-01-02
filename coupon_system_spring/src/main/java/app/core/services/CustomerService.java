@@ -1,7 +1,6 @@
 package app.core.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,20 +59,16 @@ public class CustomerService implements ClientService {
 	public void purchaseCoupon(Long couponId) throws CouponSystemException {
 		System.out.println("Customer purchaseCoupon");
 		try {
-			if (isCouponAlredyPurchased(couponId)) { return; }
+			CouponValidator validator = new CouponValidator(customer);
+			if (validator.isCouponAlredyPurchased(couponId)) { return; }
 			
-			Optional<Coupon> optCoupon = couponRepository.findById(couponId);
-			if (!optCoupon.isPresent()) { return; }
-			Coupon coupon = optCoupon.get(); 
+			Coupon coupon = getCoupon(couponId);
+			if (coupon == null) { return; }
 			
-			if (!isCouponAvailable(coupon)) { return; }
+			if (!validator.isCouponAvailable(coupon)) { return; }
+			if (validator.isCouponExpiered(coupon)) { return; }
 			
-			if (isCouponExpiered(coupon)) { return; }
-			
-			int amount = coupon.getAmount();
-			coupon.setAmount(amount--);
-			customer.addCoupn(coupon);
-			customerRepository.save(customer);
+			addCoupon(coupon);
 			System.out.println("purchaseCoupon success :)");
 		} catch (Exception e) {
 			throw new CouponSystemException("purchaseCoupon fail :(", e); 
@@ -138,44 +133,23 @@ public class CustomerService implements ClientService {
 		}
 	}
 	
-	// ---------COUPON VALIDATION --------------
-	
 	/**
 	 * @param couponId
-	 * @return true if customer already purchased this coupon
+	 * @return coupon
 	 */
-	private boolean isCouponAlredyPurchased(Long couponId) {
-		List<Coupon> coupons = customer.getCoupons();
-		for (Coupon coupon : coupons) {
-			if (couponId == coupon.getId()) {
-				System.out.println("customer already purchase this coupon");
-				return true;
-			}
-		}
-		return false;
+	private Coupon getCoupon(Long couponId) {
+		Optional<Coupon> optCoupon = couponRepository.findById(couponId);
+		if (!optCoupon.isPresent()) { return null; }
+		return optCoupon.get();
 	}
 	
-	/**
+	/** add coupon to customer coupon list
 	 * @param coupon
-	 * @return true if coupon amount > 0
 	 */
-	private boolean isCouponAvailable(Coupon coupon) {
-		if(coupon.getAmount() > 0) {
-			return true;
-		}
-		System.out.println("coupon is not available");
-		return false;
-	}
-	
-	/**
-	 * @param coupon
-	 * @return true if coupon not expired
-	 */
-	private boolean isCouponExpiered(Coupon coupon) {
-		if (coupon.getEndDate().compareTo(new Date()) > 0) {
-			return false;
-		}
-		System.out.println("coupon is expiered");
-		return true;
+	private void addCoupon(Coupon coupon) {
+		int amount = coupon.getAmount();
+		coupon.setAmount(amount--);
+		customer.addCoupn(coupon);
+		customerRepository.save(customer);
 	}
 }

@@ -38,11 +38,11 @@ public class Test {
 		AdminService adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
 		CompanyService companyService = (CompanyService) loginManager.login("company_1@mail.com", "pass_1", ClientType.COMPNY);
 		CustomerService customerService = (CustomerService) loginManager.login("customer_1@email.com", "pass_1", ClientType.CUSTOMER);
-		// Admin
+		// ADMINISTRATOR
 		context.getBean(TestAdmin.class).test(adminService, companyService, customerService);
-		// Company
+		// COMPANY
 		context.getBean(TestCompany.class).test(adminService, companyService, customerService);
-		// Customer
+		// CUSTOMER
 		context.getBean(TestCustomer.class).test(adminService, companyService, customerService);
 		
 		cleenClose(job);	
