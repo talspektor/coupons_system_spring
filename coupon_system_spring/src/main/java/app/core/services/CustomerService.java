@@ -140,7 +140,7 @@ public class CustomerService implements ClientService {
 	
 	// ---------COUPON VALIDATION --------------
 	
-	// TODO: implememnt method
+	// TODO: implement method
 	private boolean isCouponNotPurchased(Long couponId) {
 		System.out.println("customer already purchase this coupon");
 		

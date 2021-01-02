@@ -18,6 +18,8 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
 	
 	boolean existsByEmail(String email);
 	
+	boolean existsByPassword(String password);
+	
 	Optional<Customer> findByEmail(String email);
 	
 //	//TODO: check if there is a generic query

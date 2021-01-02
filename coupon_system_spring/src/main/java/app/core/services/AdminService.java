@@ -45,15 +45,20 @@ public class AdminService implements ClientService {
 		return false;
 	}
 	
+	// *********** Company Methods ************* //
+	
 	/**
 	 * @param company
 	 * @throws CouponSystemException
-	 * add company to database not allow email and password duplication
+	 * add company to database email and name must by unique
 	 */
 	public void addCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin addCompany");
 		try {
-			//TODO: get all companies and validate name, email and password are unique
+			if(!isCompanyNameUnique(company.getName()) || !isCompanyEmailUnique(company.getEmail())) {
+				System.out.println("cant add company name and email must by unique");
+				return;
+			}
 			companyRepository.save(company);
 		} catch (Exception e) {
 			throw new CouponSystemException("addCompany fail " + e.getMessage(), e);
@@ -127,14 +132,20 @@ public class AdminService implements ClientService {
 		}
 	}
 	
+	// ********** Customer Methods ***************** //
+	
 	/**
 	 * @param customer
 	 * @throws CouponSystemException
-	 * add customer to database if email is unique
+	 * add customer to database if email and password are unique
 	 */
 	public void addCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin addCustomer");
 		try {
+			if(!isCustomerEmailUniqiue(customer.getEmail())) {
+				System.out.println("You can't add customer email and password most be unique");
+				return;
+			}
 			customerRepository.save(customer);
 		} catch (Exception e) {
 			throw new CouponSystemException("addCustomer fail " + e.getMessage(), e);
@@ -149,7 +160,10 @@ public class AdminService implements ClientService {
 	public void updateCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin updateCustomer");
 		try {
-			//TODO: get all customers for validate unique email and password
+			if(!isCustomerEmailUniqiue(customer.getEmail())) {
+				System.out.println("You can't update customer email and password most be unique");
+				return;
+			}
 			customerRepository.save(customer);
 		} catch (Exception e) {
 			throw new CouponSystemException("updateCustomer fail " + e.getMessage(), e);
@@ -198,6 +212,39 @@ public class AdminService implements ClientService {
 			return null;
 		} catch (Exception e) {
 			throw new CouponSystemException("getCustomer fail " + e.getMessage(), e);
+		}
+	}
+	
+	//************** Company Unique check  Methods ********************* //
+	
+	private boolean isCompanyNameUnique(String name) throws CouponSystemException {
+		try {
+			return companyRepository.existsByName(name);
+		} catch (Exception e) {
+			throw new CouponSystemException("isCompanyNameUnique fail " + e.getMessage(), e);
+		}
+	}
+	
+	private boolean isCompanyEmailUnique(String email) throws CouponSystemException {
+		try {
+			return companyRepository.existsByEmail(email);
+		} catch (Exception e) {
+			throw new CouponSystemException("isCompanyEmailUnique fail " + e.getMessage(), e);
+		}
+	}
+	
+	//************** Customer Unique check  Methods ********************* //
+	
+	/**
+	 * @param email
+	 * @return true if customer email is unique
+	 * @throws CouponSystemException
+	 */
+	private boolean isCustomerEmailUniqiue(String email) throws CouponSystemException {
+		try {
+			return customerRepository.existsByEmail(email);
+		} catch (Exception e) {
+			throw new CouponSystemException("isCustomerEmailUniqiue fail " + e.getMessage(), e);
 		}
 	}
 }
