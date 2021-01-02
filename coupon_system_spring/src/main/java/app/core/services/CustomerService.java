@@ -59,16 +59,15 @@ public class CustomerService implements ClientService {
 	public void purchaseCoupon(Long couponId) throws CouponSystemException {
 		System.out.println("Customer purchaseCoupon");
 		try {
-			if (!isCouponNotPurchased(couponId)) { return; }
+			if (isCouponAlredyPurchased(couponId)) { return; }
 			
 			Optional<Coupon> optCoupon = couponRepository.findById(couponId);
 			if (!optCoupon.isPresent()) { return; }
-			
 			Coupon coupon = optCoupon.get(); 
 			
 			if (!isCouponAvailable(coupon)) { return; }
 			
-			if (!isCouponValid(coupon)) { return; }
+			if (isCouponExpiered(coupon)) { return; }
 			
 			int amount = coupon.getAmount();
 			coupon.setAmount(amount--);
@@ -84,13 +83,9 @@ public class CustomerService implements ClientService {
 	 * @return all customer coupons
 	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCoupons() throws CouponSystemException {
+	public List<Coupon> getCoupons() {
 		System.out.println("Customer getCoupons");
-		try {
-			return customerRepository.findAllCouponsById(getId());
-		} catch (Exception e) {
-			throw new CouponSystemException("getCoupons fail :(", e);
-		}
+		return customer.getCoupons();
 	}
 	
 	/**
@@ -141,11 +136,18 @@ public class CustomerService implements ClientService {
 	
 	// ---------COUPON VALIDATION --------------
 	
-	// TODO: implement method
-	private boolean isCouponNotPurchased(Long couponId) {
-		System.out.println("customer already purchase this coupon");
-		
-		System.out.println("coupon is already purchased");
+	/**
+	 * @param couponId
+	 * @return true if customer already purchased this coupon
+	 */
+	private boolean isCouponAlredyPurchased(Long couponId) {
+		List<Coupon> coupons = customer.getCoupons();
+		for (Coupon coupon : coupons) {
+			if (couponId == coupon.getId()) {
+				System.out.println("customer already purchase this coupon");
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -154,7 +156,7 @@ public class CustomerService implements ClientService {
 	 * @return true if coupon amount > 0
 	 */
 	private boolean isCouponAvailable(Coupon coupon) {
-		if(coupon.getAmount()>0) {
+		if(coupon.getAmount() > 0) {
 			return true;
 		}
 		System.out.println("coupon is not available");
@@ -165,11 +167,11 @@ public class CustomerService implements ClientService {
 	 * @param coupon
 	 * @return true if coupon not expired
 	 */
-	private boolean isCouponValid(Coupon coupon) {
+	private boolean isCouponExpiered(Coupon coupon) {
 		if (coupon.getEndDate().compareTo(new Date()) > 0) {
-			return true;
+			return false;
 		}
 		System.out.println("coupon is expiered");
-		return false;
+		return true;
 	}
 }

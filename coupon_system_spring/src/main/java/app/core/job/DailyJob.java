@@ -2,6 +2,9 @@ package app.core.job;
 
 import java.sql.Date;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,8 +42,10 @@ public class DailyJob implements Runnable {
 		}
 		System.out.println("job thread finished");
 	}
+	
 	public void stop() {
 		this.quit = true;
 		jobThread.interrupt();
+		System.out.println("Job stop");
 	}
 }

@@ -27,8 +27,8 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
 //	List<Coupon> findAllCouponsByCategury(Category category);
 	
 	//TODO: check if there is a generic query
-	@Query(value = "select c.coupon_id from Customer c where c.id = :id", nativeQuery = true)
-	List<Coupon> findAllCouponsById(Long id);
+	@Query(value = "select customer_vc_coupons.coupon_id from customer_vc_coupons where customer_vc_coupons.coupon_id = :id", nativeQuery = true)
+	List<Long> findAllCouponsById(Long id);
 	
 	//TODO: check if there is a generic query
 //	@Query(value = "select c.coupon_id from Customer c where c.id = :id", nativeQuery = true)
