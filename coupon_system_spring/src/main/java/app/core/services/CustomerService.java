@@ -41,6 +41,7 @@ public class CustomerService implements ClientService {
 	 * @return true if customer with given email and password is in database
 	 */
 	public boolean login(String email, String password) throws CouponSystemException {
+		System.out.println("Customer login");
 		try {
 			Optional<Customer> optCustomer = customerRepository.findByEmailAndPassword(email, password);
 			if(optCustomer.isPresent()) {

@@ -25,11 +25,14 @@ public class LoginManager {
 	public ClientService login(String email, String password, ClientType clientType) throws CouponSystemException {
 		switch (clientType) {
 		case ADMINISTRATOR:
-			return context.getBean(AdminService.class);
+			AdminService adminService = context.getBean(AdminService.class);
+			return adminService.login(email, password) ? adminService : null;
 		case COMPNY:
-			return context.getBean(CompanyService.class);
+			CompanyService companyService = context.getBean(CompanyService.class);
+			return companyService.login(email, password) ? companyService : null;
 		case CUSTOMER:
-			return context.getBean(CustomerService.class);
+			CustomerService customerService = context.getBean(CustomerService.class);
+			return customerService.login(email, password) ? customerService : null;
 		}
 		return null;
 	}

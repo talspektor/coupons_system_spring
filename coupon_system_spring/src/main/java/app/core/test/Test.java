@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import app.core.entities.Customer;
 import app.core.exceptions.CouponSystemException;
 import app.core.job.DailyJob;
+import app.core.login.ClientType;
 import app.core.login.LoginManager;
-
-
+import app.core.services.AdminService;
+import app.core.services.ClientService;
+import app.core.services.CompanyService;
+import app.core.services.CustomerService;
 
 @Component
 public class Test {
@@ -30,13 +34,16 @@ public class Test {
 		Thread thread = new Thread(job);
 		thread.start();
 		//**********************
-		// Clients:
-		// Administrator
-		context.getBean(TestAdmin.class).test();
+		// Login the clients
+		AdminService adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
+		CompanyService companyService = (CompanyService) loginManager.login("company_1@mail.com", "pass_1", ClientType.COMPNY);
+		CustomerService customerService = (CustomerService) loginManager.login("customer_1@email.com", "pass_1", ClientType.CUSTOMER);
+		// Admin
+		context.getBean(TestAdmin.class).test(adminService, companyService, customerService);
 		// Company
-		context.getBean(TestCompany.class).test();
+		context.getBean(TestCompany.class).test(adminService, companyService, customerService);
 		// Customer
-		context.getBean(TestCustomer.class).test();
+		context.getBean(TestCustomer.class).test(adminService, companyService, customerService);
 		
 		cleenClose(job);	
 	}
