@@ -1,5 +1,6 @@
 package app.core.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -93,29 +94,32 @@ public class CustomerService implements ClientService {
 	 * @return all customer coupon for given category
 	 * @throws CouponSystemException
 	 */
-//	public List<Coupon> getCouponsByCategory(Category category) throws CouponSystemException {
-//		System.out.println("Customer getCouponsByCategory");
-//		try {
-//			return customerRepository.findAllCouponsByCategury(category);
-//		} catch (Exception e) {
-//			throw new CouponSystemException("getCoupons fail getCouponsByCategory :(", e);
-//		}
-//		
-//	}
+	public List<Coupon> getCouponsByCategory(Category category) {
+		System.out.println("Customer getCouponsByCategory");
+		List<Coupon> coupons = new ArrayList<Coupon>();
+		for (Coupon coupon : customer.getCoupons()) {
+			if (coupon.getCategoryId() == category) {
+				coupons.add(coupon);
+			}
+		}
+		return coupons;
+	}
 	
 	/**
 	 * @param maxPrice
 	 * @return all customer coupons where price < maxPrice
 	 * @throws CouponSystemException
 	 */
-//	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) throws CouponSystemException {
-//		System.out.println("Customer getCouponsByPriceLessThen");
-//		try {
-//			return customerRepository.findAllCouponsByPriceLessThen(maxPrice);
-//		} catch (Exception e) {
-//			throw new CouponSystemException("getCoupons fail getCouponsByPriceLessThen :(", e);
-//		}
-//	}
+	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) {
+		System.out.println("Customer getCouponsByPriceLessThen");
+		List<Coupon> coupons = new ArrayList<Coupon>();
+		for (Coupon coupon : customer.getCoupons()) {
+			if (coupon.getPrice() < maxPrice) {
+				coupons.add(coupon);
+			}
+		}
+		return coupons;
+	}
 	
 	/**
 	 * @return customer by id
