@@ -42,6 +42,7 @@ public class DailyJob implements Runnable {
 		System.out.println("job thread finished");
 	}
 	
+	@PreDestroy
 	public void stop() {
 		this.quit = true;
 		jobThread.interrupt();

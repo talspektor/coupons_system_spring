@@ -28,9 +28,9 @@ public class Test {
 	@Transactional
 	public void testAll() throws CouponSystemException {
 		// Start the daily job
-		DailyJob job = context.getBean(DailyJob.class);
-		Thread thread = new Thread(job);
-		thread.start();
+//		DailyJob job = context.getBean(DailyJob.class);
+//		Thread thread = new Thread(job);
+//		thread.start();
 		//**********************
 		// Login the clients
 		AdminService adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
@@ -43,7 +43,7 @@ public class Test {
 		// CUSTOMER
 		context.getBean(TestCustomer.class).test(adminService, companyService, customerService);
 		
-		cleenClose(job);	
+//		cleenClose(job);	
 	}
 	
 	private void cleenClose(DailyJob job) throws CouponSystemException {

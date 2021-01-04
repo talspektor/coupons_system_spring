@@ -26,7 +26,7 @@ public class TestCustomer implements TestClient {
 			Customer customer = adminService.getAllCustomer().get(0);
 			Coupon coupon = company.getCoupons().get(0);
 						
-//			customerService.purchaseCoupon(coupon.getId());
+			customerService.purchaseCoupon(coupon.getId());
 			System.out.println(customerService.getCoupons()); 
 			System.out.println(customerService.getCustomerDetails());
 			System.out.println(customerService.getCouponsByCategory(Category.ELECTRICITY));
