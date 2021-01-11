@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import app.core.job.DailyJob;
 
-@Component
+//@Component
 public class LifecycleInterceptor implements BeanPostProcessor {
 
 	@Override

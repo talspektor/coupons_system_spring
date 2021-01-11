@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import app.core.entities.Company;
+import app.core.entities.Customer;
 import app.core.exceptions.CouponSystemException;
-import app.core.job.DailyJob;
 import app.core.login.ClientType;
 import app.core.login.LoginManager;
 import app.core.services.AdminService;
@@ -27,27 +28,30 @@ public class Test {
 	}
 	@Transactional
 	public void testAll() throws CouponSystemException {
-		// Start the daily job
-//		DailyJob job = context.getBean(DailyJob.class);
-//		Thread thread = new Thread(job);
-//		thread.start();
 		//**********************
 		// Login the clients
 		AdminService adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
-		CompanyService companyService = (CompanyService) loginManager.login("company_1@mail.com", "pass_1", ClientType.COMPNY);
-		CustomerService customerService = (CustomerService) loginManager.login("customer_1@email.com", "pass_1", ClientType.CUSTOMER);
+		
+		Company company = adminService.getAllCompanies().get(0);
+		if(company == null) {
+			System.out.println("*****  No companies in database!!! you can't continue test... ******");
+			return;
+		}
+		CompanyService companyService = (CompanyService) loginManager.login(company.getEmail(), company.getPassword(), ClientType.COMPNY);
+		
+		Customer customer = adminService.getAllCustomer().get(0);
+		if(customer == null) {
+			System.out.println("***** No customers in database!!! you can't continue test... *****");
+		}
+		CustomerService customerService = (CustomerService) loginManager.login(customer.getEmail(), customer.getPassword(), ClientType.CUSTOMER);
+		
 		// ADMINISTRATOR
 		context.getBean(TestAdmin.class).test(adminService, companyService, customerService);
-		// COMPANY
+//		// COMPANY
 		context.getBean(TestCompany.class).test(adminService, companyService, customerService);
-		// CUSTOMER
+//		// CUSTOMER
 		context.getBean(TestCustomer.class).test(adminService, companyService, customerService);
 		
-//		cleenClose(job);	
 	}
 	
-	private void cleenClose(DailyJob job) throws CouponSystemException {
-		// Stop the daily job
-		job.stop();
-	}
 }

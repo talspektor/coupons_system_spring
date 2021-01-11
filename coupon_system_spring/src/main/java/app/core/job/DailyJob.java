@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,9 +22,17 @@ public class DailyJob implements Runnable {
 
 	public DailyJob() {
 		super();
+		this.jobThread = new Thread(this, "job");
+	}
+	
+	@PostConstruct
+	public void startJob() {
+		this.jobThread.start();
+		System.out.println("job started");
 	}
 	
 	@Override
+	@Transactional
 	public void run() {
 		jobThread = Thread.currentThread();
 		try {

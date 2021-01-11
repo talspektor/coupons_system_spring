@@ -57,6 +57,7 @@ public class CustomerService implements ClientService {
 	}
 	
 	public void purchaseCoupon(Long couponId) throws CouponSystemException {
+		if (couponId == null) { return; }  
 		System.out.println("Customer purchaseCoupon");
 		try {
 			CouponValidator validator = new CouponValidator(customer);
@@ -79,9 +80,18 @@ public class CustomerService implements ClientService {
 	 * @return all customer coupons
 	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCoupons() {
+	public List<Coupon> getCoupons() throws CouponSystemException {
 		System.out.println("Customer getCoupons");
-		return customer.getCoupons();
+		try {
+			Optional<Customer> optCustomer = customerRepository.findById(customer.getId());
+			if (optCustomer.isPresent()) {
+				return optCustomer.get().getCoupons();
+			}
+			System.out.println("no coupons for this customer");
+			return null;
+		} catch (Exception e) {
+			throw new CouponSystemException("getCoupons fail :(", e); 
+		}
 	}
 	
 	/**
@@ -89,15 +99,23 @@ public class CustomerService implements ClientService {
 	 * @return all customer coupon for given category
 	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCouponsByCategory(Category category) {
+	public List<Coupon> getCouponsByCategory(Category category) throws CouponSystemException {
 		System.out.println("Customer getCouponsByCategory");
-		List<Coupon> coupons = new ArrayList<Coupon>();
-		for (Coupon coupon : customer.getCoupons()) {
-			if (coupon.getCategoryId() == category) {
-				coupons.add(coupon);
+		try {
+			Optional<Customer> optCustomer = customerRepository.findById(customer.getId());
+			if (!optCustomer.isPresent()) {
+				return null;
 			}
+			List<Coupon> coupons = new ArrayList<Coupon>();
+			for (Coupon coupon : optCustomer.get().getCoupons()) {
+				if (coupon.getCategoryId() == category) {
+					coupons.add(coupon);
+				}
+			}
+			return coupons;
+		} catch (Exception e) {
+			throw new CouponSystemException("getCouponsByCategory fail :(", e); 
 		}
-		return coupons;
 	}
 	
 	/**
@@ -105,15 +123,25 @@ public class CustomerService implements ClientService {
 	 * @return all customer coupons where price < maxPrice
 	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) {
+	//TODO: ?
+	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) throws CouponSystemException {
 		System.out.println("Customer getCouponsByPriceLessThen");
-		List<Coupon> coupons = new ArrayList<Coupon>();
-		for (Coupon coupon : customer.getCoupons()) {
-			if (coupon.getPrice() < maxPrice) {
-				coupons.add(coupon);
+		try {
+			Optional<Customer> optCustomer = customerRepository.findById(customer.getId());
+			if (!optCustomer.isPresent()) {
+				return null;
 			}
+			List<Coupon> coupons = new ArrayList<Coupon>();
+			for (Coupon coupon : optCustomer.get().getCoupons()) {
+				if (coupon.getPrice() < maxPrice) {
+					coupons.add(coupon);
+				}
+			}
+			return coupons;
+		} catch (Exception e) {
+			throw new CouponSystemException("getCouponsByPriceLessThen fail :(", e);
 		}
-		return coupons;
+		
 	}
 	
 	/**
@@ -137,19 +165,30 @@ public class CustomerService implements ClientService {
 	 * @param couponId
 	 * @return coupon
 	 */
-	private Coupon getCoupon(Long couponId) {
-		Optional<Coupon> optCoupon = couponRepository.findById(couponId);
-		if (!optCoupon.isPresent()) { return null; }
-		return optCoupon.get();
+	private Coupon getCoupon(Long couponId) throws CouponSystemException {
+		try {
+			Optional<Coupon> optCoupon = couponRepository.findById(couponId);
+			if (!optCoupon.isPresent()) { return null; }
+			return optCoupon.get();
+		} catch (Exception e) {
+			throw new CouponSystemException("getCoupon fail :(", e);
+		}
+		
 	}
 	
 	/** add coupon to customer coupon list
 	 * @param coupon
 	 */
-	private void addCoupon(Coupon coupon) {
-		int amount = coupon.getAmount();
-		coupon.setAmount(amount--);
-		customer.addCoupn(coupon);
-		customerRepository.save(customer);
+	private void addCoupon(Coupon coupon) throws CouponSystemException {
+		try {
+			Optional<Customer> optCustomer = customerRepository.findById(getId());
+			if (!optCustomer.isPresent()) { return; }
+			int amount = coupon.getAmount();
+			coupon.setAmount(amount--);
+			optCustomer.get().addCoupn(coupon);
+			customerRepository.save(optCustomer.get());
+		} catch (Exception e) {
+			throw new CouponSystemException("addCoupon fail :(", e);
+		}
 	}
 }
