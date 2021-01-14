@@ -31,8 +31,8 @@ public class TestCustomer {
 	
 	public void login() throws CouponSystemException {
 		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
-		Customer customer = adminService.getAllCustomer().get(0);
-		Company company = adminService.getAllCompanies().get(0);
+		Customer customer = TestUtils.getRandomCustomerFromDatabase(adminService);
+		Company company = TestUtils.getRandomCompanyFromDatabase(adminService);
 		if(company == null) {
 			System.out.println("*****  No companies in database!!! you can't continue test... ******");
 			return;
@@ -56,6 +56,14 @@ public class TestCustomer {
 		List<Coupon> coupons = customerService.getCoupons();
 		System.out.println(coupons);
 		System.out.println(coupons.size());
+		System.out.println("=========================================");
+	}
+	
+	public void getAllCouponsFromDB() throws CouponSystemException {
+		System.out.println("============ Test get All coupons from DB ==============");
+		List<Coupon> coupons = customerService.getAllDatabaseCoupons();
+		System.out.println(coupons);
+		System.out.println("There are: " + coupons.size() + " coupons in database");
 		System.out.println("=========================================");
 	}
 	
