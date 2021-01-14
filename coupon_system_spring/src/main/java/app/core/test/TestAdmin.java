@@ -14,7 +14,7 @@ import app.core.services.AdminService;
 
 @Component
 @Transactional
-public class TestAdmin implements TestClient {
+public class TestAdmin {
 	
 	private AdminService adminService;
 	@Autowired
@@ -26,7 +26,7 @@ public class TestAdmin implements TestClient {
 	
 	public void addCompanyTest() throws CouponSystemException {
 		System.out.println("========== Test add Company ==============");
-		Company company = Test.getRandomNewCompany();
+		Company company = TestUtils.getRandomNewCompany();
 		System.out.println(company);
 		adminService.addCompany(company);
 		System.out.println("===========================================");
@@ -47,13 +47,16 @@ public class TestAdmin implements TestClient {
 	
 	public void addCustomerTest() throws CouponSystemException {
 		System.out.println("========== Test add Customer ==============");
-		adminService.addCustomer(Test.getRandomNewCustomer());
+		Customer customer = TestUtils.getRandomNewCustomer();
+		adminService.addCustomer(customer);
+		System.out.println(customer);
 		System.out.println("===========================================");
 	}
 	
 	public void getCustomerTest() throws CouponSystemException {
 		System.out.println("========== Test get Customer ==============");
-		Customer customer = adminService.getAllCustomer().get(0);
+		Customer customer = TestUtils.getRandomCustomerFromDatabase(adminService);
+		System.out.println(adminService.getCustomer(customer.getId()));
 		System.out.println(customer);
 		System.out.println("===========================================");
 	}
@@ -66,7 +69,7 @@ public class TestAdmin implements TestClient {
 	
 	public void deleteCompanyTest() throws CouponSystemException {
 		System.out.println("========== Test delete Company ==============");
-		Company company = Test.getRandomNewCompany();
+		Company company = TestUtils.getRandomNewCompany();
 		adminService.addCompany(company);
 		company = adminService.getCompanyByName(company.getName());
 		adminService.deleteCoumpany(company.getId());
@@ -75,29 +78,7 @@ public class TestAdmin implements TestClient {
 	
 	public void deleteCustomerTest() throws CouponSystemException {
 		System.out.println("========== Test delete Customer ==============");
-		adminService.addCustomer(Test.getRandomNewCustomer());
+		adminService.addCustomer(TestUtils.getRandomNewCustomer());
 		System.out.println("===========================================");
-	}
-	
-	@Override
-	public void test() throws CouponSystemException {
-		System.out.println("==================");
-		System.out.println("Test Admin");
-
-		addCompanyTest();
-
-		getCompanyTest();
-
-		getAllCompaniesTest();
-
-		addCustomerTest();
-
-		getCustomerTest();
-
-		getAllCustomersTest();
-
-		deleteCompanyTest();
-
-		deleteCustomerTest();
 	}
 }

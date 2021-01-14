@@ -10,23 +10,30 @@ import app.core.entities.Coupon;
 import app.core.entities.Customer;
 import app.core.exceptions.CouponSystemException;
 import app.core.services.AdminService;
+import app.core.services.CompanyService;
 
 public class TestUtils {
 	
 	static Company getRandomCompanyFromDatabase(AdminService adminService) throws CouponSystemException {
 		List<Company> companies = adminService.getAllCompanies();
 		int size = companies.size();
-		return companies.get((int)Math.random() + size -1);
+		return companies.get((int)(Math.random() + size -1));
 	}
 	
 	static Customer getRandomCustomerFromDatabase(AdminService adminService) throws CouponSystemException {
 		List<Customer> customers = adminService.getAllCustomer();
 		int size = customers.size();
-		return customers.get((int)Math.random() + size -1);
+		return customers.get((int)(Math.random() + size -1));
+	}
+	
+	static Coupon getRandomCouponFromDatabase(CompanyService service) throws CouponSystemException {
+		List<Coupon> coupons = service.getCompanyCoupons();
+		int size = coupons.size();
+		return coupons.get((int)(Math.random() + size -1));
 	}
 
 	static int getRandom() {
-		return (int)Math.random() * 1000;
+		return (int)(Math.random() * 1000);
 	}
 	
 	static Company getRandomNewCompany() {
@@ -39,7 +46,7 @@ public class TestUtils {
 	
 	static Category getRandomCategory() {
 		Category[] categories = {Category.ELECTRICITY, Category.FOOD, Category.SPORTS, Category.VACATION};
-		return categories[(int)Math.random() * 4];
+		return categories[(int)(Math.random() * 4)];
 	}
 	
 	static Coupon getRandomNewCoupon(Company company) {
@@ -47,8 +54,8 @@ public class TestUtils {
 		String description = "desc_" + getRandom();
 		Date startDate = Date.valueOf(LocalDate.of(2020, 2, 1));
 		Date endDate = Date.valueOf(LocalDate.of(2021, 2, 1));
-		int amount = (int)Math.random() * 25;
-		double price = (double)Math.random() * 1000;
+		int amount = (int)(Math.random() * 25);
+		double price = (double)(Math.random() * 1000);
 		String imageUrl = "some_url";
 		Category category = getRandomCategory();
 		

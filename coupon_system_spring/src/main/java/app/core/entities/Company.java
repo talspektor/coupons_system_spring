@@ -77,7 +77,7 @@ public class Company {
 			coupons = new ArrayList<Coupon>();
 		}
 		coupons.add(coupon);
-		System.out.println("addCoupon: coupon - " + coupon.getId() + " was added");
+		System.out.println("addCoupon: coupon - " + coupon.getTitle() + " was added");
 	}
 	
 	public void removeCoupon(Long couponId) {

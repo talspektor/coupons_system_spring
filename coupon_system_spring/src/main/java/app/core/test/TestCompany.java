@@ -15,7 +15,7 @@ import app.core.services.CompanyService;
 
 @Component
 @Transactional
-public class TestCompany implements TestClient {
+public class TestCompany {
 	
 	private AdminService adminService;
 	
@@ -32,19 +32,19 @@ public class TestCompany implements TestClient {
 		}
 		companyService = (CompanyService) loginManager.login(company.getEmail(), company.getPassword(), ClientType.COMPNY);
 	}
-	
+
 	public void addCouponTest() throws CouponSystemException {
 		System.out.println("============ Test add Coupon ==============");
 		Company company = adminService.getCompany(companyService.getId());
-		companyService.addCoupon(Test.getRandomNewCoupon(company));
+		companyService.addCoupon(TestUtils.getRandomNewCoupon(company));
 		System.out.println("=========================================");
 	}
-	
+
 	public void updateCouponTest() throws CouponSystemException {
 		System.out.println("============ Test update Coupon ==============");
-		Coupon couponToUpdate = companyService.getCompanyCoupons().get(0);
-		couponToUpdate.setAmount(Test.getRandom());
-		companyService.updateCoupon(couponToUpdate);
+		Coupon coupon = TestUtils.getRandomCouponFromDatabase(companyService);
+		coupon.setAmount(TestUtils.getRandom());
+		companyService.updateCoupon(coupon);
 		System.out.println("=========================================");
 	}
 	
@@ -56,14 +56,14 @@ public class TestCompany implements TestClient {
 	
 	public void getCoumpanyCouponsByMaxPrice() throws CouponSystemException {
 		System.out.println("============ Test get company coupons by max price ==============");
-		System.out.println(companyService.getCompanyCoupons(Test.getRandom()));
+		System.out.println(companyService.getCompanyCoupons(TestUtils.getRandom()));
 		System.out.println("=========================================");
 	}
 	
 	public void deleteCouponTest() throws CouponSystemException {
 		System.out.println("============ Test delete company coupon ==============");
-		Coupon couponToDelete = companyService.getCompanyCoupons().get(0);
-		companyService.deleteCoupon(couponToDelete.getId());
+		Coupon coupon = TestUtils.getRandomCouponFromDatabase(companyService);
+		companyService.deleteCoupon(coupon.getId());
 		System.out.println("=========================================");
 	}
 	
@@ -71,27 +71,5 @@ public class TestCompany implements TestClient {
 		System.out.println("============ Test get company details ==============");
 		System.out.println(companyService.getCompanyDetails());
 		System.out.println("=========================================");
-	}
-
-	@Override
-	public void test() throws CouponSystemException {
-		System.out.println("==================");
-		System.out.println("Test Company");
-		try {
-			addCouponTest();
-			
-			updateCouponTest();
-			
-			getCompanyCouponsTest();
-			
-			getCoumpanyCouponsByMaxPrice();
-			
-			deleteCouponTest();
-			
-			getCompanyDetailsTest();
-
-		} catch (Exception e) {
-			throw new CouponSystemException("test " + e.getMessage(), e);
-		}
 	}
 }

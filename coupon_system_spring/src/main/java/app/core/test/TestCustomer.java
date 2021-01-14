@@ -14,22 +14,30 @@ import app.core.exceptions.CouponSystemException;
 import app.core.login.ClientType;
 import app.core.login.LoginManager;
 import app.core.services.AdminService;
+import app.core.services.CompanyService;
 import app.core.services.CustomerService;
 
 @Component
 @Transactional
-public class TestCustomer implements TestClient {
+public class TestCustomer {
 	
 
 	private AdminService adminService;
 
 	private CustomerService customerService;
+	private CompanyService companyService;
 	@Autowired
 	private LoginManager loginManager;
 	
 	public void login() throws CouponSystemException {
 		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
 		Customer customer = adminService.getAllCustomer().get(0);
+		Company company = adminService.getAllCompanies().get(0);
+		if(company == null) {
+			System.out.println("*****  No companies in database!!! you can't continue test... ******");
+			return;
+		}
+		companyService = (CompanyService) loginManager.login(company.getEmail(), company.getPassword(), ClientType.COMPNY);
 		if(customer == null) {
 			System.out.println("***** No customers in database!!! you can't continue test... *****");
 		}
@@ -38,8 +46,7 @@ public class TestCustomer implements TestClient {
 
 	public void purchaseCouponTest() throws CouponSystemException {
 		System.out.println("============ Test purchase coupon ==============");
-		Company company = TestUtils.getRandomCompanyFromDatabase(adminService);
-		Coupon coupon = company.getCoupons().get(0);
+		Coupon coupon = TestUtils.getRandomCouponFromDatabase(companyService);
 		customerService.purchaseCoupon(coupon.getId());
 		System.out.println("=========================================");
 	}
@@ -54,13 +61,13 @@ public class TestCustomer implements TestClient {
 	
 	public void getCouponsByCategoryTest() throws CouponSystemException {
 		System.out.println("============ Test get coupons by categoty ==============");
-		System.out.println(customerService.getCouponsByCategory(Test.getRandomCategory())); 
+		System.out.println(customerService.getCouponsByCategory(TestUtils.getRandomCategory())); 
 		System.out.println("=========================================");
 	}
 	
 	public void getCouponsByPriceLessThenTest() throws CouponSystemException {
 		System.out.println("============ Test get coupons by price less then ==============");
-		System.out.println(customerService.getCouponsByPriceLessThen(Test.getRandom()));
+		System.out.println(customerService.getCouponsByPriceLessThen(TestUtils.getRandom()));
 		System.out.println("=========================================");
 	}
 	
@@ -68,20 +75,5 @@ public class TestCustomer implements TestClient {
 		System.out.println("============ Test get customer details ==============");
 		System.out.println(customerService.getCustomerDetails());
 		System.out.println("=========================================");
-	}
-	
-	@Override
-	public void test() throws CouponSystemException {
-		System.out.println("==================");
-		System.out.println("Test Customer");
-		purchaseCouponTest();
-
-		getCouponsTest();
-
-		getCouponsByCategoryTest();
-
-		getCouponsByPriceLessThenTest();
-
-		getCustomerDetailsTest();
 	}
 }
