@@ -6,5 +6,5 @@ import app.core.services.CompanyService;
 import app.core.services.CustomerService;
 
 public interface TestClient {
-	void test(AdminService adminService, CompanyService companyService, CustomerService customerService) throws CouponSystemException;
+	void test() throws CouponSystemException;
 }

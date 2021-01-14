@@ -15,4 +15,6 @@ public interface CompanyRepository extends CrudRepository<Company, Long> {
 	boolean existsByEmail(String email);
 	
 	Optional<Company> findByEmailAndPassword(String email, String password);
+	
+	Optional<Company> findByName(String name);
 }

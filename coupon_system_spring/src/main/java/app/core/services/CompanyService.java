@@ -44,6 +44,9 @@ public class CompanyService implements ClientService {
 	 */
 	public boolean login(String email, String password) throws CouponSystemException {
 		System.out.println("Company login");
+		if (email == null || password == null) {
+			throw new CouponSystemException("login fail :( email or password are null");
+		}
 		try {
 			if (!companyRepository.existsByEmailAndPassword(email, password)) {
 				System.out.println("company not exists in database");
@@ -83,6 +86,9 @@ public class CompanyService implements ClientService {
 	 */
 	public void addCoupon(Coupon couponToAdd) throws CouponSystemException {
 		System.out.println("Company addCoupon");
+		if (couponToAdd == null) { 
+			throw new CouponSystemException("couopn is null");
+		}
 		try {
 			if (couponRepository.existsByTitleAndCompanyId(couponToAdd.getTitle(), id)) {
 				System.out.println("coupon is already in database.");
@@ -112,6 +118,9 @@ public class CompanyService implements ClientService {
 	 */
 	public void updateCoupon(Coupon coupon) throws CouponSystemException {
 		System.out.println("Company updateCoupon");
+		if (coupon == null) {
+			throw new CouponSystemException("coupon is null");
+		}
 		try {
 			couponRepository.save(coupon);
 		} catch (Exception e) {
@@ -126,8 +135,10 @@ public class CompanyService implements ClientService {
 	 */
 	public void deleteCoupon(Long couponId) throws CouponSystemException {
 		System.out.println("Company deleteCoupon");
+		if (couponId == null) {
+			throw new CouponSystemException("couponId is null");
+		}
 		try {
-			//TODO: delete coupon purchase by coupon id
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (optCompany.isPresent()) {
 				optCompany.get().removeCoupon(couponId);
@@ -147,13 +158,13 @@ public class CompanyService implements ClientService {
 		System.out.println("Company getCompanyCoupons");
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
-			if (optCompany.isPresent()) {
-				return optCompany.get().getCoupons();
+			if (!optCompany.isPresent()) {
+				return new ArrayList<Coupon>();
 			}
+			return optCompany.get().getCoupons();
 		} catch (Exception e) {
 			throw new CouponSystemException("getCompanyCoupons fail :(" + e.getMessage(), e);
 		}
-		return null;
 	}
 	
 	/**
@@ -165,7 +176,9 @@ public class CompanyService implements ClientService {
 		System.out.println("Company getCompanyCoupons(maxPrice)");
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
-			if (!optCompany.isPresent()) { return null; }
+			if (!optCompany.isPresent()) {
+				throw new CouponSystemException("company is not found in database");
+			}
 			List<Coupon> coupons = optCompany.get().getCoupons();
 			List<Coupon> couponsToReturn = new ArrayList<Coupon>();
 			for (Coupon coupon : coupons) {

@@ -34,8 +34,11 @@ public class AdminService implements ClientService {
 	 * @param password
 	 * @return true if email and password are correct
 	 */
-	public boolean login(String email, String password) {
+	public boolean login(String email, String password) throws CouponSystemException {
 		System.out.println("Admin login");
+		if (email == null || password == null) {
+			throw new CouponSystemException("login fail :( email or password are null");
+		}
 		if (email == "com.admin@admin" && password == "admin") {
 			System.out.println("login success :)");
 			return true;
@@ -53,6 +56,9 @@ public class AdminService implements ClientService {
 	 */
 	public void addCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin addCompany");
+		if(company == null) {
+			throw new CouponSystemException("company is null...");
+		}
 		try {
 			if(isCompanyNameExists(company.getName()) || isCompanyEmailExists(company.getEmail())) {
 				System.out.println("cant add company name and email must by unique");
@@ -71,6 +77,9 @@ public class AdminService implements ClientService {
 	 */
 	public void updateCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin updateCompany");
+		if (company == null) {
+			throw new CouponSystemException();
+		}
 		try {
 			Optional<Company> companyToUpdate = companyRepository.findById(company.getId());
 			if (companyToUpdate.isPresent()) {
@@ -92,6 +101,9 @@ public class AdminService implements ClientService {
 	 */ 
 	public void deleteCoumpany(Long companyId) throws CouponSystemException {
 		System.out.println("Admin deleteCompany");
+		if (companyId == null) {
+			throw new CouponSystemException("companyId is null");
+		}
 		try {
 			companyRepository.deleteById(companyId);
 		} catch (Exception e) {
@@ -119,15 +131,33 @@ public class AdminService implements ClientService {
 	 */
 	public Company getCompany(Long companyId) throws CouponSystemException {
 		System.out.println("Admin getCompany");
+		if (companyId == null) {
+			throw new CouponSystemException("companyId is null");
+		}
 		try {
 			Optional<Company> optCompany = companyRepository.findById(companyId);
 			if (optCompany.isPresent()) {
 				return optCompany.get();
 			}
-			System.out.println("getCompany fail");
-			return null;
+			throw new CouponSystemException("getCompany fail: company not found in database");
 		} catch (Exception e) {
 			throw new CouponSystemException("getCompany fail " + e.getMessage(), e);
+		}
+	}
+	
+	public Company getCompanyByName(String name) throws CouponSystemException {
+		System.out.println("Admin getCompanyByName");
+		if (name == null) {
+			throw new CouponSystemException("name is null");
+		}
+		try {
+			Optional<Company> optCompany = companyRepository.findByName(name);
+			if (optCompany.isPresent()) {
+				return optCompany.get();
+			}
+			throw new CouponSystemException("getCompanyByName fail: company not found in database");
+		} catch (Exception e) {
+			throw new CouponSystemException("getCompanyByName fail " + e.getMessage(), e);
 		}
 	}
 	
@@ -140,6 +170,9 @@ public class AdminService implements ClientService {
 	 */
 	public void addCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin addCustomer");
+		if (customer == null) {
+			throw new CouponSystemException("customer is null");
+		}
 		try {
 			if(isCustomerEmailExists(customer.getEmail())) {
 				System.out.println("You can't add customer email and password most be unique");
@@ -158,6 +191,9 @@ public class AdminService implements ClientService {
 	 */
 	public void updateCustomer(Customer customer) throws CouponSystemException {
 		System.out.println("Admin updateCustomer");
+		if (customer == null) {
+			throw new CouponSystemException("customer is null");
+		}
 		try {
 			if(isCustomerEmailExists(customer.getEmail())) {
 				System.out.println("You can't update customer email and password most be unique");
@@ -176,6 +212,9 @@ public class AdminService implements ClientService {
 	 */
 	public void deleteCustomer(Long customerId) throws CouponSystemException {
 		System.out.println("Admin deleteCustomer");
+		if (customerId == null) {
+			throw new CouponSystemException("customerId is null");
+		}
 		try {
 			customerRepository.deleteById(customerId);
 		} catch (Exception e) {
@@ -203,12 +242,15 @@ public class AdminService implements ClientService {
 	 */
 	public Customer getCustomer(Long customerId) throws CouponSystemException {
 		System.out.println("Admin getCustomer");
+		if (customerId == null) {
+			throw new CouponSystemException("customerId is null");
+		}
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(customerId);
 			if(optCustomer.isPresent()) {
 				return optCustomer.get();
 			}
-			return null;
+			throw new CouponSystemException("Costomer with id=" + customerId + " not found in database");
 		} catch (Exception e) {
 			throw new CouponSystemException("getCustomer fail " + e.getMessage(), e);
 		}
