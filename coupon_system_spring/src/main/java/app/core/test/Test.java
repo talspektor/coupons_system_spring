@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import app.core.entities.Category;
 import app.core.exceptions.CouponSystemException;
 
 @Component
@@ -49,8 +50,8 @@ public class Test {
 			testCustomer.login();
 //			testCustomer.purchaseCouponTest();
 //			testCustomer.getCouponsTest();
-			testCustomer.getAllCouponsFromDB();
-//			testCustomer.getCouponsByCategoryTest();
+//			testCustomer.getAllCouponsFromDB();
+			testCustomer.getCouponsByCategoryTest(Category.ELECTRICITY);
 //			testCustomer.getCouponsByPriceLessThenTest();
 //			testCustomer.getCustomerDetailsTest();
 		}	

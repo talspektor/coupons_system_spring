@@ -95,13 +95,18 @@ public class CompanyService implements ClientService {
 				return;
 			}
 			Optional<Company> optCompany = companyRepository.findById(id);
-			if (!optCompany.isPresent()) { return; }
-				
+			if (!optCompany.isPresent()) { 
+				return;
+			}
 			List<Coupon> coupons = optCompany.get().getCoupons();
-			for (Coupon coupon : coupons) {
-				if(coupon.getTitle() == couponToAdd.getTitle()) {
-					System.out.println("can't add coupon's title most by unique");
-					return;
+			if (coupons == null) {
+				coupons = new ArrayList<Coupon>();
+			} else {
+				for (Coupon coupon : coupons) {
+					if(coupon.getTitle() == couponToAdd.getTitle()) {
+						System.out.println("can't add coupon's title most by unique");
+						return;
+					}
 				}
 			}
 			optCompany.get().addCoupon(couponToAdd);

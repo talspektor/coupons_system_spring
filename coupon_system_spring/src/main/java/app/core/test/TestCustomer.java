@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import app.core.entities.Category;
 import app.core.entities.Company;
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
@@ -46,8 +47,11 @@ public class TestCustomer {
 
 	public void purchaseCouponTest() throws CouponSystemException {
 		System.out.println("============ Test purchase coupon ==============");
-		Coupon coupon = TestUtils.getRandomCouponFromDatabase(companyService);
-		customerService.purchaseCoupon(coupon.getId());
+		Coupon coupon = TestUtils.getRandomCouponFromDatabase(adminService);
+		if (coupon != null) {
+			customerService.purchaseCoupon(coupon.getId());
+		}
+		System.out.println("");
 		System.out.println("=========================================");
 	}
 	
@@ -67,9 +71,9 @@ public class TestCustomer {
 		System.out.println("=========================================");
 	}
 	
-	public void getCouponsByCategoryTest() throws CouponSystemException {
+	public void getCouponsByCategoryTest(Category category) throws CouponSystemException {
 		System.out.println("============ Test get coupons by categoty ==============");
-		System.out.println(customerService.getCouponsByCategory(TestUtils.getRandomCategory())); 
+		System.out.println(customerService.getCouponsByCategory(category)); 
 		System.out.println("=========================================");
 	}
 	

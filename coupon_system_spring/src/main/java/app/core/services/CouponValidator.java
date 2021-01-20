@@ -20,6 +20,9 @@ public class CouponValidator {
 	 */
 	public boolean isCouponAlredyPurchased(Long couponId) {
 		List<Coupon> coupons = customer.getCoupons();
+		if (coupons == null || coupons.isEmpty()) {
+			return false;
+		}
 		for (Coupon coupon : coupons) {
 			if (couponId == coupon.getId()) {
 				System.out.println("customer already purchase this coupon");

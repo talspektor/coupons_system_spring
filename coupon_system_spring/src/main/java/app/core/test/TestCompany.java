@@ -42,7 +42,7 @@ public class TestCompany {
 
 	public void updateCouponTest() throws CouponSystemException {
 		System.out.println("============ Test update Coupon ==============");
-		Coupon coupon = TestUtils.getRandomCouponFromDatabase(companyService);
+		Coupon coupon = TestUtils.getRandomCouponFromDatabase(adminService);
 		coupon.setAmount(TestUtils.getRandom());
 		companyService.updateCoupon(coupon);
 		System.out.println("=========================================");
@@ -62,7 +62,7 @@ public class TestCompany {
 	
 	public void deleteCouponTest() throws CouponSystemException {
 		System.out.println("============ Test delete company coupon ==============");
-		Coupon coupon = TestUtils.getRandomCouponFromDatabase(companyService);
+		Coupon coupon = TestUtils.getRandomCouponFromDatabase(adminService);
 		companyService.deleteCoupon(coupon.getId());
 		System.out.println("=========================================");
 	}
