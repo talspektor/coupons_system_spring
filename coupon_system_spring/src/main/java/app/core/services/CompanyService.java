@@ -182,7 +182,7 @@ public class CompanyService implements ClientService {
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (!optCompany.isPresent()) {
-				throw new CouponSystemException("company is not found in database");
+				throw new CouponSystemException("companyRepository.findById(id) fail :(");
 			}
 			List<Coupon> coupons = optCompany.get().getCoupons();
 			List<Coupon> couponsToReturn = new ArrayList<Coupon>();

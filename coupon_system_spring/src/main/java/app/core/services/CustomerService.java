@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
 import app.core.entities.Category;
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
@@ -65,8 +66,11 @@ public class CustomerService implements ClientService {
 	 * add coupon to customer coupons
 	 */
 	public void purchaseCoupon(Long couponId) throws CouponSystemException {
-		if (couponId == null) { return; }  
 		System.out.println("Customer purchaseCoupon");
+		if (couponId == null) {
+			System.out.println("couponId is null...");
+			return;
+		} 
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) { return; }
@@ -98,13 +102,17 @@ public class CustomerService implements ClientService {
 			if (optCustomer.isPresent()) {
 				return optCustomer.get().getCoupons();
 			}
-			System.out.println("no coupons for this customer");
+			System.out.println("no coupons for this customer :(");
 			return null;
 		} catch (Exception e) {
 			throw new CouponSystemException("getCoupons fail :(", e); 
 		}
 	}
 	
+	/**
+	 * @return All the coupons from database
+	 * @throws CouponSystemException
+	 */
 	public List<Coupon> getAllDatabaseCoupons() throws CouponSystemException {
 		System.out.println("Customer getAllDatabaseCoupons");
 		try {
@@ -124,7 +132,7 @@ public class CustomerService implements ClientService {
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
-				return null;
+				throw new CouponSystemException("customerRepository.findById(id=" + id + ") fail :(");
 			}
 			List<Coupon> coupons = new ArrayList<Coupon>();
 			for (Coupon coupon : optCustomer.get().getCoupons()) {
@@ -144,13 +152,12 @@ public class CustomerService implements ClientService {
 	 * @return all customer coupons where price < maxPrice
 	 * @throws CouponSystemException
 	 */
-	//TODO: ?
 	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) throws CouponSystemException {
 		System.out.println("Customer getCouponsByPriceLessThen");
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
-				return null;
+				throw new CouponSystemException("customerRepository.findById(id=" + id + ") fail :(");
 			}
 			List<Coupon> coupons = new ArrayList<Coupon>();
 			for (Coupon coupon : optCustomer.get().getCoupons()) {
@@ -187,7 +194,9 @@ public class CustomerService implements ClientService {
 	 * @return coupon
 	 */
 	private Coupon getCoupon(Long couponId) throws CouponSystemException {
-		if (couponId == null) { return null; }
+		if (couponId == null) { 
+			throw new CouponSystemException("couponId is null :(");
+		}
 		try {
 			Optional<Coupon> optCoupon = couponRepository.findById(couponId);
 			if (!optCoupon.isPresent()) { return null; }
@@ -202,10 +211,13 @@ public class CustomerService implements ClientService {
 	 * @param coupon
 	 */
 	private void addCoupon(Coupon coupon) throws CouponSystemException {
-		if (coupon == null) { return; }
+		if (coupon == null) { 
+			throw new CouponSystemException("Coupon is null :(");
+		}
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(getId());
 			if (!optCustomer.isPresent()) { return; }
+			
 			int amount = coupon.getAmount();
 			coupon.setAmount(amount--);
 			optCustomer.get().addCoupn(coupon);

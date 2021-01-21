@@ -20,40 +20,40 @@ public class Test {
 		
 		{
 			// ADMINISTRATOR
-//			TestAdmin testAdmin = context.getBean(TestAdmin.class);
-//			testAdmin.loginTest();
-//			testAdmin.addCompanyTest();
-//			testAdmin.getCompanyTest();
-//			testAdmin.getAllCompaniesTest();
-//			testAdmin.addCustomerTest();
-//			testAdmin.getCustomerTest();
-//			testAdmin.getAllCustomersTest();
-//			testAdmin.deleteCompanyTest();
-//			testAdmin.deleteCustomerTest();
+			TestAdmin testAdmin = context.getBean(TestAdmin.class);
+			testAdmin.loginTest();
+			testAdmin.addCompanyTest();
+			testAdmin.getCompanyTest();
+			testAdmin.getAllCompaniesTest();
+			testAdmin.addCustomerTest();
+			testAdmin.getCustomerTest();
+			testAdmin.getAllCustomersTest();
+			testAdmin.deleteCompanyTest();
+			testAdmin.deleteCustomerTest();
 		}
 		
 		{
 			// COMPANY
-//			TestCompany testCompany = context.getBean(TestCompany.class);
-//			testCompany.login();
-//			testCompany.addCouponTest();
-//			testCompany.updateCouponTest();
-//			testCompany.getCompanyCouponsTest();
-//			testCompany.getCoumpanyCouponsByMaxPrice();
-//			testCompany.deleteCouponTest();
-//			testCompany.getCompanyDetailsTest();
+			TestCompany testCompany = context.getBean(TestCompany.class);
+			testCompany.login();
+			testCompany.addCouponTest();
+			testCompany.updateCouponTest();
+			testCompany.getCompanyCouponsTest();
+			testCompany.getCoumpanyCouponsByMaxPrice();
+			testCompany.deleteCouponTest();
+			testCompany.getCompanyDetailsTest();
 		}
 		
 		{
 			// CUSTOMER
 			TestCustomer testCustomer = context.getBean(TestCustomer.class);
 			testCustomer.login();
-//			testCustomer.purchaseCouponTest();
-//			testCustomer.getCouponsTest();
-//			testCustomer.getAllCouponsFromDB();
+			testCustomer.purchaseCouponTest();
+			testCustomer.getCouponsTest();
+			testCustomer.getAllCouponsFromDB();
 			testCustomer.getCouponsByCategoryTest(Category.ELECTRICITY);
-//			testCustomer.getCouponsByPriceLessThenTest();
-//			testCustomer.getCustomerDetailsTest();
+			testCustomer.getCouponsByPriceLessThenTest();
+			testCustomer.getCustomerDetailsTest();
 		}	
 	}
 }

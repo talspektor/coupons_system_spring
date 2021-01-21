@@ -25,7 +25,6 @@ public class CouponSystemSpringApplication {
 				Thread.sleep(7000);
 				context.close();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -120,7 +120,7 @@ public class AdminService implements ClientService {
 		try {
 			return (List<Company>) companyRepository.findAll();
 		} catch (Exception e) {
-			throw new CouponSystemException("getAllCompanies fail " + e.getMessage(), e);
+			throw new CouponSystemException("getAllCompanies fail :(" + e.getMessage(), e);
 		}
 	}
 	
@@ -141,7 +141,7 @@ public class AdminService implements ClientService {
 			}
 			throw new CouponSystemException("getCompany fail: company not found in database");
 		} catch (Exception e) {
-			throw new CouponSystemException("getCompany fail " + e.getMessage(), e);
+			throw new CouponSystemException("getCompany fail :(" + e.getMessage(), e);
 		}
 	}
 	
@@ -196,8 +196,7 @@ public class AdminService implements ClientService {
 		}
 		try {
 			if(isCustomerEmailExists(customer.getEmail())) {
-				System.out.println("You can't update customer email and password most be unique");
-				return;
+				throw new CouponSystemException("You can't update customer email and password most be unique");
 			}
 			customerRepository.save(customer);
 		} catch (Exception e) {
