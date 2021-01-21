@@ -61,8 +61,7 @@ public class AdminService implements ClientService {
 		}
 		try {
 			if(isCompanyNameExists(company.getName()) || isCompanyEmailExists(company.getEmail())) {
-				System.out.println("cant add company name and email must by unique");
-				return;
+				throw new CouponSystemException("cant add company name and email must by unique");
 			}
 			companyRepository.save(company);
 		} catch (Exception e) {
@@ -87,8 +86,8 @@ public class AdminService implements ClientService {
 				companyRepository.save(company);
 				System.out.println("updateCompany: " + company);
 				return;
-			} 
-			System.out.println("company: " + company + " is not found is database");
+			}
+			throw new CouponSystemException("company: " + company + " is not found is database");
 		} catch (Exception e) {
 			throw new CouponSystemException("updateCompany fail " + e.getMessage(), e);
 		}
