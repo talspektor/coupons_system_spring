@@ -116,7 +116,7 @@ public class CustomerService implements ClientService {
 	public List<Coupon> getAllDatabaseCoupons() throws CouponSystemException {
 		System.out.println("Customer getAllDatabaseCoupons");
 		try {
-			return (List<Coupon>) couponRepository.findAll();
+			return (List<Coupon>) couponRepository.findAllByOrderByCategory();
 		} catch (Exception e) {
 			throw new CouponSystemException("getAllDatabaseCoupons fail :(", e); 
 		}
