@@ -194,8 +194,14 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException("customer is null");
 		}
 		try {
-			if(isCustomerEmailExists(customer.getEmail())) {
-				throw new CouponSystemException("You can't update customer email and password most be unique");
+			Optional<Customer> optCustomer = customerRepository.findById(customer.getId());
+			if (!optCustomer.isPresent()) {
+				throw new CouponSystemException("Costomer not found in database");
+			}
+			if (customer.getEmail() != optCustomer.get().getEmail()) {
+				if(isCustomerEmailExists(customer.getEmail())) {
+					throw new CouponSystemException("You can't update customer email most be unique");
+				}
 			}
 			customerRepository.save(customer);
 		} catch (Exception e) {

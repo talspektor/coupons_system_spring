@@ -1,9 +1,7 @@
 package app.core.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.standard.PresentationDirection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.core.entities.Company;
@@ -29,20 +26,16 @@ public class AdminController implements ClientController {
 	private AdminService adminService;
 	
 	// CREATE - add a representation to the server
-	@PostMapping("/login")
-	public boolean login(@RequestBody String email, @RequestBody String password) {
+	@PostMapping("/login/{email}/{password}")
+	public boolean login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("AdminController login");
 		if (email == null || password == null) {
 			//TODO: show message to the user
 			return false;
 		}
 		try {
-			if (adminService.login(email, password)) {
-				//TODO: show message to the user
-				return true;
-			}
+			return adminService.login(email, password);
 			//TODO: show message to the user
-			return false;
 		} catch (CouponSystemException e) {
 			//TODO: show message to the user
 			System.out.println(e.getMessage());
@@ -50,7 +43,7 @@ public class AdminController implements ClientController {
 		}
 	}
 	
-	@PostMapping("/addcompany")
+	@PostMapping("/add-company")
 	public void addCoumpany(@RequestBody Company company) {
 		System.out.println("AdminController addCompany");
 		if (company == null) {
@@ -66,7 +59,7 @@ public class AdminController implements ClientController {
 		
 	}
 	
-	@PutMapping("/updatecompany")
+	@PutMapping("/update-company")
 	public void updateCompany(@RequestBody Company company) {
 		System.out.println("AdminController updateCompany");
 		if (company == null) {
@@ -80,7 +73,7 @@ public class AdminController implements ClientController {
 		}
 	}
 	
-	@DeleteMapping("/deletecompany")
+	@DeleteMapping("/delete-company")
 	public void deleteCompany(@RequestBody Long companyId) {
 		System.out.println("AdminController deleteCompany");
 		if (companyId == null) {
@@ -95,34 +88,33 @@ public class AdminController implements ClientController {
 	}
 	
 	@GetMapping("/companies")
-	public List<Company> getAllCompanies() {
+	public List<Company> getAllCompanies() throws CouponSystemException {
 		System.out.println("AdminController getAllCompanies");
 		try {
 			return adminService.getAllCompanies();
 		} catch (CouponSystemException e) {
-			//TODO: show message to the user
+			throw e;
 			
 		}
-		return null;
 	}
 	
-	@GetMapping("/company")
-	public Company getCompany(@RequestBody Long companyId) {
+	@GetMapping("/company/{id}")
+	public Company getCompany(@PathVariable Long id) {
 		System.out.println("AdminController getCompany");
-		if (companyId == null) {
+		if (id == null) {
 			//TODO: show message to the user
 			return null;
 		}
 		try {
-			return adminService.getCompany(companyId);
+			return adminService.getCompany(id);
 		} catch (CouponSystemException e) {
 			//TODO: show message to the user
 		}
 		return null;
 	}
 	
-	@GetMapping("/company")
-	public Company getCompanyByName(@RequestBody String name) {
+	@GetMapping("/company/name/{name}")
+	public Company getCompanyByName(@PathVariable String name) {
 		System.out.println("AdminController getCompanyByName");
 		if (name == null) {
 			//TODO: show message to the user
@@ -138,49 +130,37 @@ public class AdminController implements ClientController {
 	
 	// ********** Customer Methods ***************** //
 	
-	@PostMapping("/addcustomer")
-	public void addCustomer(@RequestBody Customer customer) {
+	@PostMapping("/add-customer")
+	public void addCustomer(@RequestBody Customer customer) throws CouponSystemException {
 		System.out.println("AdminController addCustomer");
-		if (customer == null) {
-			//TODO: show message to the user
-			return;
-		}
 		try {
 			adminService.addCustomer(customer);
 		} catch (CouponSystemException e) {
-			//TODO: show message to the user
+			throw e;
 		}
 	}
 	
-	@PutMapping("updteCustomer")
-	public void updateCustomer(Customer customer) {
+	@PutMapping("/updte-customer")
+	public void updateCustomer(@RequestBody Customer customer) throws CouponSystemException {
 		System.out.println("AdminController updateCustomer");
-		if (customer == null) {
-			//TODO: show message to the user
-			return;
-		}
 		try {
 			adminService.updateCustomer(customer);
 		} catch (CouponSystemException e) {
-			//TODO: show message to the user
+			throw e;
 		}
 	}
 	
-	@DeleteMapping("deletecustomer")
-	public void deleteCustomer(Long customerId) {
+	@DeleteMapping("/delete-customer")
+	public void deleteCustomer(@RequestBody Long id) throws CouponSystemException {
 		System.out.println("AdminController deleteCustomer");
-		if (customerId == null) {
-			//TODO: show message to the user
-			return;
-		}
 		try {
-			adminService.deleteCustomer(customerId);
+			adminService.deleteCustomer(id);
 		} catch (CouponSystemException e) {
-			//TODO: show message to the user
+			throw e;
 		}
 	}
 	
-	@GetMapping("customers")
+	@GetMapping("/customers")
 	public List<Customer> getAllCustomers() {
 		System.out.println("AdminController getAllCustomers");
 		try {
@@ -191,11 +171,11 @@ public class AdminController implements ClientController {
 		return null;
 	}
 	
-	@GetMapping("customer")
-	public Customer getCustomer(@RequestBody Long customerId) {
+	@GetMapping("customer/{id}")
+	public Customer getCustomer(@PathVariable Long id) {
 		System.out.println("AdminController getCustomer");
 		try {
-			return adminService.getCustomer(customerId);
+			return adminService.getCustomer(id);
 		} catch (CouponSystemException e) {
 			//TODO: show message to the user
 		}
