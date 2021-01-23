@@ -16,56 +16,60 @@ import org.springframework.web.bind.annotation.RestController;
 import app.core.entities.Company;
 import app.core.entities.Customer;
 import app.core.exceptions.CouponSystemException;
+import app.core.login.ClientType;
+import app.core.login.LoginManager;
 import app.core.services.AdminService;
 
 @RestController
 @RequestMapping("/api")
 public class AdminController implements ClientController {
 	
+	private AdminService service;
 	@Autowired
-	private AdminService adminService;
+	private LoginManager loginManager;
 	
-	// CREATE - add a representation to the server
+	@Override
 	@PostMapping("/login/{email}/{password}")
 	public boolean login(@PathVariable String email, @PathVariable String password) throws CouponSystemException {
 		System.out.println("AdminController login");
-		return adminService.login(email, password);
+		service = (AdminService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+		return service.login(email, password);
 	}
 	
 	@PostMapping("/add-company")
 	public void addCoumpany(@RequestBody Company company) throws CouponSystemException {
 		System.out.println("AdminController addCompany");
-		adminService.addCompany(company);
+		service.addCompany(company);
 	}
 	
 	@PutMapping("/update-company")
 	public void updateCompany(@RequestBody Company company) throws CouponSystemException {
 		System.out.println("AdminController updateCompany");
-		adminService.updateCompany(company);
+		service.updateCompany(company);
 	}
 	
 	@DeleteMapping("/delete-company")
 	public void deleteCompany(@RequestBody Long companyId) throws CouponSystemException {
 		System.out.println("AdminController deleteCompany");
-		adminService.deleteCoumpany(companyId);
+		service.deleteCoumpany(companyId);
 	}
 	
 	@GetMapping("/companies")
 	public List<Company> getAllCompanies() throws CouponSystemException {
 		System.out.println("AdminController getAllCompanies");
-		return adminService.getAllCompanies();
+		return service.getAllCompanies();
 	}
 	
 	@GetMapping("/company/{id}")
 	public Company getCompany(@PathVariable Long id) throws CouponSystemException {
 		System.out.println("AdminController getCompany");
-		return adminService.getCompany(id);
+		return service.getCompany(id);
 	}
 	
 	@GetMapping("/company/name/{name}")
 	public Company getCompanyByName(@PathVariable String name) throws CouponSystemException {
 		System.out.println("AdminController getCompanyByName");
-		return adminService.getCompanyByName(name);
+		return service.getCompanyByName(name);
 	}
 	
 	// ********** Customer Methods ***************** //
@@ -73,30 +77,30 @@ public class AdminController implements ClientController {
 	@PostMapping("/add-customer")
 	public void addCustomer(@RequestBody Customer customer) throws CouponSystemException {
 		System.out.println("AdminController addCustomer");
-		adminService.addCustomer(customer);
+		service.addCustomer(customer);
 	}
 	
 	@PutMapping("/updte-customer")
 	public void updateCustomer(@RequestBody Customer customer) throws CouponSystemException {
 		System.out.println("AdminController updateCustomer");
-		adminService.updateCustomer(customer);
+		service.updateCustomer(customer);
 	}
 	
 	@DeleteMapping("/delete-customer")
 	public void deleteCustomer(@RequestBody Long id) throws CouponSystemException {
 		System.out.println("AdminController deleteCustomer");
-		adminService.deleteCustomer(id);
+		service.deleteCustomer(id);
 	}
 	
 	@GetMapping("/customers")
 	public List<Customer> getAllCustomers() throws CouponSystemException {
 		System.out.println("AdminController getAllCustomers");
-		return adminService.getAllCustomer();
+		return service.getAllCustomer();
 	}
 	
 	@GetMapping("customer/{id}")
 	public Customer getCustomer(@PathVariable Long id) throws CouponSystemException {
 		System.out.println("AdminController getCustomer");
-		return adminService.getCustomer(id);
+		return service.getCustomer(id);
 	}
 }
