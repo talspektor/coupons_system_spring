@@ -16,6 +16,7 @@ import app.core.services.AdminService;
 @Transactional
 public class TestAdmin {
 	
+	@Autowired
 	private AdminService adminService;
 	@Autowired
 	private LoginManager loginManager;

@@ -22,7 +22,8 @@ import app.core.services.CompanyService;
 @RestController
 @RequestMapping("/api")
 public class CompanyController implements ClientController {
-	
+	//TODO: remove Autowired
+	@Autowired
 	private CompanyService service;
 	@Autowired
 	private LoginManager loginManager;

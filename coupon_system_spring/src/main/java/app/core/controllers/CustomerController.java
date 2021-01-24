@@ -21,7 +21,8 @@ import app.core.services.CustomerService;
 @RestController
 @RequestMapping("/api")
 public class CustomerController implements ClientController {
-	
+	//TODO: remove Autowired
+	@Autowired
 	private CustomerService service;
 	@Autowired
 	private LoginManager loginManager;
