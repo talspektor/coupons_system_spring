@@ -52,19 +52,19 @@ public class CustomerController implements ClientController {
 		return service.getAllDatabaseCoupons();
 	}
 	
-	@GetMapping("customer/coupons/{category}")
+	@GetMapping("/customer/coupons/{category}")
 	public List<Coupon> getCouponsByCategory(@PathVariable Category category) throws CouponSystemException {
 		System.out.println("CustomerController getCouponsByCategory");
 		return service.getCouponsByCategory(category);
 	}
 	
-	@GetMapping("customer/coupons/{maxPrice}")
+	@GetMapping("/customer/coupons/{maxPrice}")
 	public List<Coupon> getCouponsByPriceLessThen(@PathVariable double maxPrice) throws CouponSystemException {
 		System.out.println("CustomerController getCouponsByPriceLessthen");
 		return service.getCouponsByPriceLessThen(maxPrice);
 	}
 	
-	@GetMapping("customer")
+	@GetMapping("/customer")
 	public Customer getCustomerDetails() throws CouponSystemException {
 		System.out.println("CustomerController getCustomerDetails");
 		return service.getCustomerDetails();
