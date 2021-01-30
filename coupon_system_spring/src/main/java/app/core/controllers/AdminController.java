@@ -23,7 +23,7 @@ import app.core.services.AdminService;
 @RestController
 @RequestMapping("/api")
 public class AdminController implements ClientController {
-	
+
 	private AdminService service;
 	@Autowired
 	private LoginManager loginManager;
@@ -48,10 +48,10 @@ public class AdminController implements ClientController {
 		service.updateCompany(company);
 	}
 	
-	@DeleteMapping("/delete-company")
-	public void deleteCompany(@RequestBody Long companyId) throws CouponSystemException {
+	@DeleteMapping("/delete-company/{id}")
+	public void deleteCompany(@PathVariable Long id) throws CouponSystemException {
 		System.out.println("AdminController deleteCompany");
-		service.deleteCoumpany(companyId);
+		service.deleteCoumpany(id);
 	}
 	
 	@GetMapping("/companies")
@@ -80,14 +80,14 @@ public class AdminController implements ClientController {
 		service.addCustomer(customer);
 	}
 	
-	@PutMapping("/updte-customer")
+	@PutMapping("/update-customer")
 	public void updateCustomer(@RequestBody Customer customer) throws CouponSystemException {
 		System.out.println("AdminController updateCustomer");
 		service.updateCustomer(customer);
 	}
 	
-	@DeleteMapping("/delete-customer")
-	public void deleteCustomer(@RequestBody Long id) throws CouponSystemException {
+	@DeleteMapping("/delete-customer/{id}")
+	public void deleteCustomer(@PathVariable Long id) throws CouponSystemException {
 		System.out.println("AdminController deleteCustomer");
 		service.deleteCustomer(id);
 	}
@@ -98,7 +98,7 @@ public class AdminController implements ClientController {
 		return service.getAllCustomer();
 	}
 	
-	@GetMapping("customer/{id}")
+	@GetMapping("/customer/{id}")
 	public Customer getCustomer(@PathVariable Long id) throws CouponSystemException {
 		System.out.println("AdminController getCustomer");
 		return service.getCustomer(id);

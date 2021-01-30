@@ -109,6 +109,7 @@ public class CompanyService implements ClientService {
 					}
 				}
 			}
+			couponToAdd.setCompany(optCompany.get());
 			optCompany.get().addCoupon(couponToAdd);
 			companyRepository.save(optCompany.get());
 		} catch (Exception e) {
