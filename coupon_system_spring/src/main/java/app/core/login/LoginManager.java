@@ -23,17 +23,33 @@ public class LoginManager {
 	 * @throws CouponSystemException
 	 */
 	public ClientService login(String email, String password, ClientType clientType) throws CouponSystemException {
+		ClientService service = null;
+		System.out.println(email);
+		System.out.println(password);
+		System.out.println(clientType);
 		switch (clientType) {
 		case ADMINISTRATOR:
 			AdminService adminService = context.getBean(AdminService.class);
-			return adminService.login(email, password) ? adminService : null;
+			if (adminService.login(email, password)) {
+				service = adminService;
+			}
+			break;
 		case COMPNY:
 			CompanyService companyService = context.getBean(CompanyService.class);
-			return companyService.login(email, password) ? companyService : null;
+			if (companyService.login(email, password)) {
+				service = companyService;
+			}
+			break;
 		case CUSTOMER:
 			CustomerService customerService = context.getBean(CustomerService.class);
-			return customerService.login(email, password) ? customerService : null;
+			if (customerService.login(email, password)) {
+				service = customerService;
+			}
+			break;
 		}
-		return null;
+		if (service == null) {
+			throw new CouponSystemException("Wrong credentials: " + clientType + " email: " + email + " password: " + password);
+		}
+		return service;
 	}
 }

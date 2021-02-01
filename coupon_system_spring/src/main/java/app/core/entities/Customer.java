@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Customer {
 
@@ -27,6 +29,7 @@ public class Customer {
 	@JoinTable(name = "customer_vs_coupons",
 		joinColumns = { @JoinColumn( name = "customer_id") },
 		inverseJoinColumns = { @JoinColumn(name = "coupon_id") })
+	@JsonIgnore
 	private List<Coupon> coupons;
 
 	public Customer() {

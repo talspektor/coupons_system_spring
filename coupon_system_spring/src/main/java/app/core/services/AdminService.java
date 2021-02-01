@@ -39,7 +39,7 @@ public class AdminService implements ClientService {
 		if (email == null || password == null) {
 			throw new CouponSystemException("login fail :( email or password are null");
 		}
-		if (email == "com.admin@admin" && password == "admin") {
+		if (email.equals("com.admin@admin") && password.equals("admin")) {
 			System.out.println("login success :)");
 			return true;
 		}

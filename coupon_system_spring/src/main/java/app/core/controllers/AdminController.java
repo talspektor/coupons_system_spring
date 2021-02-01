@@ -33,6 +33,7 @@ public class AdminController implements ClientController {
 	public boolean login(@PathVariable String email, @PathVariable String password) throws CouponSystemException {
 		System.out.println("AdminController login");
 		service = (AdminService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+		System.out.println(service);
 		return service.login(email, password);
 	}
 	

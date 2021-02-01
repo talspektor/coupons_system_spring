@@ -21,7 +21,7 @@ public class Test {
 		{
 			// ADMINISTRATOR
 			TestAdmin testAdmin = context.getBean(TestAdmin.class);
-			testAdmin.loginTest();
+//			testAdmin.loginTest();
 //			testAdmin.addCompanyTest();
 //			testAdmin.getCompanyTest();
 //			testAdmin.getAllCompaniesTest();
