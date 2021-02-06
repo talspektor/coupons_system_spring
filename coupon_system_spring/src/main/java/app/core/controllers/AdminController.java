@@ -2,8 +2,9 @@ package app.core.controllers;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +31,21 @@ public class AdminController implements ClientController {
 	
 	@Override
 	@PostMapping("/login/{email}/{password}")
-	public boolean login(@PathVariable String email, @PathVariable String password) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<Boolean>> login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("AdminController login");
-		service = (AdminService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
-		System.out.println(service);
-		return service.login(email, password);
+		try {
+			service = (AdminService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+			if (service != null) {
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new ResponseItem<Boolean>(true));
+			}
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseItem<Boolean>(false));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Boolean>(false, e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Boolean>(false, e.getMessage()));
+		}
 	}
 	
 	@PostMapping("/add-company")

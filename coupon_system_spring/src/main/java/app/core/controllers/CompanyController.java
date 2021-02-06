@@ -3,6 +3,8 @@ package app.core.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,10 +32,22 @@ public class CompanyController implements ClientController {
 
 	@Override
 	@PostMapping("/compamy/login/{email}/{password}")
-	public boolean login(@PathVariable String email, @PathVariable String password) throws CouponSystemException {
+	public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("CompanyController login");
-		service = (CompanyService) loginManager.login(email, password, ClientType.COMPNY);
-		return service.login(email, password);
+		try {
+			service = (CompanyService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+			if (service != null) {
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(true);
+			}
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(false);
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		
 	}
 	
 	@PostMapping("/add-coupon")

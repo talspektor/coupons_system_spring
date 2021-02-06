@@ -3,6 +3,8 @@ package app.core.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,10 +30,21 @@ public class CustomerController implements ClientController {
 
 	@Override
 	@PostMapping("/customer/login/{email}/{password}")
-	public boolean login(@PathVariable String email, @PathVariable String password) throws CouponSystemException {
+	public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("CustomerController login");
-		service = (CustomerService)loginManager.login(email, password, ClientType.CUSTOMER);
-		return service.login(email, password);
+		try {
+			service = (CustomerService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+			if (service != null) {
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(true);
+			}
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(false);
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 
 	@PutMapping("/purchase-coupon/{id}")
@@ -52,14 +65,14 @@ public class CustomerController implements ClientController {
 		return service.getAllDatabaseCoupons();
 	}
 	
-	@GetMapping("/customer/coupons/category/")
+	@GetMapping("/customer/coupons/category/{category}")
 	public List<Coupon> getCouponsByCategory(Category category) throws CouponSystemException {
 		System.out.println("CustomerController getCouponsByCategory");
 		return service.getCouponsByCategory(category);
 	}
 	
-	@GetMapping("/customer/coupons/maxPrice/")
-	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) throws CouponSystemException {
+	@GetMapping("/customer/coupons/maxPrice/{maxPrice}")
+	public List<Coupon> getCouponsByPriceLessThen(@PathVariable double maxPrice) throws CouponSystemException {
 		System.out.println("CustomerController getCouponsByPriceLessthen");
 		return service.getCouponsByPriceLessThen(maxPrice);
 	}

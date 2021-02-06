@@ -1,7 +1,9 @@
 package app.core.controllers;
 
+import org.springframework.http.ResponseEntity;
+
 import app.core.exceptions.CouponSystemException;
 
 public interface ClientController {
-	boolean login(String email, String password) throws CouponSystemException;
+	ResponseEntity<?> login(String email, String password) throws CouponSystemException;
 }

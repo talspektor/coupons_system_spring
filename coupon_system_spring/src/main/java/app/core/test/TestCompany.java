@@ -25,7 +25,7 @@ public class TestCompany {
 
 	public void login() throws CouponSystemException {
 		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
-		Company company = adminService.getAllCompanies().get(0);
+		Company company = adminService.getCompany(1L);//adminService.getAllCompanies().get(0);
 		if(company == null) {
 			System.out.println("*****  No companies in database!!! you can't continue test... ******");
 			return;
@@ -63,7 +63,7 @@ public class TestCompany {
 	public void deleteCouponTest() throws CouponSystemException {
 		System.out.println("============ Test delete company coupon ==============");
 		Coupon coupon = TestUtils.getRandomCouponFromDatabase(adminService);
-		companyService.deleteCoupon(coupon.getId());
+		companyService.deleteCoupon(18L);
 		System.out.println("=========================================");
 	}
 	

@@ -3,6 +3,8 @@ package app.core.repositories;
 import java.sql.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.repository.CrudRepository;
 
 import app.core.entities.Category;
@@ -15,6 +17,6 @@ public interface CouponRepository extends CrudRepository<Coupon, Long> {
 	boolean existsByTitleAndCompanyId(String title, Long companyId);
 
 	List<Coupon> findAllByCategory(Category category);
-	
+	@Transactional
 	void removeByEndDateLessThan(Date endDate);
 }

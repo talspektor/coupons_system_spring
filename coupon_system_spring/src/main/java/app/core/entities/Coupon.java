@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity(name = "coupon")
@@ -28,14 +31,23 @@ public class Coupon {
 	@JoinTable(name = "customer_vs_coupons",
 		joinColumns = { @JoinColumn( name = "coupon_id") },
 		inverseJoinColumns = { @JoinColumn(name = "customer_id") })
+	@JsonIgnore
 	private List<Customer> customers;
+	@Column(nullable = false)
 	private Category category;
+	@Column(nullable = false)
 	private String title;
+	@Column(nullable = false)
 	private String description;
+	@Column(nullable = false)
 	private Date startDate;
+	@Column(nullable = false)
 	private Date endDate;
+	@Column(nullable = false)
 	private int amount;
+	@Column(nullable = false)
 	private double price;
+	
 	private String imageUrl;
 	
 	public Coupon() {
