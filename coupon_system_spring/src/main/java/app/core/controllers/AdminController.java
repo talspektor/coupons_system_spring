@@ -77,7 +77,6 @@ public class AdminController implements ClientController {
 	
 	@DeleteMapping("/delete-company/{id}")
 	public ResponseEntity<ResponseItem<Company>> deleteCompany(@PathVariable Long id) {
-		System.out.println("AdminController deleteCompany");
 		try {
 			Company  deletedCompany = service.deleteCoumpany(id);
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<Company>(deletedCompany));
@@ -86,7 +85,6 @@ public class AdminController implements ClientController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Company>(e.getMessage()));
 		}
-		
 	}
 	
 	@GetMapping("/companies")
