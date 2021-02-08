@@ -30,20 +30,20 @@ public class CustomerController implements ClientController {
 
 	@Override
 	@PostMapping("/customer/login/{email}/{password}")
-	public ResponseEntity<?> login(@PathVariable String email, @PathVariable String password) {
+	public ResponseEntity<ResponseItem<Boolean>> login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("CustomerController login");
 		try {
 			service = (CustomerService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
 			if (service != null) {
 				return ResponseEntity.status(HttpStatus.OK)
-						.body(true);
+						.body(new ResponseItem<Boolean>(true));
 			}
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(false);
+					.body(new ResponseItem<Boolean>(false));
 		} catch (CouponSystemException e) {
-			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Boolean>(false, e.getMessage()));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Boolean>(false, e.getMessage()));
 		}
 	}
 
