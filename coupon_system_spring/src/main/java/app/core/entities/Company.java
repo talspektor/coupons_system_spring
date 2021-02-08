@@ -88,14 +88,15 @@ public class Company {
 		System.out.println("addCoupon: coupon - " + coupon.getTitle() + " was added");
 	}
 	
-	public void removeCoupon(Long couponId) {
-		if(couponId == null) { return; }
+	public Coupon removeCoupon(Long couponId) {
+		if(couponId == null) { return null; }
 		for (Coupon coupon : coupons) {
 			if (couponId == coupon.getId()) {
 				coupons.remove(coupon);
-				return;
+				return coupon;
 			}
 		}
+		return null;
 	}
 	
 	public void deleteCoupon(Coupon coupon) {

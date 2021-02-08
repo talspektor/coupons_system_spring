@@ -84,19 +84,18 @@ public class CompanyService implements ClientService {
 	 * @throws CouponSystemException
 	 * add new coupon of the company to database - couopn's title most by unique
 	 */
-	public void addCoupon(Coupon couponToAdd) throws CouponSystemException {
+	public Coupon addCoupon(Coupon couponToAdd) throws CouponSystemException {
 		System.out.println("Company addCoupon");
 		if (couponToAdd == null) { 
 			throw new CouponSystemException("couopn is null");
 		}
 		try {
 			if (couponRepository.existsByTitleAndCompanyId(couponToAdd.getTitle(), id)) {
-				System.out.println("coupon is already in database.");
-				return;
+				throw new CouponSystemException("coupon is already in database.");
 			}
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (!optCompany.isPresent()) { 
-				return;
+				throw new CouponSystemException("addCoupon fail");
 			}
 			List<Coupon> coupons = optCompany.get().getCoupons();
 			if (coupons == null) {
@@ -104,14 +103,16 @@ public class CompanyService implements ClientService {
 			} else {
 				for (Coupon coupon : coupons) {
 					if(coupon.getTitle() == couponToAdd.getTitle()) {
-						System.out.println("can't add coupon's title most by unique");
-						return;
+						throw new CouponSystemException("addCoupon fail: can't add coupon's title most by unique");
 					}
 				}
 			}
 			couponToAdd.setCompany(optCompany.get());
 			optCompany.get().addCoupon(couponToAdd);
 			companyRepository.save(optCompany.get());
+			int index = optCompany.get().getCoupons().indexOf(couponToAdd);
+			Coupon addedCoupon = optCompany.get().getCoupons().get(index);
+			return addedCoupon;
 		} catch (Exception e) {
 			throw new CouponSystemException("addCoupon fail :(" + e.getMessage(), e);
 		}
@@ -122,13 +123,19 @@ public class CompanyService implements ClientService {
 	 * @throws CouponSystemException
 	 * update coupon in database
 	 */
-	public void updateCoupon(Coupon coupon) throws CouponSystemException {
+	public Coupon updateCoupon(Coupon coupon) throws CouponSystemException {
 		System.out.println("Company updateCoupon");
 		if (coupon == null) {
 			throw new CouponSystemException("coupon is null");
 		}
 		try {
+			Optional<Company> optCompany = companyRepository.findById(id);
+			if (!optCompany.isPresent()) { 
+				throw new CouponSystemException("updateCoupon fail");
+			}
+			coupon.setCompany(optCompany.get());
 			couponRepository.save(coupon);
+			return coupon;
 		} catch (Exception e) {
 			throw new CouponSystemException("updateCoupon fail :(" + e.getMessage(), e);
 		}
@@ -139,7 +146,7 @@ public class CompanyService implements ClientService {
 	 * @throws CouponSystemException
 	 * delete coupon from database
 	 */
-	public void deleteCoupon(Long couponId) throws CouponSystemException {
+	public Coupon deleteCoupon(Long couponId) throws CouponSystemException {
 		System.out.println("Company deleteCoupon");
 		if (couponId == null) {
 			throw new CouponSystemException("couponId is null");
@@ -147,11 +154,14 @@ public class CompanyService implements ClientService {
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (optCompany.isPresent()) {
-				optCompany.get().removeCoupon(couponId);
+				
+				Coupon coupon = optCompany.get().removeCoupon(couponId);
 				companyRepository.save(optCompany.get());
 				couponRepository.deleteById(couponId);
 				System.out.println("success");
+				return coupon;
 			}
+			throw new CouponSystemException("deleteCoupon fail");
 		} catch (Exception e) {
 			throw new CouponSystemException("deleteCoupon fail :(" + e.getMessage(), e);
 		}

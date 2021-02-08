@@ -8,6 +8,10 @@ public class ResponseItem<T> {
 		this.data = data;
 	}
 	
+	public ResponseItem(String message) {
+		this.message = message;
+	}
+	
 	public ResponseItem(T data, String message) {
 		super();
 		this.data = data;

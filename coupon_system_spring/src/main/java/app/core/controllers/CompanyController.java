@@ -51,39 +51,84 @@ public class CompanyController implements ClientController {
 	}
 	
 	@PostMapping("/add-coupon")
-	public void addCoupon(@RequestBody Coupon coupon) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<Coupon>> addCoupon(@RequestBody Coupon coupon) {
 		System.out.println("CompanyController addCoupon");
-		service.addCoupon(coupon);
+		try {
+			Coupon addedCoupon = service.addCoupon(coupon);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<Coupon>(addedCoupon));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Coupon>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Coupon>(e.getMessage()));
+		}
+		
 	}
 	
 	
 	@PutMapping("/update-coupon")
-	public void updateCoupon(@RequestBody Coupon coupon) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<Coupon>> updateCoupon(@RequestBody Coupon coupon) {
 		System.out.println("CompanyController updateCoupon");
-		service.updateCoupon(coupon);
+		try {
+			Coupon updatedCoupon = service.updateCoupon(coupon);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<Coupon>(updatedCoupon));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Coupon>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Coupon>(e.getMessage()));
+		}
+		
 	}
 	
 	@DeleteMapping("/delete-coupon/{id}")
-	public void deleteCoupon(@PathVariable Long id) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<Coupon>> deleteCoupon(@PathVariable Long id) {
 		System.out.println("CompanyController deleteCoupon");
-		service.deleteCoupon(id);
+		try {
+			Coupon deletedCoupon = service.deleteCoupon(id);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<Coupon>(deletedCoupon));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Coupon>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Coupon>(e.getMessage()));
+		}
+		
 	}
 	
 	@GetMapping("/company/coupons")
-	public List<Coupon> getAllCounpanyCoupons() throws CouponSystemException {
+	public ResponseEntity<ResponseItem<List<Coupon>>> getAllCounpanyCoupons() {
 		System.out.println("CompanyController getAllCompanycouopons");
-		return service.getCompanyCoupons();
+		try {
+			List<Coupon> coupons = service.getCompanyCoupons();
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<List<Coupon>>(coupons));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} 
 	}
 	
 	@GetMapping("/company/coupons/{maxPrice}")
-	public List<Coupon> getCoumpanyCouponsPriceLessThen(@PathVariable double maxPrice) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<List<Coupon>>> getCoumpanyCouponsPriceLessThen(@PathVariable double maxPrice) {
 		System.out.println("CompanyController getCoumpanyCouponsPriceLessThen");
-		return service.getCompanyCoupons(maxPrice);
+		try {
+			List<Coupon> coupons = service.getCompanyCoupons(maxPrice);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<List<Coupon>>(coupons));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} 
 	}
 	
 	@GetMapping("/company")
-	public Company getCompanyDetails() throws CouponSystemException {
+	public ResponseEntity<ResponseItem<Company>> getCompanyDetails() {
 		System.out.println("CompanyController getCompanyDetails");
-		return service.getCompanyDetails();
+		try {
+			Company company = service.getCompanyDetails();
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<Company>(company)); 
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Company>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Company>(e.getMessage()));
+		}
 	}
 }
