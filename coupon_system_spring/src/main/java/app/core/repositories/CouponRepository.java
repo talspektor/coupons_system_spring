@@ -14,6 +14,8 @@ public interface CouponRepository extends CrudRepository<Coupon, Long> {
 	
 	List<Coupon> findAllByOrderByCategory();
 	
+	Coupon findByTitle(String title);
+	
 	boolean existsByTitleAndCompanyId(String title, Long companyId);
 
 	List<Coupon> findAllByCategory(Category category);

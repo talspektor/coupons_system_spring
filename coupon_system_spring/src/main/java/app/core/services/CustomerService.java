@@ -65,29 +65,27 @@ public class CustomerService implements ClientService {
 	 * @throws CouponSystemException
 	 * add coupon to customer coupons
 	 */
-	public void purchaseCoupon(Long couponId) throws CouponSystemException {
+	public Coupon purchaseCoupon(Long couponId) throws CouponSystemException {
 		System.out.println("Customer purchaseCoupon");
-		if (couponId == null) {
-			System.out.println("couponId is null...");
-			return;
-		} 
+		if (couponId == null) { throw new CouponSystemException("couponId is null :("); } 
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
-			if (!optCustomer.isPresent()) { return; }
+			if (!optCustomer.isPresent()) { throw new CouponSystemException(); }
 			
 			CouponValidator validator = new CouponValidator(optCustomer.get());
-			if (validator.isCouponAlredyPurchased(couponId)) { return; }
+			if (validator.isCouponAlredyPurchased(couponId)) { throw new CouponSystemException("Coupon is alredy purchased"); }
 			
 			Coupon coupon = getCoupon(couponId);
-			if (coupon == null) { return; }
+			if (coupon == null) { throw new CouponSystemException("coupon is not in database"); }
 			
-			if (!validator.isCouponAvailable(coupon)) { return; }
-			if (validator.isCouponExpiered(coupon)) { return; }
+			if (!validator.isCouponAvailable(coupon)) { throw new CouponSystemException("coupon is not available"); }
+			if (validator.isCouponExpiered(coupon)) { throw new CouponSystemException("coupon expiered"); }
 			
 			addCoupon(coupon);
 			System.out.println("purchaseCoupon success :)");
+			return coupon;
 		} catch (Exception e) {
-			throw new CouponSystemException("purchaseCoupon fail :(", e); 
+			throw new CouponSystemException("purchaseCoupon fail :(" + e.getMessage(), e); 
 		}
 	}
 		
@@ -139,7 +137,9 @@ public class CustomerService implements ClientService {
 				if (coupon.getCategoryId() == category) {
 					System.out.println(coupon.getCategoryId() + "   " + category);
 					coupons.add(coupon);
+					System.out.println("==================");
 				}
+				System.out.println("==================");
 			}
 			return coupons;
 		} catch (Exception e) {

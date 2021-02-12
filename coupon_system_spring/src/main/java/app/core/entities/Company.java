@@ -20,9 +20,9 @@ public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String name;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String email;
 	@Column(nullable = false)
 	private String password;
@@ -85,7 +85,7 @@ public class Company {
 			coupons = new ArrayList<Coupon>();
 		}
 		coupons.add(coupon);
-		System.out.println("addCoupon: coupon - " + coupon.getTitle() + " was added");
+		System.out.println("addCoupon: coupon - " + coupon.getTitle() + " was added to entity");
 	}
 	
 	public Coupon removeCoupon(Long couponId) {

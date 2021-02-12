@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
+import app.core.exceptions.CouponSystemException;
 
 public class CouponValidator {
 
@@ -18,15 +19,14 @@ public class CouponValidator {
 	 * @param couponId
 	 * @return true if customer already purchased this coupon
 	 */
-	public boolean isCouponAlredyPurchased(Long couponId) {
+	public boolean isCouponAlredyPurchased(Long couponId) throws CouponSystemException {
 		List<Coupon> coupons = customer.getCoupons();
 		if (coupons == null || coupons.isEmpty()) {
 			return false;
 		}
 		for (Coupon coupon : coupons) {
 			if (couponId == coupon.getId()) {
-				System.out.println("customer already purchase this coupon");
-				return true;
+				throw new CouponSystemException("customer already purchase this coupon");
 			}
 		}
 		return false;
@@ -36,23 +36,21 @@ public class CouponValidator {
 	 * @param coupon
 	 * @return true if coupon amount > 0
 	 */
-	public boolean isCouponAvailable(Coupon coupon) {
+	public boolean isCouponAvailable(Coupon coupon) throws CouponSystemException {
 		if(coupon.getAmount() > 0) {
 			return true;
 		}
-		System.out.println("coupon is not available");
-		return false;
+		throw new CouponSystemException("coupon is not available");
 	}
 	
 	/**
 	 * @param coupon
 	 * @return true if coupon not expired
 	 */
-	public boolean isCouponExpiered(Coupon coupon) {
+	public boolean isCouponExpiered(Coupon coupon) throws CouponSystemException {
 		if (coupon.getEndDate().compareTo(new Date()) > 0) {
 			return false;
 		}
-		System.out.println("coupon is expiered");
-		return true;
+		throw new CouponSystemException("coupon is expiered");
 	}
 }

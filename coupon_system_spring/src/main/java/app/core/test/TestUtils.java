@@ -91,6 +91,6 @@ public class TestUtils {
 		String imageUrl = "some_url";
 		Category category = getRandomCategory();
 		
-		return new Coupon(company, category, title, description, startDate, endDate, amount, price, imageUrl);
+		return new Coupon(category, title, description, startDate, endDate, amount, price, imageUrl);
 	}
 }

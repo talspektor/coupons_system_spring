@@ -35,7 +35,7 @@ public class Coupon {
 	private List<Customer> customers;
 	@Column(nullable = false)
 	private Category category;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String title;
 	@Column(nullable = false)
 	private String description;
@@ -54,10 +54,9 @@ public class Coupon {
 		super();
 	}
 
-	public Coupon(Company company, Category category, String title, String description, Date startDate, Date endDate,
+	public Coupon(Category category, String title, String description, Date startDate, Date endDate,
 			int amount, double price, String imageUrl) {
 		super();
-		this.company = company;
 		this.category = category;
 		this.title = title;
 		this.description = description;

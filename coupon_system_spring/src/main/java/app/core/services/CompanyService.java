@@ -110,8 +110,8 @@ public class CompanyService implements ClientService {
 			couponToAdd.setCompany(optCompany.get());
 			optCompany.get().addCoupon(couponToAdd);
 			companyRepository.save(optCompany.get());
-			int index = optCompany.get().getCoupons().indexOf(couponToAdd);
-			Coupon addedCoupon = optCompany.get().getCoupons().get(index);
+			
+			Coupon addedCoupon = couponRepository.findByTitle(couponToAdd.getTitle());
 			return addedCoupon;
 		} catch (Exception e) {
 			throw new CouponSystemException("addCoupon fail :(" + e.getMessage(), e);
@@ -133,9 +133,20 @@ public class CompanyService implements ClientService {
 			if (!optCompany.isPresent()) { 
 				throw new CouponSystemException("updateCoupon fail");
 			}
-			coupon.setCompany(optCompany.get());
-			couponRepository.save(coupon);
-			return coupon;
+			Optional<Coupon> optCoupon = couponRepository.findById(coupon.getId());
+			if (!optCoupon.isPresent()) {
+				throw new CouponSystemException("coupon is not in database");
+			}
+			optCoupon.get().setAmount(coupon.getAmount());
+			optCoupon.get().setCategory(coupon.getCategoryId());
+			optCoupon.get().setDescription(coupon.getDescription());
+			optCoupon.get().setEndDate(coupon.getEndDate());
+			optCoupon.get().setImageUrl(coupon.getImageUrl());
+			optCoupon.get().setPrice(coupon.getPrice());
+			optCoupon.get().setStartDate(coupon.getStartDate());
+			optCoupon.get().setTitle(coupon.getTitle());
+			couponRepository.save(optCoupon.get());
+			return optCoupon.get();
 		} catch (Exception e) {
 			throw new CouponSystemException("updateCoupon fail :(" + e.getMessage(), e);
 		}

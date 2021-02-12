@@ -35,7 +35,7 @@ public class CompanyController implements ClientController {
 	public ResponseEntity<ResponseItem<Boolean>> login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("CompanyController login");
 		try {
-			service = (CompanyService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+			service = (CompanyService) loginManager.login(email, password, ClientType.COMPNY);
 			if (service != null) {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(new ResponseItem<Boolean>(true));

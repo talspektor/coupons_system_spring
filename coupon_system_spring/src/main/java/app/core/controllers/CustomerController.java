@@ -33,7 +33,7 @@ public class CustomerController implements ClientController {
 	public ResponseEntity<ResponseItem<Boolean>> login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("CustomerController login");
 		try {
-			service = (CustomerService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+			service = (CustomerService) loginManager.login(email, password, ClientType.CUSTOMER);
 			if (service != null) {
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(new ResponseItem<Boolean>(true));
@@ -48,38 +48,74 @@ public class CustomerController implements ClientController {
 	}
 
 	@PutMapping("/purchase-coupon/{id}")
-	public void purchaseCoupon(@PathVariable Long id) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<Coupon>> purchaseCoupon(@PathVariable Long id) {
 		System.out.println("CustomerController purchaseCoupon");
-		service.purchaseCoupon(id);
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<Coupon>(service.purchaseCoupon(id)));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Coupon>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Coupon>(e.getMessage()));
+		}
 	}
 	
 	@GetMapping("/customer/coupons")
-	public List<Coupon> getCostomerCoupons() throws CouponSystemException {
+	public ResponseEntity<ResponseItem<List<Coupon>>> getCostomerCoupons() {
 		System.out.println("CustomerController getAllcoupons");
-		return service.getCoupons();
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<List<Coupon>>(service.getCoupons())); 
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		}
 	}
 	
 	@GetMapping("/coupons")
-	public List<Coupon> getAllCoupons() throws CouponSystemException {
+	public ResponseEntity<ResponseItem<List<Coupon>>> getAllCoupons() {
 		System.out.println("CustomerController getAllCoupons");
-		return service.getAllDatabaseCoupons();
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<List<Coupon>>(service.getAllDatabaseCoupons()));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		}
 	}
 	
 	@GetMapping("/customer/coupons/category/{category}")
-	public List<Coupon> getCouponsByCategory(Category category) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<List<Coupon>>> getCouponsByCategory(@PathVariable Category category) {
 		System.out.println("CustomerController getCouponsByCategory");
-		return service.getCouponsByCategory(category);
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<List<Coupon>>(service.getCouponsByCategory(category)));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		}
 	}
 	
 	@GetMapping("/customer/coupons/maxPrice/{maxPrice}")
-	public List<Coupon> getCouponsByPriceLessThen(@PathVariable double maxPrice) throws CouponSystemException {
+	public ResponseEntity<ResponseItem<List<Coupon>>> getCouponsByPriceLessThen(@PathVariable double maxPrice) {
 		System.out.println("CustomerController getCouponsByPriceLessthen");
-		return service.getCouponsByPriceLessThen(maxPrice);
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<List<Coupon>>(service.getCouponsByPriceLessThen(maxPrice)));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<List<Coupon>>(e.getMessage()));
+		}
 	}
 	
 	@GetMapping("/customer")
-	public Customer getCustomerDetails() throws CouponSystemException {
+	public ResponseEntity<ResponseItem<Customer>> getCustomerDetails() {
 		System.out.println("CustomerController getCustomerDetails");
-		return service.getCustomerDetails();
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseItem<Customer>(service.getCustomerDetails()));
+		} catch (CouponSystemException e) {
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Customer>(e.getMessage()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Customer>(e.getMessage()));
+		}
 	}
 }
