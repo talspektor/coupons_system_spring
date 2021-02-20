@@ -2,6 +2,7 @@ package app.core.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import app.core.exceptions.CouponSystemException;
@@ -48,7 +49,7 @@ public class LoginManager {
 			break;
 		}
 		if (service == null) {
-			throw new CouponSystemException("Wrong credentials: " + clientType + " email: " + email + " password: " + password);
+			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "Wrong credentials: " + clientType + " email: " + email + " password: " + password);
 		}
 		return service;
 	}
