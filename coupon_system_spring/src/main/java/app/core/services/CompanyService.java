@@ -113,6 +113,7 @@ public class CompanyService implements ClientService {
 			}
 			couponToAdd.setCompany(optCompany.get());
 			optCompany.get().addCoupon(couponToAdd);
+			//TODO: remove this line.
 			companyRepository.save(optCompany.get());
 			
 			Coupon addedCoupon = couponRepository.findByTitle(couponToAdd.getTitle());
@@ -151,6 +152,7 @@ public class CompanyService implements ClientService {
 			optCoupon.get().setPrice(coupon.getPrice());
 			optCoupon.get().setStartDate(coupon.getStartDate());
 			optCoupon.get().setTitle(coupon.getTitle());
+			//TODO: remove this line.
 			couponRepository.save(optCoupon.get());
 			return optCoupon.get();
 		} catch (DataAccessException e) {
@@ -175,7 +177,9 @@ public class CompanyService implements ClientService {
 			if (optCompany.isPresent()) {
 				
 				Coupon coupon = optCompany.get().removeCoupon(couponId);
+				//TODO: remove this line.
 				companyRepository.save(optCompany.get());
+				//TODO: remove this line.
 				couponRepository.deleteById(couponId);
 				System.out.println("success");
 				return coupon;

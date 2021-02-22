@@ -71,6 +71,8 @@ public class AdminService implements ClientService {
 				return optCompany.get();
 			}
 			throw new CouponSystemException(HttpStatus.CREATED, "server fail to get company from database");
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCompany fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -92,6 +94,7 @@ public class AdminService implements ClientService {
 			Optional<Company> companyToUpdate = companyRepository.findById(company.getId());
 			if (companyToUpdate.isPresent()) {
 				company.setName(companyToUpdate.get().getName());
+				//TODO: remove line
 				companyRepository.save(company);
 				System.out.println("updateCompany: " + company);
 				return company;
@@ -233,6 +236,7 @@ public class AdminService implements ClientService {
 					throw new CouponSystemException(HttpStatus.BAD_REQUEST, "You can't update customer email most be unique");
 				}
 			}
+			//TODO: remove line
 			customerRepository.save(customer);
 			return customer;
 		} catch (DataAccessException e) {
