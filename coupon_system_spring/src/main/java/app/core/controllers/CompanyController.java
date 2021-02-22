@@ -32,18 +32,16 @@ public class CompanyController implements ClientController {
 
 	@Override
 	@PostMapping("/compamy/login/{email}/{password}")
-	public ResponseEntity<ResponseItem<Boolean>> login(@PathVariable String email, @PathVariable String password) {
+	public boolean login(@PathVariable String email, @PathVariable String password) {
 		System.out.println("CompanyController login");
 		try {
 			service = (CompanyService) loginManager.login(email, password, ClientType.COMPNY);
 			if (service != null) {
-				return ResponseEntity.status(HttpStatus.OK)
-						.body(new ResponseItem<Boolean>(true));
+				return true;
 			}
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponseItem<Boolean>(false));
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
 		} catch (CouponSystemException e) {
-			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseItem<Boolean>(false, e.getMessage()));
+			throw e;
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseItem<Boolean>(false, e.getMessage()));
 		}

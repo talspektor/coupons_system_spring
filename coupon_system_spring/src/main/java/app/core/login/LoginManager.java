@@ -49,7 +49,7 @@ public class LoginManager {
 			break;
 		}
 		if (service == null) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "Wrong credentials: " + clientType + " email: " + email + " password: " + password);
+			throw new CouponSystemException(HttpStatus.NOT_FOUND, "Wrong credentials: " + clientType + " email: " + email + " password: " + password);
 		}
 		return service;
 	}

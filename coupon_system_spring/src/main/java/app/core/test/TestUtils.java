@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.http.HttpStatus;
+
 import app.core.entities.Category;
 import app.core.entities.Company;
 import app.core.entities.Coupon;
@@ -19,7 +21,7 @@ public class TestUtils {
 	static Company getRandomCompanyFromDatabase(AdminService adminService) throws CouponSystemException {
 		List<Company> companies = adminService.getAllCompanies();
 		if (companies.isEmpty()) {
-			throw new CouponSystemException("Test Utils - there are no companies in database");
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "Test Utils - there are no companies in database");
 		}
 		int size = companies.size();
 		int index = (int)(Math.random() * (size -1));
@@ -29,7 +31,7 @@ public class TestUtils {
 	static Customer getRandomCustomerFromDatabase(AdminService adminService) throws CouponSystemException {
 		List<Customer> customers = adminService.getAllCustomer();
 		if (customers.isEmpty()) {
-			throw new CouponSystemException("Test Utils - there are no customers in database");
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "Test Utils - there are no customers in database");
 		}
 		int size = customers.size();
 		int index = (int)(Math.random() * (size -1));
@@ -40,7 +42,7 @@ public class TestUtils {
 	static Coupon getRandomCouponFromDatabase(AdminService service) throws CouponSystemException {
 		List<Company> companies = service.getAllCompanies();
 		if (companies==null || companies.isEmpty()) {
-			throw new CouponSystemException("Test Utils - there are no companies in database");
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "Test Utils - there are no companies in database");
 		}
 		List<Coupon> coupons = new ArrayList<Coupon>();
 		for (Company company : companies) {
@@ -51,7 +53,7 @@ public class TestUtils {
 			}
 		}
 		if (coupons == null) {
-			throw new CouponSystemException("Test Utils - there are no coupons in database");
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "Test Utils - there are no coupons in database");
 		}
 		int size = coupons.size();
 		int index = (int)(Math.random() * (size -1));

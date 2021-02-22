@@ -3,6 +3,8 @@ package app.core.services;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
 import app.core.exceptions.CouponSystemException;
@@ -26,7 +28,7 @@ public class CouponValidator {
 		}
 		for (Coupon coupon : coupons) {
 			if (couponId == coupon.getId()) {
-				throw new CouponSystemException("customer already purchase this coupon");
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "customer already purchase this coupon");
 			}
 		}
 		return false;
@@ -40,7 +42,7 @@ public class CouponValidator {
 		if(coupon.getAmount() > 0) {
 			return true;
 		}
-		throw new CouponSystemException("coupon is not available");
+		throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not available");
 	}
 	
 	/**
@@ -51,6 +53,6 @@ public class CouponValidator {
 		if (coupon.getEndDate().compareTo(new Date()) > 0) {
 			return false;
 		}
-		throw new CouponSystemException("coupon is expiered");
+		throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is expiered");
 	}
 }

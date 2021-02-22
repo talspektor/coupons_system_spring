@@ -39,7 +39,7 @@ public class AdminService implements ClientService {
 	public boolean login(String email, String password) throws CouponSystemException {
 		System.out.println("Admin login");
 		if (email == null || password == null) {
-			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :( email or password are null");
+			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "login fail :( email or password are null");
 		}
 		if (email.equals("com.admin@admin") && password.equals("admin")) {
 			System.out.println("login success :)");
@@ -59,11 +59,11 @@ public class AdminService implements ClientService {
 	public Company addCompany(Company company) throws CouponSystemException {
 		System.out.println("Admin addCompany");
 		if(company == null) {
-			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "company is null...");
+			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "company is null...");
 		}
 		try {
 			if(isCompanyNameExists(company.getName()) || isCompanyEmailExists(company.getEmail())) {
-				throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "can't add company name and email must by unique");
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "can't add company name and email must by unique");
 			}
 			companyRepository.save(company);
 			Optional<Company> optCompany = companyRepository.findByName(company.getName());
@@ -71,6 +71,8 @@ public class AdminService implements ClientService {
 				return optCompany.get();
 			}
 			throw new CouponSystemException(HttpStatus.CREATED, "server fail to get company from database");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCompany fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "addCompany fail " + e.getMessage(), e);
 		}
@@ -95,8 +97,10 @@ public class AdminService implements ClientService {
 				return company;
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "company: " + company + " is not found is database");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "updateCompany fail " + e.getMessage(), e);
 		} catch (Exception e) {
-			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "updateCompany fail " + e.getMessage(), e);
 		}
 	}
 	
@@ -117,6 +121,8 @@ public class AdminService implements ClientService {
 				return optCompany.get();
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "deleteCoumpany fail company is not in database");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "deleteCoumpany fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "deleteCoumpany fail " + e.getMessage(), e);
 		}
@@ -130,6 +136,8 @@ public class AdminService implements ClientService {
 		System.out.println("Admin getAllCompanies");
 		try {
 			return (List<Company>) companyRepository.findAll();
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getAllCompanies fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR,"getAllCompanies fail :(" + e.getMessage(), e);
 		}
@@ -151,6 +159,8 @@ public class AdminService implements ClientService {
 				return optCompany.get();
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "getCompany fail: company not found in database");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompany fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCompany fail :(" + e.getMessage(), e);
 		}
@@ -167,6 +177,8 @@ public class AdminService implements ClientService {
 				return optCompany.get();
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "getCompanyByName fail: company not found in database");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyByName fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCompanyByName fail " + e.getMessage(), e);
 		}
@@ -193,7 +205,9 @@ public class AdminService implements ClientService {
 			if(optCustoemr.isPresent()) {
 				return optCustoemr.get();
 			}
-			throw new CouponSystemException(HttpStatus.CREATED, "addCustomer fail ");
+			throw new CouponSystemException(HttpStatus.NON_AUTHORITATIVE_INFORMATION, "addCustomer fail ");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCustomer fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "addCustomer fail " + e.getMessage(), e);
 		}
@@ -221,6 +235,8 @@ public class AdminService implements ClientService {
 			}
 			customerRepository.save(customer);
 			return customer;
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "updateCustomer fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "updateCustomer fail " + e.getMessage(), e);
 		}
@@ -243,6 +259,8 @@ public class AdminService implements ClientService {
 				return optCustomer.get();
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "deleteCustomer fail: customer with id: " + customerId + " not found in database");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "deleteCustomer fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "deleteCustomer fail " + e.getMessage(), e);
 		}
@@ -256,6 +274,8 @@ public class AdminService implements ClientService {
 		System.out.println("Admin getAllCustomer");
 		try {
 			return (List<Customer>) customerRepository.findAll();
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getAllCustomer fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getAllCustomer fail " + e.getMessage(), e);
 		}
@@ -277,6 +297,8 @@ public class AdminService implements ClientService {
 				return optCustomer.get();
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "Costomer with id=" + customerId + " not found in database");
+		} catch (DataAccessException e) {
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCustomer fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCustomer fail " + e.getMessage(), e);
 		}
@@ -293,7 +315,7 @@ public class AdminService implements ClientService {
 		try {
 			return companyRepository.existsByName(name);
 		} catch (DataAccessException e) {
-			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "isCompanyNameUnique fail " + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "isCompanyNameUnique fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "isCompanyNameUnique fail " + e.getMessage(), e);
 		}
@@ -308,7 +330,7 @@ public class AdminService implements ClientService {
 		try {
 			return companyRepository.existsByEmail(email);
 		} catch (DataAccessException e) {
-			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "isCompanyEmailExists fail " + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "isCompanyEmailExists fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "isCompanyEmailUnique fail " + e.getMessage(), e);
 		}
@@ -325,7 +347,7 @@ public class AdminService implements ClientService {
 		try {
 			return customerRepository.existsByEmail(email);
 		} catch (DataAccessException e) {
-			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "isCustomerEmailExists fail " + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "isCustomerEmailExists fail " + e.getMessage(), e);
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "isCustomerEmailExists fail " + e.getMessage(), e);
 		}
