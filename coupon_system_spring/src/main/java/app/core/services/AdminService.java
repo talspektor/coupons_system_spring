@@ -93,11 +93,15 @@ public class AdminService implements ClientService {
 		try {
 			Optional<Company> companyToUpdate = companyRepository.findById(company.getId());
 			if (companyToUpdate.isPresent()) {
-				company.setName(companyToUpdate.get().getName());
-				//TODO: remove line
-				companyRepository.save(company);
+				if (!company.getName().equals(companyToUpdate.get().getName())) {
+					throw new CouponSystemException(HttpStatus.BAD_REQUEST, "You can't change company name");
+				}
+				companyToUpdate.get().setName(company.getName());
+				companyToUpdate.get().setEmail(company.getEmail());
+				companyToUpdate.get().setPassword(company.getPassword());
+			
 				System.out.println("updateCompany: " + company);
-				return company;
+				return companyToUpdate.get();
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "company: " + company + " is not found is database");
 		} catch (DataAccessException e) {
@@ -119,11 +123,13 @@ public class AdminService implements ClientService {
 		}
 		try {
 			Optional<Company> optCompany = companyRepository.findById(companyId);
-			companyRepository.deleteById(companyId);
 			if(optCompany.isPresent()) {
+				companyRepository.deleteById(companyId);
 				return optCompany.get();
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "deleteCoumpany fail company is not in database");
+		} catch (IllegalArgumentException e) {
+						throw new CouponSystemException(HttpStatus.NOT_FOUND, "deleteCoumpany fail company is not in database", e);
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "deleteCoumpany fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -201,7 +207,8 @@ public class AdminService implements ClientService {
 		}
 		try {
 			if(isCustomerEmailExists(customer.getEmail())) {
-				throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "You can't add customer email and password most be unique");
+				System.out.println("You can't add customer email and password most be unique");
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "You can't add customer email and password most be unique");
 			}
 			customerRepository.save(customer);
 			Optional<Customer> optCustoemr = customerRepository.findByEmail(customer.getEmail());
@@ -231,14 +238,13 @@ public class AdminService implements ClientService {
 			if (!optCustomer.isPresent()) {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "Costomer not found in database");
 			}
-			if (customer.getEmail() != optCustomer.get().getEmail()) {
-				if(isCustomerEmailExists(customer.getEmail())) {
-					throw new CouponSystemException(HttpStatus.BAD_REQUEST, "You can't update customer email most be unique");
-				}
-			}
-			//TODO: remove line
-			customerRepository.save(customer);
+			optCustomer.get().setFirstName(customer.getFirstName());
+			optCustomer.get().setLastName(customer.getLastName());
+			optCustomer.get().setPassword(customer.getPassword());
+			optCustomer.get().setEmail(customer.getEmail());
 			return customer;
+		} catch (IllegalArgumentException e) {
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "updateCustomer fail eimal moat be uniqua", e);
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "updateCustomer fail " + e.getMessage(), e);
 		} catch (Exception e) {
