@@ -101,21 +101,13 @@ public class CompanyService implements ClientService {
 			if (!optCompany.isPresent()) { 
 				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCoupon fail can't find coupon in database");
 			}
-			List<Coupon> coupons = optCompany.get().getCoupons();
-			if (coupons == null) {
-				coupons = new ArrayList<Coupon>();
-			} else {
-				for (Coupon coupon : coupons) {
-					if(coupon.getTitle() == couponToAdd.getTitle()) {
-						throw new CouponSystemException(HttpStatus.BAD_REQUEST, "addCoupon fail: can't add coupon's title most by unique");
-					}
-				}
+			if (!isCouponTitleUnique(couponToAdd, optCompany.get())) {
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "addCoupon fail: can't add coupon's title most by unique");
 			}
 			couponToAdd.setCompany(optCompany.get());
 			optCompany.get().addCoupon(couponToAdd);
-			//TODO: remove this line.
+
 			companyRepository.save(optCompany.get());
-			
 			Coupon addedCoupon = couponRepository.findByTitle(couponToAdd.getTitle());
 			return addedCoupon;
 		} catch (DataAccessException e) {
@@ -123,6 +115,20 @@ public class CompanyService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "addCoupon fail :(" + e.getMessage(), e);
 		}
+	}
+	
+	private boolean isCouponTitleUnique(Coupon couponToAdd, Company company) throws CouponSystemException {
+		List<Coupon> coupons = company.getCoupons();
+		if (coupons == null) {
+			coupons = new ArrayList<Coupon>();
+		} else {
+			for (Coupon coupon : coupons) {
+				if(coupon.getTitle() == couponToAdd.getTitle()) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	/**
@@ -152,8 +158,7 @@ public class CompanyService implements ClientService {
 			optCoupon.get().setPrice(coupon.getPrice());
 			optCoupon.get().setStartDate(coupon.getStartDate());
 			optCoupon.get().setTitle(coupon.getTitle());
-			//TODO: remove this line.
-			couponRepository.save(optCoupon.get());
+
 			return optCoupon.get();
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "updateCoupon fail " + e.getMessage(), e);
@@ -178,7 +183,7 @@ public class CompanyService implements ClientService {
 				
 				Coupon coupon = optCompany.get().removeCoupon(couponId);
 				//TODO: remove this line.
-				companyRepository.save(optCompany.get());
+//				companyRepository.save(optCompany.get());
 				//TODO: remove this line.
 				couponRepository.deleteById(couponId);
 				System.out.println("success");

@@ -254,8 +254,7 @@ public class CustomerService implements ClientService {
 			int amount = coupon.getAmount();
 			coupon.setAmount(amount--);
 			optCustomer.get().addCoupn(coupon);
-			//TODO: remove line
-			customerRepository.save(optCustomer.get());
+
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCoupon fail :(" + e.getMessage(), e);
 		} catch (Exception e) {

@@ -3,11 +3,8 @@ package app.core.services;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
-import app.core.exceptions.CouponSystemException;
 
 public class CouponValidator {
 
@@ -21,14 +18,14 @@ public class CouponValidator {
 	 * @param couponId
 	 * @return true if customer already purchased this coupon
 	 */
-	public boolean isCouponAlredyPurchased(Long couponId) throws CouponSystemException {
+	public boolean isCouponAlredyPurchased(Long couponId) {
 		List<Coupon> coupons = customer.getCoupons();
 		if (coupons == null || coupons.isEmpty()) {
 			return false;
 		}
 		for (Coupon coupon : coupons) {
 			if (couponId == coupon.getId()) {
-				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "customer already purchase this coupon");
+				return true;
 			}
 		}
 		return false;
@@ -38,21 +35,21 @@ public class CouponValidator {
 	 * @param coupon
 	 * @return true if coupon amount > 0
 	 */
-	public boolean isCouponAvailable(Coupon coupon) throws CouponSystemException {
+	public boolean isCouponAvailable(Coupon coupon) {
 		if(coupon.getAmount() > 0) {
 			return true;
 		}
-		throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not available");
+		return false;
 	}
 	
 	/**
 	 * @param coupon
 	 * @return true if coupon not expired
 	 */
-	public boolean isCouponExpiered(Coupon coupon) throws CouponSystemException {
+	public boolean isCouponExpiered(Coupon coupon) {
 		if (coupon.getEndDate().compareTo(new Date()) > 0) {
 			return false;
 		}
-		throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is expiered");
+		return true;
 	}
 }
