@@ -1,0 +1,81 @@
+package app.core.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import app.core.exceptions.CouponSystemException;
+import app.core.login.ClientType;
+import app.core.login.LoginManager;
+import app.core.services.AdminService;
+import app.core.services.ClientService;
+import app.core.services.CompanyService;
+import app.core.session.Session;
+import app.core.session.SessionContext;
+
+@CrossOrigin
+@RestController
+public class LoginController {
+
+	@Autowired
+	private SessionContext sessionContext;
+	@Autowired
+	private LoginManager loginManager;
+	
+	@PostMapping("/login/admin/{email}/{password}")
+	public String adminLogin(@PathVariable String email, @PathVariable String password) {
+		System.out.println("AdminController login");
+		try {
+			ClientService service = (AdminService) loginManager.login(email, password, ClientType.ADMINISTRATOR);
+			if (service != null) {
+				Session session = sessionContext.createSession();
+				session.setAttribute("email", email);
+				return session.token;
+			}
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
+		} catch (CouponSystemException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+		}
+	}
+	
+	@PostMapping("/login/company/{email}/{password}")
+	public String companyLogin(@PathVariable String email, @PathVariable String password) {
+		System.out.println("CompanyController login");
+		try {
+			ClientService service = (CompanyService) loginManager.login(email, password, ClientType.COMPNY);
+			if (service != null) {
+				Session session = sessionContext.createSession();
+				session.setAttribute("email", email);
+				return session.token;
+			}
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
+		} catch (CouponSystemException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+		}
+	}
+	
+	@PostMapping("/login/customer/{email}/{password}")
+	public String customerLogin(@PathVariable String email, @PathVariable String password) {
+		System.out.println("CompanyController login");
+		try {
+			ClientService service = (CompanyService) loginManager.login(email, password, ClientType.CUSTOMER);
+			if (service != null) {
+				Session session = sessionContext.createSession();
+				session.setAttribute("email", email);
+				return session.token;
+			}
+			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
+		} catch (CouponSystemException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+		}
+	}
+}

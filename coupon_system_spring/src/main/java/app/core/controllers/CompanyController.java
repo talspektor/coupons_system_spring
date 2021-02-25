@@ -10,45 +10,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.core.entities.Company;
 import app.core.entities.Coupon;
 import app.core.exceptions.CouponSystemException;
-import app.core.login.ClientType;
-import app.core.login.LoginManager;
 import app.core.services.CompanyService;
 
 @RestController
 @RequestMapping("/api")
-public class CompanyController implements ClientController {
+public class CompanyController {
 	
+	@Autowired
 	private CompanyService service;
 	@Autowired
-	private LoginManager loginManager;
-	
-
-	@Override
-	@PostMapping("/compamy/login/{email}/{password}")
-	public boolean login(@PathVariable String email, @PathVariable String password) {
-		System.out.println("CompanyController login");
-		try {
-			service = (CompanyService) loginManager.login(email, password, ClientType.COMPNY);
-			if (service != null) {
-				return true;
-			}
-			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
-		} catch (CouponSystemException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-		}	
-	}
+	private TokenValidator tokenValidator;
 	
 	@PostMapping("/add-coupon")
-	public Coupon addCoupon(@RequestBody Coupon coupon) {
+	public Coupon addCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
 		System.out.println("CompanyController addCoupon");
+		if (tokenValidator.validate(token)) {
+			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+		}
 		try {
 			Coupon addedCoupon = service.addCoupon(coupon);
 			return addedCoupon;
@@ -61,8 +46,11 @@ public class CompanyController implements ClientController {
 	
 	
 	@PutMapping("/update-coupon")
-	public Coupon updateCoupon(@RequestBody Coupon coupon) {
+	public Coupon updateCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
 		System.out.println("CompanyController updateCoupon");
+		if (tokenValidator.validate(token)) {
+			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+		}
 		try {
 			Coupon updatedCoupon = service.updateCoupon(coupon);
 			return updatedCoupon;
@@ -74,8 +62,11 @@ public class CompanyController implements ClientController {
 	}
 	
 	@DeleteMapping("/delete-coupon/{id}")
-	public Coupon deleteCoupon(@PathVariable Long id) {
+	public Coupon deleteCoupon(@PathVariable Long id, @RequestHeader String token) {
 		System.out.println("CompanyController deleteCoupon");
+		if (tokenValidator.validate(token)) {
+			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+		}
 		try {
 			Coupon deletedCoupon = service.deleteCoupon(id);
 			return deletedCoupon;
@@ -87,8 +78,11 @@ public class CompanyController implements ClientController {
 	}
 	
 	@GetMapping("/company/coupons")
-	public List<Coupon> getAllCounpanyCoupons() {
+	public List<Coupon> getAllCounpanyCoupons(@RequestHeader String token) {
 		System.out.println("CompanyController getAllCompanycouopons");
+		if (tokenValidator.validate(token)) {
+			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+		}
 		try {
 			List<Coupon> coupons = service.getCompanyCoupons();
 			return coupons;
@@ -100,8 +94,11 @@ public class CompanyController implements ClientController {
 	}
 	
 	@GetMapping("/company/coupons/{maxPrice}")
-	public List<Coupon> getCoumpanyCouponsPriceLessThen(@PathVariable double maxPrice) {
+	public List<Coupon> getCoumpanyCouponsPriceLessThen(@PathVariable double maxPrice, @RequestHeader String token) {
 		System.out.println("CompanyController getCoumpanyCouponsPriceLessThen");
+		if (tokenValidator.validate(token)) {
+			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+		}
 		try {
 			List<Coupon> coupons = service.getCompanyCoupons(maxPrice);
 			return coupons;
@@ -113,8 +110,11 @@ public class CompanyController implements ClientController {
 	}
 	
 	@GetMapping("/company")
-	public Company getCompanyDetails() {
+	public Company getCompanyDetails(@RequestHeader String token) {
 		System.out.println("CompanyController getCompanyDetails");
+		if (tokenValidator.validate(token)) {
+			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+		}
 		try {
 			Company company = service.getCompanyDetails();
 			return company; 

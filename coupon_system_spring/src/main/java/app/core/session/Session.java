@@ -35,6 +35,10 @@ public class Session {
 		maxInactiveInterval = TimeUnit.MINUTES.toMillis(TOKEN_MAX_LENGTH);
 	}
 	
+	public void setAttribute(String attrName, Object attrVal) {
+		attributes.put(attrName, attrVal);
+	}
+	
 	public Object getAttritutes(String attrName) {
 		return attributes.get(attrName);
 	}
