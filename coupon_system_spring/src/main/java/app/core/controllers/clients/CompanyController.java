@@ -1,4 +1,4 @@
-package app.core.controllers;
+package app.core.controllers.clients;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.core.controllers.TokenValidator;
 import app.core.entities.Company;
 import app.core.entities.Coupon;
 import app.core.exceptions.CouponSystemException;
@@ -25,15 +26,15 @@ public class CompanyController {
 	
 	@Autowired
 	private CompanyService service;
-	@Autowired
-	private TokenValidator tokenValidator;
+//	@Autowired
+//	private TokenValidator tokenValidator;
 	
 	@PostMapping("/add-coupon")
 	public Coupon addCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
 		System.out.println("CompanyController addCoupon");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Coupon addedCoupon = service.addCoupon(coupon);
 			return addedCoupon;
@@ -48,9 +49,9 @@ public class CompanyController {
 	@PutMapping("/update-coupon")
 	public Coupon updateCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
 		System.out.println("CompanyController updateCoupon");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Coupon updatedCoupon = service.updateCoupon(coupon);
 			return updatedCoupon;
@@ -64,9 +65,9 @@ public class CompanyController {
 	@DeleteMapping("/delete-coupon/{id}")
 	public Coupon deleteCoupon(@PathVariable Long id, @RequestHeader String token) {
 		System.out.println("CompanyController deleteCoupon");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Coupon deletedCoupon = service.deleteCoupon(id);
 			return deletedCoupon;
@@ -80,9 +81,9 @@ public class CompanyController {
 	@GetMapping("/company/coupons")
 	public List<Coupon> getAllCounpanyCoupons(@RequestHeader String token) {
 		System.out.println("CompanyController getAllCompanycouopons");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			List<Coupon> coupons = service.getCompanyCoupons();
 			return coupons;
@@ -96,9 +97,9 @@ public class CompanyController {
 	@GetMapping("/company/coupons/{maxPrice}")
 	public List<Coupon> getCoumpanyCouponsPriceLessThen(@PathVariable double maxPrice, @RequestHeader String token) {
 		System.out.println("CompanyController getCoumpanyCouponsPriceLessThen");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			List<Coupon> coupons = service.getCompanyCoupons(maxPrice);
 			return coupons;
@@ -112,9 +113,9 @@ public class CompanyController {
 	@GetMapping("/company")
 	public Company getCompanyDetails(@RequestHeader String token) {
 		System.out.println("CompanyController getCompanyDetails");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Company company = service.getCompanyDetails();
 			return company; 

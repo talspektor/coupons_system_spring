@@ -106,7 +106,7 @@ public class CompanyService implements ClientService {
 			}
 			couponToAdd.setCompany(optCompany.get());
 			optCompany.get().addCoupon(couponToAdd);
-
+			//TODO: check if can remove line
 			companyRepository.save(optCompany.get());
 			Coupon addedCoupon = couponRepository.findByTitle(couponToAdd.getTitle());
 			return addedCoupon;

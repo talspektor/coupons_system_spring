@@ -1,9 +1,10 @@
-package app.core.controllers;
+package app.core.controllers.clients;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,26 +15,28 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.core.controllers.TokenValidator;
 import app.core.entities.Company;
 import app.core.entities.Customer;
 import app.core.exceptions.CouponSystemException;
 import app.core.services.AdminService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class AdminController {
 	
 	@Autowired
 	private AdminService service;
-	@Autowired
-	private TokenValidator tokenValidator;
+//	@Autowired
+//	private TokenValidator tokenValidator;
 	
 	@PostMapping("/add-company")
 	public Company addCoumpany(@RequestBody Company company, @RequestHeader String token) {
 		System.out.println("AdminController addCompany");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Company addedCompany = service.addCompany(company);
 			return addedCompany;
@@ -47,9 +50,9 @@ public class AdminController {
 	@PutMapping("/update-company")
 	public Company updateCompany(@RequestBody Company company, @RequestHeader String token) {
 		System.out.println("AdminController updateCompany");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Company updatedCompany = service.updateCompany(company);
 			return updatedCompany;
@@ -64,9 +67,9 @@ public class AdminController {
 	@DeleteMapping("/delete-company/{id}")
 	public Company deleteCompany(@PathVariable Long id, @RequestHeader String token) {
 		System.out.println("AdminController deleteCompany");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Company  deletedCompany = service.deleteCoumpany(id);
 			return deletedCompany;
@@ -80,9 +83,9 @@ public class AdminController {
 	@GetMapping("/companies")
 	public List<Company> getAllCompanies(@RequestHeader String token) {
 		System.out.println("AdminController getAllCompanies");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			List<Company> companies = service.getAllCompanies();
 			return companies;
@@ -97,9 +100,9 @@ public class AdminController {
 	@GetMapping("/company/{id}")
 	public Company getCompany(@PathVariable Long id, @RequestHeader String token) {
 		System.out.println("AdminController getCompany");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Company compnay = service.getCompany(id);
 			return compnay;
@@ -113,9 +116,9 @@ public class AdminController {
 	@GetMapping("/company/name/{name}")
 	public Company getCompanyByName(@PathVariable String name, @RequestHeader String token) throws CouponSystemException {
 		System.out.println("AdminController getCompanyByName");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Company company = service.getCompanyByName(name);
 			return company;
@@ -131,9 +134,9 @@ public class AdminController {
 	@PostMapping("/add-customer")
 	public Customer addCustomer(@RequestBody Customer customer, @RequestHeader String token) {
 		System.out.println("AdminController addCustomer");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Customer addedCustomer = service.addCustomer(customer);
 			return addedCustomer;
@@ -148,9 +151,9 @@ public class AdminController {
 	@PutMapping("/update-customer")
 	public Customer updateCustomer(@RequestBody Customer customer, @RequestHeader String token) {
 		System.out.println("AdminController updateCustomer");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Customer updatedCustomer = service.updateCustomer(customer);
 			return updatedCustomer;
@@ -165,9 +168,9 @@ public class AdminController {
 	@DeleteMapping("/delete-customer/{id}")
 	public Customer deleteCustomer(@PathVariable Long id, @RequestHeader String token) {
 		System.out.println("AdminController deleteCustomer");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Customer deletedCustomer = service.deleteCustomer(id);
 			return deletedCustomer;
@@ -182,9 +185,9 @@ public class AdminController {
 	@GetMapping("/customers")
 	public List<Customer>  getAllCustomers(@RequestHeader String token) {
 		System.out.println("AdminController getAllCustomers");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			List<Customer> customers = service.getAllCustomer();
 			return customers;
@@ -198,9 +201,9 @@ public class AdminController {
 	@GetMapping("/customer/{id}")
 	public Customer getCustomer(@PathVariable Long id, @RequestHeader String token) {
 		System.out.println("AdminController getCustomer");
-		if (tokenValidator.validate(token)) {
-			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-		}
+//		if (tokenValidator.validate(token)) {
+//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
+//		}
 		try {
 			Customer customer = service.getCustomer(id);
 			return customer;
