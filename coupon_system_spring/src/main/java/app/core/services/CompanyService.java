@@ -106,8 +106,6 @@ public class CompanyService implements ClientService {
 			}
 			couponToAdd.setCompany(optCompany.get());
 			optCompany.get().addCoupon(couponToAdd);
-			//TODO: check if can remove line
-			companyRepository.save(optCompany.get());
 			Coupon addedCoupon = couponRepository.findByTitle(couponToAdd.getTitle());
 			return addedCoupon;
 		} catch (DataAccessException e) {
@@ -182,9 +180,6 @@ public class CompanyService implements ClientService {
 			if (optCompany.isPresent()) {
 				
 				Coupon coupon = optCompany.get().removeCoupon(couponId);
-				//TODO: remove this line.
-//				companyRepository.save(optCompany.get());
-				//TODO: remove this line.
 				couponRepository.deleteById(couponId);
 				System.out.println("success");
 				return coupon;

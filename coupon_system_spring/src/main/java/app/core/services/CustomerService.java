@@ -158,9 +158,7 @@ public class CustomerService implements ClientService {
 				if (coupon.getCategoryId() == category) {
 					System.out.println(coupon.getCategoryId() + "   " + category);
 					coupons.add(coupon);
-					System.out.println("==================");
 				}
-				System.out.println("==================");
 			}
 			return coupons;
 		} catch (DataAccessException e) {

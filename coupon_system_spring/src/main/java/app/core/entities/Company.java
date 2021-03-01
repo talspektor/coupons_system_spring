@@ -84,6 +84,7 @@ public class Company {
 		if(coupons == null) {
 			coupons = new ArrayList<Coupon>();
 		}
+		coupon.setCompany(this);
 		coupons.add(coupon);
 		System.out.println("addCoupon: coupon - " + coupon.getTitle() + " was added to entity");
 	}
