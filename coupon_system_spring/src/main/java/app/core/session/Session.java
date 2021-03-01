@@ -24,6 +24,7 @@ public class Session {
 	
 	{
 		this.token = UUID.randomUUID().toString().replace("-", "").substring(TOKEN_MAX_LENGTH);
+		this.resetLastAccessed();
 	}
 	
 	public void resetLastAccessed() {

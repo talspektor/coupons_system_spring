@@ -54,7 +54,9 @@ public class SessionContext {
 	
 	public Session createSession() {
 		Session session = ctx.getBean(Session.class);
+		System.out.println(session);
 		sessionsMap.put(session.token, session);
+		System.out.println(sessionsMap);
 		return session;
 	}
 	
@@ -64,6 +66,7 @@ public class SessionContext {
 	
 	public Session getSession(String sessionToken) {
 		Session session = sessionsMap.get(sessionToken);
+		System.out.println(sessionsMap);
 		if (session != null) {
 			if (!isSessionExpired(session)) {
 				session.resetLastAccessed();

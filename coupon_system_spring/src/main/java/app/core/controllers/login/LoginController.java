@@ -33,6 +33,7 @@ public class LoginController {
 			if (service != null) {
 				Session session = sessionContext.createSession();
 				session.setAttribute("email", email);
+				session.setAttribute("service", service);
 				return session.token;
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
@@ -51,6 +52,7 @@ public class LoginController {
 			if (service != null) {
 				Session session = sessionContext.createSession();
 				session.setAttribute("email", email);
+				session.setAttribute("servise", service);
 				return session.token;
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
@@ -69,6 +71,7 @@ public class LoginController {
 			if (service != null) {
 				Session session = sessionContext.createSession();
 				session.setAttribute("email", email);
+				session.setAttribute("servise", service);
 				return session.token;
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");

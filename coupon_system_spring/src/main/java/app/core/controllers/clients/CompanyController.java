@@ -14,28 +14,26 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.core.controllers.TokenValidator;
 import app.core.entities.Company;
 import app.core.entities.Coupon;
 import app.core.exceptions.CouponSystemException;
 import app.core.services.CompanyService;
+import app.core.session.Session;
+import app.core.session.SessionContext;
 
 @RestController
 @RequestMapping("/api")
 public class CompanyController {
 	
 	@Autowired
-	private CompanyService service;
-//	@Autowired
-//	private TokenValidator tokenValidator;
+	private SessionContext sessionContext;
 	
 	@PostMapping("/add-coupon")
 	public Coupon addCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
 		System.out.println("CompanyController addCoupon");
-//		if (tokenValidator.validate(token)) {
-//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-//		}
 		try {
+			Session session = sessionContext.getSession(token);
+			CompanyService service = (CompanyService) session.getAttritutes("service");
 			Coupon addedCoupon = service.addCoupon(coupon);
 			return addedCoupon;
 		} catch (CouponSystemException e) {
@@ -49,10 +47,9 @@ public class CompanyController {
 	@PutMapping("/update-coupon")
 	public Coupon updateCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
 		System.out.println("CompanyController updateCoupon");
-//		if (tokenValidator.validate(token)) {
-//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-//		}
 		try {
+			Session session = sessionContext.getSession(token);
+			CompanyService service = (CompanyService) session.getAttritutes("service");
 			Coupon updatedCoupon = service.updateCoupon(coupon);
 			return updatedCoupon;
 		} catch (CouponSystemException e) {
@@ -65,10 +62,9 @@ public class CompanyController {
 	@DeleteMapping("/delete-coupon/{id}")
 	public Coupon deleteCoupon(@PathVariable Long id, @RequestHeader String token) {
 		System.out.println("CompanyController deleteCoupon");
-//		if (tokenValidator.validate(token)) {
-//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-//		}
 		try {
+			Session session = sessionContext.getSession(token);
+			CompanyService service = (CompanyService) session.getAttritutes("service");
 			Coupon deletedCoupon = service.deleteCoupon(id);
 			return deletedCoupon;
 		} catch (CouponSystemException e) {
@@ -81,10 +77,9 @@ public class CompanyController {
 	@GetMapping("/company/coupons")
 	public List<Coupon> getAllCounpanyCoupons(@RequestHeader String token) {
 		System.out.println("CompanyController getAllCompanycouopons");
-//		if (tokenValidator.validate(token)) {
-//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-//		}
 		try {
+			Session session = sessionContext.getSession(token);
+			CompanyService service = (CompanyService) session.getAttritutes("service");
 			List<Coupon> coupons = service.getCompanyCoupons();
 			return coupons;
 		} catch (CouponSystemException e) {
@@ -97,10 +92,9 @@ public class CompanyController {
 	@GetMapping("/company/coupons/{maxPrice}")
 	public List<Coupon> getCoumpanyCouponsPriceLessThen(@PathVariable double maxPrice, @RequestHeader String token) {
 		System.out.println("CompanyController getCoumpanyCouponsPriceLessThen");
-//		if (tokenValidator.validate(token)) {
-//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-//		}
 		try {
+			Session session = sessionContext.getSession(token);
+			CompanyService service = (CompanyService) session.getAttritutes("service");
 			List<Coupon> coupons = service.getCompanyCoupons(maxPrice);
 			return coupons;
 		} catch (CouponSystemException e) {
@@ -113,12 +107,10 @@ public class CompanyController {
 	@GetMapping("/company")
 	public Company getCompanyDetails(@RequestHeader String token) {
 		System.out.println("CompanyController getCompanyDetails");
-//		if (tokenValidator.validate(token)) {
-//			throw new CouponSystemException(HttpStatus.UNAUTHORIZED, "You need to login");
-//		}
 		try {
-			Company company = service.getCompanyDetails();
-			return company; 
+			Session session = sessionContext.getSession(token);
+			CompanyService service = (CompanyService) session.getAttritutes("service");
+			return service.getCompanyDetails(); 
 		} catch (CouponSystemException e) {
 			throw e;
 		} catch (Exception e) {
