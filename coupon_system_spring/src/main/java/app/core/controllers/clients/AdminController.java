@@ -39,8 +39,12 @@ public class AdminController {
 			Company addedCompany = service.addCompany(company);
 			return addedCompany;
 		} catch (CouponSystemException e) {
+			System.err.println("CouponSystemException");
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println("Exception");
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}

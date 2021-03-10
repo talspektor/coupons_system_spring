@@ -27,17 +27,17 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
+		System.out.println("doFilter");
 		HttpServletRequest req = (HttpServletRequest)request;
 		String token = req.getHeader("token");
-		System.out.println(token);
-		System.out.println(sessionContext.getSession(token));
+		System.out.println("token: " + token);
+//		System.out.println(sessionContext.getSession(token));
 		if(token != null && sessionContext.getSession(token) != null) {
 			chain.doFilter(request, response);
 			System.out.println("session is good");
 			return;
 		}
-		
+		System.err.println("doFilter fail");
 		HttpServletResponse res = (HttpServletResponse) response;
 		res.sendError(HttpStatus.UNAUTHORIZED.value(), "you are not logged in");
 	}

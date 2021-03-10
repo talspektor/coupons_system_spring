@@ -13,6 +13,7 @@ import app.core.login.LoginManager;
 import app.core.services.AdminService;
 import app.core.services.ClientService;
 import app.core.services.CompanyService;
+import app.core.services.CustomerService;
 import app.core.session.Session;
 import app.core.session.SessionContext;
 
@@ -67,7 +68,7 @@ public class LoginController {
 	public String customerLogin(@PathVariable String email, @PathVariable String password) {
 		System.out.println("CompanyController login");
 		try {
-			ClientService service = (CompanyService) loginManager.login(email, password, ClientType.CUSTOMER);
+			ClientService service = (CustomerService) loginManager.login(email, password, ClientType.CUSTOMER);
 			if (service != null) {
 				Session session = sessionContext.createSession();
 				session.setAttribute("email", email);
