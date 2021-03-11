@@ -10,10 +10,13 @@ public class RestTanletTest {
 			Login login = new Login();
 			Admin admin = new Admin(login.adminLogin());
 			System.out.println("token: " + admin.getHeaders());
+			admin.getCompany(8L);
 //			admin.getAllCompanies();
-			Company company = new Company("rest3", "rest3", "rest3");
+			Company company = admin.getCompany(8L);
+			company.setEmail("123");
+			admin.updateCompany(company);
 //			admin.addCompany(company);
-			admin.deleteCompany(9L);
+//			admin.deleteCompany(9L);
 //			company.setId(8L);
 //			company.setEmail("rest_update");
 //			admin.updateCompany(company);

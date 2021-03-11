@@ -41,21 +41,38 @@ public class Admin {
 		}
 	}
 	
-	public void updateCompany(Company company) throws Exception {
+	public Company updateCompany(Company company) throws Exception {
 		try {
 			String url = "http://localhost:8080/api/update-company";
-			restTemplate.put(url, Company.class);
-			System.out.println("company updated");
+			HttpEntity<Company> httpEntity = new HttpEntity<Company>(company, headers);
+			ResponseEntity<Company> response = restTemplate.exchange(url, HttpMethod.PUT, httpEntity, Company.class);
+			System.out.println("company updated: " + response.getBody());
+			return response.getBody();
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 	
-	public void deleteCompany(Long id) throws Exception {
+	public Company deleteCompany(Long id) throws Exception {
 		try {
 			String url = "http://localhost:8080/api/delete-company/" + id;
-			restTemplate.delete(url);
-			System.out.println("company deleted");
+			HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+			ResponseEntity<Company> response = restTemplate.exchange(url,  HttpMethod.DELETE, httpEntity, Company.class);
+			System.out.println("company deleted: " + response.getBody());
+			return response.getBody();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public Company getCompany(Long id) {
+		System.out.println("getCompany");
+		try {
+			String url = "http://localhost:8080/api/company/" + id;
+			HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+			ResponseEntity<Company> response = restTemplate.exchange(url,  HttpMethod.GET, httpEntity, Company.class);
+			System.out.println("company: " + response.getBody());
+			return response.getBody();
 		} catch (Exception e) {
 			throw e;
 		}
@@ -66,7 +83,6 @@ public class Admin {
 		try {
 			String url = "http://localhost:8080/api/companies";
 			HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
-			System.out.println(headers);
 			ResponseEntity<Company[]> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, Company[].class);
 			List<Company> companies = Arrays.asList(response.getBody());
 			System.out.println("getAllCompanies: " + companies);
