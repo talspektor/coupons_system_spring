@@ -39,7 +39,7 @@ public class RestTampletTest {
 //			admin.deleteCustomer(1L);
 			
 			// ****** Comapny methods ******** //
-//			CompanyRest companyRest = new CompanyRest(login.companyLogin("1", "1"));	
+			CompanyRest companyRest = new CompanyRest(login.companyLogin("1", "1"));	
 //			System.out.println("token: " + companyRest.getHeaders());
 //			Coupon coupon = new Coupon(Category.FOOD, "t_rt", "d_rt", new Date(2021, 1, 1), new Date(2021, 10, 2), 10, 50, "");
 //			System.out.println(coupon.getCategoryId());
@@ -48,7 +48,7 @@ public class RestTampletTest {
 //			companyRest.getCompanyDetails();
 			
 			// ***** Customer methods ******** //
-			CustomerRest customerRest = new CustomerRest(login.customerLogin("zzz", "zzz"));
+//			CustomerRest customerRest = new CustomerRest(login.customerLogin("zzz", "zzz"));
 //			customerRest.getCustomerDetails();
 //			login.customerLogin("www", "www");
 
