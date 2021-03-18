@@ -25,7 +25,7 @@ public class DailyJob implements Runnable {
 		this.jobThread = new Thread(this, "job");
 	}
 	
-	@PostConstruct
+//	@PostConstruct
 	public void startJob() {
 		this.jobThread.start();
 		System.out.println("job started");

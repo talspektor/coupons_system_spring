@@ -31,7 +31,7 @@ public class LoginFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest)request;
 		String token = req.getHeader("token");
 		System.out.println("token: " + token);
-//		System.out.println(sessionContext.getSession(token));
+
 		if(token != null && sessionContext.getSession(token) != null) {
 			chain.doFilter(request, response);
 			System.out.println("session is good");

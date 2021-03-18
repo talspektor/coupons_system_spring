@@ -26,7 +26,7 @@ public class Company {
 	private String email;
 	@Column(nullable = false)
 	private String password;
-	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "company", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Coupon> coupons;
 	
@@ -76,6 +76,15 @@ public class Company {
 		return coupons;
 	}
 	
+	public Coupon getCoupon(String name) {
+		for (Coupon coupon : coupons) {
+			if (coupon.getTitle().equals(name)) {
+				return coupon;
+			}
+		}
+		return null;
+	}
+	
 	public void setCoupons(List<Coupon> coupons) {
 		this.coupons = coupons;
 	}
@@ -86,7 +95,6 @@ public class Company {
 		}
 		coupon.setCompany(this);
 		coupons.add(coupon);
-		System.out.println("addCoupon: coupon - " + coupon.getTitle() + " was added to entity");
 	}
 	
 	public Coupon removeCoupon(Long couponId) {

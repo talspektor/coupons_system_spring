@@ -25,7 +25,7 @@ public class Coupon {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "company_id")
+	@JoinColumn(name = "company_id", nullable = false)
 	@JsonIgnore
 	private Company company;
 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
@@ -36,7 +36,7 @@ public class Coupon {
 	private List<Customer> customers;
 	@Column(nullable = false)
 	private Category category;
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String title;
 	@Column(nullable = false)
 	private String description;

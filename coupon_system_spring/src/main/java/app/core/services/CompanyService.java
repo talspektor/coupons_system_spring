@@ -105,9 +105,10 @@ public class CompanyService implements ClientService {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "addCoupon fail: can't add coupon's title most by unique");
 			}
 			couponToAdd.setCompany(optCompany.get());
+			couponToAdd = couponRepository.save(couponToAdd);
 			optCompany.get().addCoupon(couponToAdd);
-			Coupon addedCoupon = couponRepository.findByTitle(couponToAdd.getTitle());
-			return addedCoupon;
+
+			return couponToAdd;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCoupon fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -226,7 +227,7 @@ public class CompanyService implements ClientService {
 			List<Coupon> coupons = optCompany.get().getCoupons();
 			List<Coupon> couponsToReturn = new ArrayList<Coupon>();
 			for (Coupon coupon : coupons) {
-				if (coupon.getPrice() < maxPrice) {
+				if (coupon.getPrice() >= maxPrice) {
 					couponsToReturn.add(coupon);
 				}
 			}

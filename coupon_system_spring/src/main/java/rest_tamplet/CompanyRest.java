@@ -86,7 +86,7 @@ public class CompanyRest {
 			HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
 			ResponseEntity<Coupon[]> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, Coupon[].class);
 			List<Coupon> coupons = Arrays.asList(response.getBody());
-			System.out.println("companies: " + coupons);
+			System.out.println("coupons: " + coupons);
 			return coupons;
 		} catch (Exception e) {
 			throw e;
