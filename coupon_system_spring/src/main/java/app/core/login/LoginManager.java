@@ -29,13 +29,13 @@ public class LoginManager {
 		System.out.println(password);
 		System.out.println(clientType);
 		switch (clientType) {
-		case ADMINISTRATOR:
+		case ADMIN:
 			AdminService adminService = context.getBean(AdminService.class);
 			if (adminService.login(email, password)) {
 				service = adminService;
 			}
 			break;
-		case COMPNY:
+		case COMPANY:
 			CompanyService companyService = context.getBean(CompanyService.class);
 			if (companyService.login(email, password)) {
 				service = companyService;

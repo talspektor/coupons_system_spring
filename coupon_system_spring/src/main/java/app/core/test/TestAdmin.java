@@ -21,7 +21,7 @@ public class TestAdmin {
 	private LoginManager loginManager;
 
 	public void loginTest() throws CouponSystemException {
-		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
+		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMIN);
 	}
 	
 	public void addCompanyTest() throws CouponSystemException {

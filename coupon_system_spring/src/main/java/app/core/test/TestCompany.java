@@ -24,13 +24,13 @@ public class TestCompany {
 	private LoginManager loginManager;
 
 	public void login() throws CouponSystemException {
-		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
+		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMIN);
 		Company company = adminService.getCompany(1L);//adminService.getAllCompanies().get(0);
 		if(company == null) {
 			System.out.println("*****  No companies in database!!! you can't continue test... ******");
 			return;
 		}
-		companyService = (CompanyService) loginManager.login(company.getEmail(), company.getPassword(), ClientType.COMPNY);
+		companyService = (CompanyService) loginManager.login(company.getEmail(), company.getPassword(), ClientType.COMPANY);
 	}
 
 	public void addCouponTest() throws CouponSystemException {

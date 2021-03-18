@@ -31,14 +31,14 @@ public class TestCustomer {
 	private LoginManager loginManager;
 	
 	public void login() throws CouponSystemException {
-		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMINISTRATOR);
+		adminService = (AdminService) loginManager.login("com.admin@admin", "admin", ClientType.ADMIN);
 		Customer customer = TestUtils.getRandomCustomerFromDatabase(adminService);
 		Company company = TestUtils.getRandomCompanyFromDatabase(adminService);
 		if(company == null) {
 			System.out.println("*****  No companies in database!!! you can't continue test... ******");
 			return;
 		}
-		companyService = (CompanyService) loginManager.login(company.getEmail(), company.getPassword(), ClientType.COMPNY);
+		companyService = (CompanyService) loginManager.login(company.getEmail(), company.getPassword(), ClientType.COMPANY);
 		if(customer == null) {
 			System.out.println("***** No customers in database!!! you can't continue test... *****");
 		}

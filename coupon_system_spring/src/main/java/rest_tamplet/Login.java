@@ -9,7 +9,7 @@ public class Login {
 
 	public String adminLogin() throws Exception {
 		try {
-			String url = "http://localhost:8080/login/admin/com.admin@admin/admin";
+			String url = "http://localhost:8080/login/ADMIN/com.admin@admin/admin";
 			String login = "";
 			ResponseEntity<String> response = restTemplate.postForEntity(url, login, String.class);
 			System.out.println("Admin Token: " + response.getBody());
@@ -21,7 +21,7 @@ public class Login {
 
 	public String companyLogin(String email, String password) throws Exception {
 		try {
-			String url = "http://localhost:8080/login/company/" + email + "/" + password;
+			String url = "http://localhost:8080/login/COMPANY/" + email + "/" + password;
 			String login = "";
 			ResponseEntity<String> response = restTemplate.postForEntity(url, login, String.class);
 			System.out.println("Company Token: " + response.getBody());
@@ -33,7 +33,7 @@ public class Login {
 	
 	public String customerLogin(String email, String password) throws Exception {
 		try {
-			String url = "http://localhost:8080/login/customer/" + email + "/" + password;
+			String url = "http://localhost:8080/login/CUSTOMER/" + email + "/" + password;
 			String login = "";
 			ResponseEntity<String> response = restTemplate.postForEntity(url, login, String.class);
 			System.out.println("Customer Token: " + response.getBody());

@@ -13,7 +13,7 @@ public class RestTampletTest {
 
 		try {
 			Login login = new Login();
-//			Admin admin = new Admin(login.adminLogin());
+			Admin admin = new Admin(login.adminLogin());
 //			System.out.println("token: " + admin.getHeaders());
 			// ****** Admin company methods *********
 //			admin.getCompany(8L);
@@ -48,7 +48,7 @@ public class RestTampletTest {
 //			companyRest.getCompanyDetails();
 			
 			// ***** Customer methods ******** //
-//			CustomerRest customerRest = new CustomerRest(login.customerLogin("zzz", "zzz"));
+			CustomerRest customerRest = new CustomerRest(login.customerLogin("zzz", "zzz"));
 //			customerRest.getCustomerDetails();
 //			login.customerLogin("www", "www");
 
