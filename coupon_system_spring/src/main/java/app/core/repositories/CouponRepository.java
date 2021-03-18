@@ -19,6 +19,6 @@ public interface CouponRepository extends CrudRepository<Coupon, Long> {
 	boolean existsByTitleAndCompanyId(String title, Long companyId);
 
 	List<Coupon> findAllByCategory(Category category);
-//	@Transactional
+	@Transactional
 	void removeByEndDateLessThan(Date endDate);
 }
