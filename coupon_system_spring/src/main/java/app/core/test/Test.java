@@ -20,7 +20,7 @@ public class Test {
 		
 		{
 			// ADMINISTRATOR
-			TestAdmin testAdmin = context.getBean(TestAdmin.class);
+//			TestAdmin testAdmin = context.getBean(TestAdmin.class);
 //			testAdmin.loginTest();
 //			testAdmin.addCompanyTest();
 //			testAdmin.getCompanyTest();
@@ -34,7 +34,7 @@ public class Test {
 		
 		{
 			// COMPANY
-			TestCompany testCompany = context.getBean(TestCompany.class);
+//			TestCompany testCompany = context.getBean(TestCompany.class);
 //			testCompany.login();
 //			testCompany.addCouponTest();
 //			testCompany.updateCouponTest();
@@ -46,7 +46,7 @@ public class Test {
 		
 		{
 			// CUSTOMER
-			TestCustomer testCustomer = context.getBean(TestCustomer.class);
+//			TestCustomer testCustomer = context.getBean(TestCustomer.class);
 //			testCustomer.login();
 //			testCustomer.purchaseCouponTest();
 //			testCustomer.getCouponsTest();
