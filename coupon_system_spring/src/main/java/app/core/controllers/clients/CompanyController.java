@@ -30,7 +30,6 @@ public class CompanyController {
 	
 	@PostMapping("/add-coupon")
 	public Coupon addCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
-		System.out.println("CompanyController addCoupon");
 		try {
 			Session session = sessionContext.getSession(token);
 			CompanyService service = (CompanyService) session.getAttritutes("service");
@@ -46,7 +45,6 @@ public class CompanyController {
 	
 	@PutMapping("/update-coupon")
 	public Coupon updateCoupon(@RequestBody Coupon coupon, @RequestHeader String token) {
-		System.out.println("CompanyController updateCoupon");
 		try {
 			Session session = sessionContext.getSession(token);
 			CompanyService service = (CompanyService) session.getAttritutes("service");
@@ -61,7 +59,6 @@ public class CompanyController {
 	
 	@DeleteMapping("/delete-coupon/{id}")
 	public Coupon deleteCoupon(@PathVariable Long id, @RequestHeader String token) {
-		System.out.println("CompanyController deleteCoupon");
 		try {
 			Session session = sessionContext.getSession(token);
 			CompanyService service = (CompanyService) session.getAttritutes("service");
@@ -76,7 +73,6 @@ public class CompanyController {
 	
 	@GetMapping("/company/coupons")
 	public List<Coupon> getAllCounpanyCoupons(@RequestHeader String token) {
-		System.out.println("CompanyController getAllCompanycouopons");
 		try {
 			Session session = sessionContext.getSession(token);
 			CompanyService service = (CompanyService) session.getAttritutes("service");
@@ -91,7 +87,6 @@ public class CompanyController {
 	
 	@GetMapping("/company/coupons/{maxPrice}")
 	public List<Coupon> getCoumpanyCouponsPriceLessThen(@PathVariable double maxPrice, @RequestHeader String token) {
-		System.out.println("CompanyController getCoumpanyCouponsPriceLessThen");
 		try {
 			Session session = sessionContext.getSession(token);
 			CompanyService service = (CompanyService) session.getAttritutes("service");
@@ -106,7 +101,6 @@ public class CompanyController {
 	
 	@GetMapping("/company")
 	public Company getCompanyDetails(@RequestHeader String token) {
-		System.out.println("CompanyController getCompanyDetails");
 		try {
 			Session session = sessionContext.getSession(token);
 			CompanyService service = (CompanyService) session.getAttritutes("service");

@@ -32,7 +32,6 @@ public class AdminController {
 	
 	@PostMapping("/add-company")
 	public Company addCoumpany(@RequestBody Company company, @RequestHeader String token) {
-		System.out.println("AdminController addCompany");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -51,7 +50,6 @@ public class AdminController {
 	
 	@PutMapping("/update-company")
 	public Company updateCompany(@RequestBody Company company, @RequestHeader String token) {
-		System.out.println("AdminController updateCompany");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -67,7 +65,6 @@ public class AdminController {
 	
 	@DeleteMapping("/delete-company/{id}")
 	public Company deleteCompany(@PathVariable Long id, @RequestHeader String token) {
-		System.out.println("AdminController deleteCompany");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -82,7 +79,6 @@ public class AdminController {
 	
 	@GetMapping("/companies")
 	public List<Company> getAllCompanies(@RequestHeader String token) {
-		System.out.println("AdminController getAllCompanies");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -99,7 +95,6 @@ public class AdminController {
 	
 	@GetMapping("/company/{id}")
 	public Company getCompany(@PathVariable Long id, @RequestHeader String token) {
-		System.out.println("AdminController getCompany");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -114,7 +109,6 @@ public class AdminController {
 	
 	@GetMapping("/company/name/{name}")
 	public Company getCompanyByName(@PathVariable String name, @RequestHeader String token) throws CouponSystemException {
-		System.out.println("AdminController getCompanyByName");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -131,7 +125,6 @@ public class AdminController {
 	
 	@PostMapping("/add-customer")
 	public Customer addCustomer(@RequestBody Customer customer, @RequestHeader String token) {
-		System.out.println("AdminController addCustomer");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -147,7 +140,6 @@ public class AdminController {
 	
 	@PutMapping("/update-customer")
 	public Customer updateCustomer(@RequestBody Customer customer, @RequestHeader String token) {
-		System.out.println("AdminController updateCustomer");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -163,7 +155,6 @@ public class AdminController {
 	
 	@DeleteMapping("/delete-customer/{id}")
 	public Customer deleteCustomer(@PathVariable Long id, @RequestHeader String token) {
-		System.out.println("AdminController deleteCustomer");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -179,7 +170,6 @@ public class AdminController {
 	
 	@GetMapping("/customers")
 	public List<Customer>  getAllCustomers(@RequestHeader String token) {
-		System.out.println("AdminController getAllCustomers");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
@@ -194,7 +184,6 @@ public class AdminController {
 	
 	@GetMapping("/customer/{id}")
 	public Customer getCustomer(@PathVariable Long id, @RequestHeader String token) {
-		System.out.println("AdminController getCustomer");
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");

@@ -17,7 +17,6 @@ public class LogoutController {
 
 	@PostMapping("/logout")
 	public void logout(@RequestHeader String token) {
-		System.out.println("logout");
 		Session session = sessionContext.getSession(token);
 		sessionContext.invalidate(session);
 	}
