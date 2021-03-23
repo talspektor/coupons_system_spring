@@ -25,7 +25,6 @@ public class LoginController {
 	
 	@PostMapping("/login/{type}/{email}/{password}")
 	public String login(@PathVariable ClientType type, @PathVariable String email, @PathVariable String password) {
-		System.out.println("LoginController login");
 		try {
 			ClientService service = loginManager.login(email, password, type);
 			if (service != null) {

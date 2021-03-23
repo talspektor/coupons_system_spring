@@ -54,6 +54,8 @@ public class CompanyService implements ClientService {
 				throw new CouponSystemException(HttpStatus.NOT_FOUND, "Wrong credentials - email: " + email + " password: " + password);
 			}
 			return setId(email, password);
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "login fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -76,6 +78,8 @@ public class CompanyService implements ClientService {
 				return true;
 			}
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "setId fail to fide company ");
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "setId fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -109,6 +113,8 @@ public class CompanyService implements ClientService {
 			optCompany.get().addCoupon(couponToAdd);
 
 			return couponToAdd;
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCoupon fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -159,6 +165,8 @@ public class CompanyService implements ClientService {
 			optCoupon.get().setTitle(coupon.getTitle());
 
 			return optCoupon.get();
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "updateCoupon fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -186,6 +194,8 @@ public class CompanyService implements ClientService {
 				return coupon;
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "deleteCoupon fail: coupon is not in database");
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "deleteCoupon fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -205,6 +215,8 @@ public class CompanyService implements ClientService {
 				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE);
 			}
 			return optCompany.get().getCoupons();
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyCoupons fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -232,6 +244,8 @@ public class CompanyService implements ClientService {
 				}
 			}
 			return couponsToReturn;
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyCoupons(maxPrice) fail " + e.getMessage(), e);
 		} catch (Exception e) {
@@ -251,6 +265,8 @@ public class CompanyService implements ClientService {
 				return optCompany.get();
 			}
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyDetails(maxPrice) fail: didn't find company in database");
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyDetails(maxPrice) fail " + e.getMessage(), e);
 		} catch (Exception e) {

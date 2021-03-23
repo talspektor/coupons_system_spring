@@ -38,11 +38,9 @@ public class AdminController {
 			Company addedCompany = service.addCompany(company);
 			return addedCompany;
 		} catch (CouponSystemException e) {
-			System.err.println("CouponSystemException");
 			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
-			System.err.println("Exception");
 			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
@@ -56,8 +54,10 @@ public class AdminController {
 			Company updatedCompany = service.updateCompany(company);
 			return updatedCompany;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 		
@@ -71,8 +71,10 @@ public class AdminController {
 			Company  deletedCompany = service.deleteCoumpany(id);
 			return deletedCompany;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}
@@ -82,12 +84,13 @@ public class AdminController {
 		try {
 			Session session = sessionContext.getSession(token);
 			AdminService service = (AdminService) session.getAttritutes("service");
-			System.out.println(service);
 			List<Company> companies = service.getAllCompanies();
 			return companies;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 		
@@ -101,8 +104,10 @@ public class AdminController {
 			Company compnay = service.getCompany(id);
 			return compnay;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}
@@ -115,8 +120,10 @@ public class AdminController {
 			Company company = service.getCompanyByName(name);
 			return company;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}
@@ -131,8 +138,10 @@ public class AdminController {
 			Customer addedCustomer = service.addCustomer(customer);
 			return addedCustomer;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 		
@@ -146,8 +155,10 @@ public class AdminController {
 			Customer updatedCustomer = service.updateCustomer(customer);
 			return updatedCustomer;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 		
@@ -161,8 +172,10 @@ public class AdminController {
 			Customer deletedCustomer = service.deleteCustomer(id);
 			return deletedCustomer;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 		
@@ -176,8 +189,10 @@ public class AdminController {
 			List<Customer> customers = service.getAllCustomer();
 			return customers;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}
@@ -190,8 +205,10 @@ public class AdminController {
 			Customer customer = service.getCustomer(id);
 			return customer;
 		} catch (CouponSystemException e) {
+			System.err.println(e.getReason());
 			throw e;
 		} catch (Exception e) {
+			System.err.println(e.getCause());
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}

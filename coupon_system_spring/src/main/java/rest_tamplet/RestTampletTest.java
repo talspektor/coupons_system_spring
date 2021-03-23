@@ -17,7 +17,7 @@ public class RestTampletTest {
 //			System.out.println("token: " + admin.getHeaders());
 			// ****** Admin company methods *********
 //			admin.getCompany(8L);
-			admin.getAllCompanies();
+//			admin.getAllCompanies();
 //			Company company = admin.getCompany(8L);
 //			company.setEmail("123");
 //			admin.updateCompany(company);

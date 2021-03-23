@@ -35,23 +35,28 @@ public class MyPointcuts {
 		
 	}
 	
-	@Pointcut("execution(* app.core.controllers.login.*.*(..))")
+	@Pointcut("execution(public * app.core.controllers.login.*.*(..))")
 	public void loginController() {
 		
 	}
 	
-	@Pointcut("execution(* app.core.controllers.clients.*.*(..))")
+	@Pointcut("execution(public * app.core.controllers.clients.*.*(..))")
 	public void clientController() {
 		
 	}
 	
-	@Pointcut("execution(* app.core.services.*.*(..))")
+	@Pointcut("execution(public * app.core.services.*.*(..))")
 	public void services() {
 		
 	}
 	
-	@Pointcut("services() || clientController()")
-	public void servicesOrClientController() {
+	@Pointcut("services() || clientController() || sessionContext()")
+	public void servicesOrClientControllerOrSessionContext() {
+		
+	}
+	
+	@Pointcut("execution(public * app.core.session.SessionContext.*(..))")
+	public void sessionContext() {
 		
 	}
 }

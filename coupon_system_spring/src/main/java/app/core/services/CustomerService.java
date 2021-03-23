@@ -56,6 +56,8 @@ public class CustomerService implements ClientService {
 				return true;
 			}
 			throw new CouponSystemException(HttpStatus.NOT_FOUND, "Wrong credentials - email: " + email + " password: " + password);
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "login fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -100,6 +102,8 @@ public class CustomerService implements ClientService {
 			addCoupon(coupon);
 			System.out.println("purchaseCoupon success :)");
 			return coupon;
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "purchaseCoupon fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -119,6 +123,8 @@ public class CustomerService implements ClientService {
 				return optCustomer.get().getCoupons();
 			}
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCoupons fail :(");
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCoupons fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -134,6 +140,8 @@ public class CustomerService implements ClientService {
 		System.out.println("Customer getAllDatabaseCoupons");
 		try {
 			return (List<Coupon>) couponRepository.findAllByOrderByCategory();
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getAllDatabaseCoupons fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -161,6 +169,8 @@ public class CustomerService implements ClientService {
 				}
 			}
 			return coupons;
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCouponsByCategory fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -187,6 +197,8 @@ public class CustomerService implements ClientService {
 				}
 			}
 			return coupons;
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCouponsByPriceLessThen fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -207,6 +219,8 @@ public class CustomerService implements ClientService {
 				return optCustomer.get();
 			}
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCustomerDetails fail");
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCustomerDetails fail :(" + e.getMessage(), e);
 		} catch (Exception e) {
@@ -252,7 +266,8 @@ public class CustomerService implements ClientService {
 			int amount = coupon.getAmount();
 			coupon.setAmount(amount--);
 			optCustomer.get().addCoupn(coupon);
-
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCoupon fail :(" + e.getMessage(), e);
 		} catch (Exception e) {

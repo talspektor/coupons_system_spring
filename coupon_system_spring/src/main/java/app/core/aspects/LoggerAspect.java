@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class LoggerAspect {
+	
+	// ******* Login ************
 
 	@Before("app.core.aspects.MyPointcuts.loginController()")
 	public void beforeLogin(JoinPoint joinPoint) {
@@ -38,20 +40,26 @@ public class LoggerAspect {
 		System.out.println("====== Login failed :(");
 	}
 	
-	@Before("app.core.aspects.MyPointcuts.servicesOrClientController()")
+	// ********* Services and Controllers and SessionContext
+	
+	@Before("app.core.aspects.MyPointcuts.servicesOrClientControllerOrSessionContext()")
 	public void controllerAndServiseLog(JoinPoint joinPoint) {
 		logClassAndMethod(joinPoint);
 	}
 	
-	@AfterReturning(pointcut = "app.core.aspects.MyPointcuts.servicesOrClientController()", returning = "obj")
+	@AfterReturning(pointcut = "app.core.aspects.MyPointcuts.servicesOrClientControllerOrSessionContext()", returning = "obj")
 	public void serviceSucces(JoinPoint joinPoint, Object obj) {
-		System.out.println("======= Success: " + obj.toString());
+		if (obj != null) {
+			System.out.println("======= Success: " + obj.toString());
+		}
 	}
 	
-	@AfterThrowing(pointcut = "app.core.aspects.MyPointcuts.servicesOrClientController()", throwing = "t")
+	@AfterThrowing(pointcut = "app.core.aspects.MyPointcuts.servicesOrClientControllerOrSessionContext()", throwing = "t")
 	public void sevicesFailed() {
 		System.out.println("======= Failed");
 	}
+	
+	// ********** Private Method ***********
 	
 	private void logClassAndMethod(JoinPoint joinPoint) {
 		System.out.println("========  " + joinPoint.getSignature().getDeclaringType().getSimpleName() + " - " + joinPoint.getSignature().getName());
