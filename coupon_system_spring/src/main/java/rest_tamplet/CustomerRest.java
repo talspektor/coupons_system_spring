@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import app.core.entities.Category;
-import app.core.entities.Company;
 import app.core.entities.Coupon;
 import app.core.entities.Customer;
 
@@ -34,7 +33,7 @@ public class CustomerRest {
 		try {
 			String url = "http://localhost:8080/api/purchase-coupon/" + id;
 			HttpEntity<Object> companyHttpEntity = new HttpEntity<Object>(headers);
-			ResponseEntity<Coupon> response = restTemplate.postForEntity(url, companyHttpEntity, Coupon.class);
+			ResponseEntity<Coupon> response = restTemplate.exchange(url, HttpMethod.PUT, companyHttpEntity, Coupon.class);
 			System.out.println("coupon purchase: " + response.getBody());
 			return response.getBody();
 		} catch (Exception e) {

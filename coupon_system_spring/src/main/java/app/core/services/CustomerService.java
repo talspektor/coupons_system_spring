@@ -44,7 +44,6 @@ public class CustomerService implements ClientService {
 	 * @return true if customer with given email and password is in database
 	 */
 	public boolean login(String email, String password) throws CouponSystemException {
-		System.out.println("Customer login");
 		if (email == null || password == null) { 
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE,"login fail :( email or password are null");
 		}
@@ -52,7 +51,6 @@ public class CustomerService implements ClientService {
 			Optional<Customer> optCustomer = customerRepository.findByEmailAndPassword(email, password);
 			if(optCustomer.isPresent()) {
 				this.id = optCustomer.get().getId();
-				System.out.println("login success :)");
 				return true;
 			}
 			throw new CouponSystemException(HttpStatus.NOT_FOUND, "Wrong credentials - email: " + email + " password: " + password);
@@ -71,7 +69,6 @@ public class CustomerService implements ClientService {
 	 * add coupon to customer coupons
 	 */
 	public Coupon purchaseCoupon(Long couponId) throws CouponSystemException {
-		System.out.println("Customer purchaseCoupon");
 		if (couponId == null) { 
 			throw new CouponSystemException(HttpStatus.NOT_FOUND, "couponId is null :(");
 		} 
@@ -116,7 +113,6 @@ public class CustomerService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public List<Coupon> getCoupons() throws CouponSystemException {
-		System.out.println("Customer getCoupons");
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (optCustomer.isPresent()) {
@@ -137,7 +133,6 @@ public class CustomerService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public List<Coupon> getAllDatabaseCoupons() throws CouponSystemException {
-		System.out.println("Customer getAllDatabaseCoupons");
 		try {
 			return (List<Coupon>) couponRepository.findAllByOrderByCategory();
 		} catch (CouponSystemException e) {
@@ -155,7 +150,6 @@ public class CustomerService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public List<Coupon> getCouponsByCategory(Category category) throws CouponSystemException {
-		System.out.println("Customer getCouponsByCategory");
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
@@ -184,7 +178,6 @@ public class CustomerService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) throws CouponSystemException {
-		System.out.println("Customer getCouponsByPriceLessThen");
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
@@ -212,7 +205,6 @@ public class CustomerService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public Customer getCustomerDetails() throws CouponSystemException {
-		System.out.println("Customer getCustomerDetails()");
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if(optCustomer.isPresent()) {
@@ -242,6 +234,8 @@ public class CustomerService implements ClientService {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not in database");
 			}
 			return optCoupon.get();
+		} catch (CouponSystemException e) {
+			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCoupon fail :(" + e.getMessage(), e);
 		} catch (Exception e) {

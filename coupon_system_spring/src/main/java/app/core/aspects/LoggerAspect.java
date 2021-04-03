@@ -42,7 +42,7 @@ public class LoggerAspect {
 	
 	// ********* Services and Controllers and SessionContext
 	
-	@Before("app.core.aspects.MyPointcuts.servicesOrClientControllerOrSessionContext()")
+	@Before("app.core.aspects.MyPointcuts.servicesOrClientControllerOrSessionContextOrDailyJob()")
 	public void controllerAndServiseLog(JoinPoint joinPoint) {
 		logClassAndMethod(joinPoint);
 	}

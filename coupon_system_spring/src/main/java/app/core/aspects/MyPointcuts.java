@@ -55,8 +55,18 @@ public class MyPointcuts {
 		
 	}
 	
+	@Pointcut("services() || clientController() || sessionContext() || dailyJob()")
+	public void servicesOrClientControllerOrSessionContextOrDailyJob() {
+		
+	}
+	
 	@Pointcut("execution(public * app.core.session.SessionContext.*(..))")
 	public void sessionContext() {
+		
+	}
+	
+	@Pointcut("execution(public * app.core.job.DailyJob.*(..))")
+	public void dailyJob() {
 		
 	}
 }

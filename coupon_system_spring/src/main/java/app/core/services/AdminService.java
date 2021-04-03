@@ -37,15 +37,12 @@ public class AdminService implements ClientService {
 	 * @return true if email and password are correct
 	 */
 	public boolean login(String email, String password) throws CouponSystemException {
-		System.out.println("Admin login");
 		if (email == null || password == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "login fail :( email or password are null");
 		}
 		if (email.equals("com.admin@admin") && password.equals("admin")) {
-			System.out.println("login success :)");
 			return true;
 		}
-		System.out.println("login fail :(");
 		return false;
 	}
 	
@@ -57,7 +54,6 @@ public class AdminService implements ClientService {
 	 * add company to database email and name must by unique
 	 */
 	public Company addCompany(Company company) throws CouponSystemException {
-		System.out.println("Admin addCompany");
 		if(company == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "company is null...");
 		}
@@ -86,7 +82,6 @@ public class AdminService implements ClientService {
 	 * update company in database (don't change company name) 
 	 */
 	public Company updateCompany(Company company) throws CouponSystemException {
-		System.out.println("Admin updateCompany");
 		if (company == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "can't update company - company is null");
 		}
@@ -119,7 +114,6 @@ public class AdminService implements ClientService {
 	 * delete all company coupon and then delete the company
 	 */ 
 	public Company deleteCoumpany(Long companyId) throws CouponSystemException {
-		System.out.println("Admin deleteCompany");
 		if (companyId == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "Id is null");
 		}
@@ -146,7 +140,6 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public List<Company> getAllCompanies() throws CouponSystemException {
-		System.out.println("Admin getAllCompanies");
 		try {
 			return (List<Company>) companyRepository.findAll();
 		} catch (CouponSystemException e) {
@@ -164,7 +157,6 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public Company getCompany(Long companyId) throws CouponSystemException {
-		System.out.println("Admin getCompany");
 		if (companyId == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "Id is null");
 		}
@@ -184,7 +176,6 @@ public class AdminService implements ClientService {
 	}
 	
 	public Company getCompanyByName(String name) throws CouponSystemException {
-		System.out.println("Admin getCompanyByName");
 		if (name == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "name is null");
 		}
@@ -211,7 +202,6 @@ public class AdminService implements ClientService {
 	 * add customer to database if email and password are unique
 	 */
 	public Customer addCustomer(Customer customer) throws CouponSystemException {
-		System.out.println("Admin addCustomer");
 		if (customer == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customer is null");
 		}
@@ -241,7 +231,6 @@ public class AdminService implements ClientService {
 	 * update customer in database 
 	 */
 	public Customer updateCustomer(Customer customer) throws CouponSystemException {
-		System.out.println("Admin updateCustomer");
 		if (customer == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customer is null");
 		}
@@ -272,7 +261,6 @@ public class AdminService implements ClientService {
 	 * delete customer coupon purchases and delete customer from database
 	 */
 	public Customer deleteCustomer(Long customerId) throws CouponSystemException {
-		System.out.println("Admin deleteCustomer");
 		if (customerId == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customerId is null");
 		}
@@ -297,7 +285,6 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public List<Customer> getAllCustomer() throws CouponSystemException {
-		System.out.println("Admin getAllCustomer");
 		try {
 			return (List<Customer>) customerRepository.findAll();
 		} catch (CouponSystemException e) {
@@ -315,7 +302,6 @@ public class AdminService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public Customer getCustomer(Long customerId) throws CouponSystemException {
-		System.out.println("Admin getCustomer");
 		if (customerId == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customerId is null");
 		}

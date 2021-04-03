@@ -27,7 +27,7 @@ public class CompanyService implements ClientService {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private CouponRepository couponRepository;
-	
+
 	public CompanyService() {
 		super();
 	}
@@ -37,7 +37,7 @@ public class CompanyService implements ClientService {
 	public Long getId() {
 		return id;
 	}
-	
+
 	/**
 	 * @param email
 	 * @param password
@@ -45,13 +45,13 @@ public class CompanyService implements ClientService {
 	 * @throws CouponSystemException
 	 */
 	public boolean login(String email, String password) throws CouponSystemException {
-		System.out.println("Company login");
 		if (email == null || password == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "login fail :( email or password are null");
 		}
 		try {
 			if (!companyRepository.existsByEmailAndPassword(email, password)) {
-				throw new CouponSystemException(HttpStatus.NOT_FOUND, "Wrong credentials - email: " + email + " password: " + password);
+				throw new CouponSystemException(HttpStatus.NOT_FOUND,
+						"Wrong credentials - email: " + email + " password: " + password);
 			}
 			return setId(email, password);
 		} catch (CouponSystemException e) {
@@ -62,7 +62,7 @@ public class CompanyService implements ClientService {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "login fail :(" + e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * @param email
 	 * @param password
@@ -72,7 +72,7 @@ public class CompanyService implements ClientService {
 	private boolean setId(String email, String password) throws CouponSystemException {
 		try {
 			Optional<Company> optCompany = companyRepository.findByEmailAndPassword(email, password);
-			if(optCompany.isPresent()) {
+			if (optCompany.isPresent()) {
 				this.id = optCompany.get().getId();
 				System.out.println("login success :)");
 				return true;
@@ -86,15 +86,14 @@ public class CompanyService implements ClientService {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "setId fail :(" + e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * @param coupon
-	 * @throws CouponSystemException
-	 * add new coupon of the company to database - couopn's title most by unique
+	 * @throws CouponSystemException add new coupon of the company to database -
+	 *                               couopn's title most by unique
 	 */
 	public Coupon addCoupon(Coupon couponToAdd) throws CouponSystemException {
-		System.out.println("Company addCoupon");
-		if (couponToAdd == null) { 
+		if (couponToAdd == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "couopn is null");
 		}
 		try {
@@ -102,11 +101,13 @@ public class CompanyService implements ClientService {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is already in database.");
 			}
 			Optional<Company> optCompany = companyRepository.findById(id);
-			if (!optCompany.isPresent()) { 
-				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCoupon fail can't find coupon in database");
+			if (!optCompany.isPresent()) {
+				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE,
+						"addCoupon fail can't find coupon in database");
 			}
 			if (!isCouponTitleUnique(couponToAdd, optCompany.get())) {
-				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "addCoupon fail: can't add coupon's title most by unique");
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST,
+						"addCoupon fail: can't add coupon's title most by unique");
 			}
 			couponToAdd.setCompany(optCompany.get());
 			couponToAdd = couponRepository.save(couponToAdd);
@@ -121,34 +122,29 @@ public class CompanyService implements ClientService {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "addCoupon fail :(" + e.getMessage(), e);
 		}
 	}
-	
+
 	private boolean isCouponTitleUnique(Coupon couponToAdd, Company company) throws CouponSystemException {
 		List<Coupon> coupons = company.getCoupons();
-		if (coupons == null) {
-			coupons = new ArrayList<Coupon>();
-		} else {
-			for (Coupon coupon : coupons) {
-				if(coupon.getTitle() == couponToAdd.getTitle()) {
-					return false;
-				}
+
+		for (Coupon coupon : coupons) {
+			if (coupon.getTitle() == couponToAdd.getTitle()) {
+				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	/**
 	 * @param coupon
-	 * @throws CouponSystemException
-	 * update coupon in database
+	 * @throws CouponSystemException update coupon in database
 	 */
 	public Coupon updateCoupon(Coupon coupon) throws CouponSystemException {
-		System.out.println("Company updateCoupon");
 		if (coupon == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "coupon is null");
 		}
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
-			if (!optCompany.isPresent()) { 
+			if (!optCompany.isPresent()) {
 				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "updateCoupon fail");
 			}
 			Optional<Coupon> optCoupon = couponRepository.findById(coupon.getId());
@@ -170,45 +166,45 @@ public class CompanyService implements ClientService {
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "updateCoupon fail " + e.getMessage(), e);
 		} catch (Exception e) {
-			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "updateCoupon fail :(" + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "updateCoupon fail :(" + e.getMessage(),
+					e);
 		}
 	}
-	
+
 	/**
 	 * @param couponId
-	 * @throws CouponSystemException
-	 * delete coupon from database
+	 * @throws CouponSystemException delete coupon from database
 	 */
 	public Coupon deleteCoupon(Long couponId) throws CouponSystemException {
-		System.out.println("Company deleteCoupon");
 		if (couponId == null) {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "couponId is null");
 		}
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (optCompany.isPresent()) {
-				
+
 				Coupon coupon = optCompany.get().removeCoupon(couponId);
 				couponRepository.deleteById(couponId);
 				System.out.println("success");
 				return coupon;
+			} else {
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "deleteCoupon fail: coupon is not in database");
 			}
-			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "deleteCoupon fail: coupon is not in database");
 		} catch (CouponSystemException e) {
 			throw e;
 		} catch (DataAccessException e) {
 			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "deleteCoupon fail " + e.getMessage(), e);
 		} catch (Exception e) {
-			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "deleteCoupon fail :(" + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "deleteCoupon fail :(" + e.getMessage(),
+					e);
 		}
 	}
-	
+
 	/**
 	 * @return list of all company coupons
 	 * @throws CouponSystemException
 	 */
-	public List<Coupon> getCompanyCoupons() throws CouponSystemException{
-		System.out.println("Company getCompanyCoupons");
+	public List<Coupon> getCompanyCoupons() throws CouponSystemException {
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (!optCompany.isPresent()) {
@@ -218,23 +214,25 @@ public class CompanyService implements ClientService {
 		} catch (CouponSystemException e) {
 			throw e;
 		} catch (DataAccessException e) {
-			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyCoupons fail " + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyCoupons fail " + e.getMessage(),
+					e);
 		} catch (Exception e) {
-			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCompanyCoupons fail :(" + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"getCompanyCoupons fail :(" + e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * @param maxPrice
 	 * @return list of company coupons where price less then maxPrice
 	 * @throws CouponSystemException
 	 */
 	public List<Coupon> getCompanyCoupons(double maxPrice) throws CouponSystemException {
-		System.out.println("Company getCompanyCoupons(maxPrice)");
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (!optCompany.isPresent()) {
-				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "companyRepository.findById(id) fail :(");
+				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE,
+						"companyRepository.findById(id) fail :(");
 			}
 			List<Coupon> coupons = optCompany.get().getCoupons();
 			List<Coupon> couponsToReturn = new ArrayList<Coupon>();
@@ -247,30 +245,34 @@ public class CompanyService implements ClientService {
 		} catch (CouponSystemException e) {
 			throw e;
 		} catch (DataAccessException e) {
-			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyCoupons(maxPrice) fail " + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE,
+					"getCompanyCoupons(maxPrice) fail " + e.getMessage(), e);
 		} catch (Exception e) {
-			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCompanyCoupons(maxPrice) fail :(" + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"getCompanyCoupons(maxPrice) fail :(" + e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * @return the by the id company
 	 * @throws CouponSystemException
 	 */
 	public Company getCompanyDetails() throws CouponSystemException {
-		System.out.println("Company getCompanyDetails");
 		try {
 			Optional<Company> optCompany = companyRepository.findById(id);
 			if (optCompany.isPresent()) {
 				return optCompany.get();
 			}
-			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyDetails(maxPrice) fail: didn't find company in database");
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE,
+					"getCompanyDetails(maxPrice) fail: didn't find company in database");
 		} catch (CouponSystemException e) {
 			throw e;
 		} catch (DataAccessException e) {
-			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCompanyDetails(maxPrice) fail " + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE,
+					"getCompanyDetails(maxPrice) fail " + e.getMessage(), e);
 		} catch (Exception e) {
-			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCompanyDetails(maxPrice) fail :(" + e.getMessage(), e);
+			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"getCompanyDetails(maxPrice) fail :(" + e.getMessage(), e);
 		}
 	}
 }
