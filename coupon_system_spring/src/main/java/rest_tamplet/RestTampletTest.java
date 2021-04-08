@@ -42,7 +42,7 @@ public class RestTampletTest {
 			CompanyRest companyRest = new CompanyRest(login.companyLogin("1", "1"));	
 			System.out.println("token: " + companyRest.getHeaders());
 			Coupon coupon = new Coupon(Category.FOOD, "t_rt", "d_rt", new Date(2021, 1, 1), new Date(2021, 10, 2), 10, 50, "");
-			System.out.println(coupon.getCategoryId());
+			System.out.println(coupon.getCategory());
 			companyRest.addCoupon(coupon);
 //			companyRest.getAllCoupons();
 //			companyRest.getCompanyDetails();

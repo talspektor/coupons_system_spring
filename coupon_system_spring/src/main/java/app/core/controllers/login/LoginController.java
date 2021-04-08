@@ -24,14 +24,14 @@ public class LoginController {
 	private LoginManager loginManager;
 	
 	@PostMapping("/login/{type}/{email}/{password}")
-	public String login(@PathVariable ClientType type, @PathVariable String email, @PathVariable String password) {
+	public LoginItem login(@PathVariable ClientType type, @PathVariable String email, @PathVariable String password) {
 		try {
 			ClientService service = loginManager.login(email, password, type);
 			if (service != null) {
 				Session session = sessionContext.createSession();
 				session.setAttribute("email", email);
 				session.setAttribute("service", service);
-				return session.token;
+				return new LoginItem(session.token);
 			}
 			throw new CouponSystemException(HttpStatus.BAD_REQUEST, "login fail :(");
 		} catch (CouponSystemException e) {

@@ -93,7 +93,7 @@ public class Coupon {
 		this.company = company;
 	}
 
-	public Category getCategoryId() {
+	public Category getCategory() {
 		return category;
 	}
 

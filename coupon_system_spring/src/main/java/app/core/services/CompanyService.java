@@ -152,7 +152,7 @@ public class CompanyService implements ClientService {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not in database");
 			}
 			optCoupon.get().setAmount(coupon.getAmount());
-			optCoupon.get().setCategory(coupon.getCategoryId());
+			optCoupon.get().setCategory(coupon.getCategory());
 			optCoupon.get().setDescription(coupon.getDescription());
 			optCoupon.get().setEndDate(coupon.getEndDate());
 			optCoupon.get().setImageUrl(coupon.getImageUrl());
@@ -237,7 +237,7 @@ public class CompanyService implements ClientService {
 			List<Coupon> coupons = optCompany.get().getCoupons();
 			List<Coupon> couponsToReturn = new ArrayList<Coupon>();
 			for (Coupon coupon : coupons) {
-				if (coupon.getPrice() >= maxPrice) {
+				if (coupon.getPrice() <= maxPrice) {
 					couponsToReturn.add(coupon);
 				}
 			}

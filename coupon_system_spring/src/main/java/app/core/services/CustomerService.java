@@ -157,8 +157,8 @@ public class CustomerService implements ClientService {
 			}
 			List<Coupon> coupons = new ArrayList<Coupon>();
 			for (Coupon coupon : optCustomer.get().getCoupons()) {
-				if (coupon.getCategoryId() == category) {
-					System.out.println(coupon.getCategoryId() + "   " + category);
+				if (coupon.getCategory() == category) {
+					System.out.println(coupon.getCategory() + "   " + category);
 					coupons.add(coupon);
 				}
 			}
