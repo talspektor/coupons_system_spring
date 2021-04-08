@@ -96,8 +96,8 @@ public class CustomerService implements ClientService {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon expiered");
 			}
 			
-			addCoupon(coupon);
-			System.out.println("purchaseCoupon success :)");
+			addCoupon(coupon, optCustomer.get());
+			
 			return coupon;
 		} catch (CouponSystemException e) {
 			throw e;
@@ -247,19 +247,15 @@ public class CustomerService implements ClientService {
 	/** add coupon to customer coupon list
 	 * @param coupon
 	 */
-	private void addCoupon(Coupon coupon) throws CouponSystemException {
+	private void addCoupon(Coupon coupon, Customer customer) throws CouponSystemException {
 		if (coupon == null) { 
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "Coupon is null :(");
 		}
 		try {
-			Optional<Customer> optCustomer = customerRepository.findById(getId());
-			if (!optCustomer.isPresent()) {
-				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "addCoupon fail :(");
-			}
-			
 			int amount = coupon.getAmount();
-			coupon.setAmount(amount--);
-			optCustomer.get().addCoupn(coupon);
+			coupon.setAmount(amount-1);
+			couponRepository.save(coupon);
+			customer.addCoupn(coupon);
 		} catch (CouponSystemException e) {
 			throw e;
 		} catch (DataAccessException e) {
