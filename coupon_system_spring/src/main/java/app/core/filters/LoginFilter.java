@@ -47,7 +47,7 @@ public class LoginFilter implements Filter {
 		System.err.println("doFilter fail: " + req.getMethod());
 		HttpServletResponse res = (HttpServletResponse) response;
 		//TODO: tech debt - remove line when develop is finished
-		res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+		res.setHeader("Access-Control-Allow-Origin", "*");
 		res.sendError(HttpStatus.UNAUTHORIZED.value(), "you are not logged in");
 	}
 
