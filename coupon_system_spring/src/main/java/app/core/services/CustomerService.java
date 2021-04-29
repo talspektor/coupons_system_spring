@@ -75,7 +75,7 @@ public class CustomerService implements ClientService {
 		try {
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
-				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not in database");
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "purchaseCoupon fail");
 			}
 			
 			CouponValidator validator = new CouponValidator(optCustomer.get());
@@ -85,7 +85,7 @@ public class CustomerService implements ClientService {
 			
 			Coupon coupon = getCoupon(couponId);
 			if (coupon == null) {
-				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not in database");
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon id=" + couponId + " is not in database");
 			}
 			
 			if (!validator.isCouponAvailable(coupon)) {
@@ -134,6 +134,13 @@ public class CustomerService implements ClientService {
 	 */
 	public List<Coupon> getAllDatabaseCoupons() throws CouponSystemException {
 		try {
+			List<Coupon> allCoupons = couponRepository.findAllByOrderByCategory();
+			List<Coupon> couponsForSell = new ArrayList<Coupon>();
+			for (Coupon coupon : allCoupons) {
+				if(!coupon.getCustomers().contains(customerRepository.findById(id))) {
+					couponsForSell.add(coupon);
+				}
+			}
 			return (List<Coupon>) couponRepository.findAllByOrderByCategory();
 		} catch (CouponSystemException e) {
 			throw e;
@@ -225,13 +232,14 @@ public class CustomerService implements ClientService {
 	 * @return coupon
 	 */
 	private Coupon getCoupon(Long couponId) throws CouponSystemException {
+		System.out.println("getCoupon " + couponId);
 		if (couponId == null) { 
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "couponId is null :(");
 		}
 		try {
 			Optional<Coupon> optCoupon = couponRepository.findById(couponId);
 			if (!optCoupon.isPresent()) {
-				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not in database");
+				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "getCoupon fail id=" + couponId);
 			}
 			return optCoupon.get();
 		} catch (CouponSystemException e) {
