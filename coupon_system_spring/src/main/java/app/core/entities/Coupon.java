@@ -69,6 +69,10 @@ public class Coupon {
 		this.imageUrl = imageUrl;
 	}
 
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
 	public int getAmount() {
 		return amount;
 	}

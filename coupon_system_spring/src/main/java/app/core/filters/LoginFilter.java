@@ -37,8 +37,17 @@ public class LoginFilter implements Filter {
 			System.out.println("session is good");
 			return;
 		}
-		System.err.println("doFilter fail");
+		//TODO: tech debt - remove if block when develop is finished
+		if (req.getMethod().equals("OPTIONS")) {
+			chain.doFilter(request, response);
+			System.out.println("preflight request");
+			return;
+		}
+		
+		System.err.println("doFilter fail: " + req.getMethod());
 		HttpServletResponse res = (HttpServletResponse) response;
+		//TODO: tech debt - remove line when develop is finished
+		res.setHeader("Access-Control-Allow-Origin", "*");
 		res.sendError(HttpStatus.UNAUTHORIZED.value(), "you are not logged in");
 	}
 

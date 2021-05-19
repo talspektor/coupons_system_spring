@@ -144,6 +144,13 @@ public class CustomerService implements ClientService {
 	public List<Coupon> getAllDatabaseCoupons() throws CouponSystemException {
 		try {
 			lock.readLock();
+			List<Coupon> allCoupons = couponRepository.findAllByOrderByCategory();
+			List<Coupon> couponsForSell = new ArrayList<Coupon>();
+			for (Coupon coupon : allCoupons) {
+				if(!coupon.getCustomers().contains(customerRepository.findById(id))) {
+					couponsForSell.add(coupon);
+				}
+			}
 			return (List<Coupon>) couponRepository.findAllByOrderByCategory();
 		} catch (CouponSystemException e) {
 			throw e;
