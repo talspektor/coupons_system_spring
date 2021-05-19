@@ -147,11 +147,12 @@ public class CustomerService implements ClientService {
 			List<Coupon> allCoupons = couponRepository.findAllByOrderByCategory();
 			List<Coupon> couponsForSell = new ArrayList<Coupon>();
 			for (Coupon coupon : allCoupons) {
-				if(!coupon.getCustomers().contains(customerRepository.findById(id))) {
+				Optional<Customer> optCustomer = customerRepository.findById(id);
+				if(optCustomer.isPresent() && !coupon.getCustomers().contains(optCustomer.get())) {
 					couponsForSell.add(coupon);
 				}
 			}
-			return (List<Coupon>) couponRepository.findAllByOrderByCategory();
+			return couponsForSell;
 		} catch (CouponSystemException e) {
 			throw e;
 		} catch (DataAccessException e) {
