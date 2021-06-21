@@ -27,8 +27,8 @@ public class AdminService implements ClientService {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
-	@Autowired
-	private ReentrantReadWriteLock lock;
+//	@Autowired
+//	private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 	
 	public AdminService() {
 		super();
@@ -61,7 +61,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "company is null...");
 		}
 		try {
-			lock.writeLock();
+//			lock.writeLock();
 			if(isCompanyNameExists(company.getName()) || isCompanyEmailExists(company.getEmail())) {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "can't add company name and email must by unique");
 			}
@@ -78,7 +78,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "addCompany fail " + e.getMessage(), e);
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 	
@@ -92,7 +92,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "can't update company - company is null");
 		}
 		try {
-			lock.writeLock();
+//			lock.writeLock();
 			Optional<Company> companyToUpdate = companyRepository.findById(company.getId());
 			if (companyToUpdate.isPresent()) {
 				if (!company.getName().equals(companyToUpdate.get().getName())) {
@@ -113,7 +113,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "updateCompany fail " + e.getMessage(), e);
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "Id is null");
 		}
 		try {
-			lock.wait();
+//			lock.wait();
 			Optional<Company> optCompany = companyRepository.findById(companyId);
 			if(optCompany.isPresent()) {
 				companyRepository.deleteById(companyId);
@@ -143,7 +143,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "deleteCoumpany fail " + e.getMessage(), e);
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 	
@@ -153,7 +153,7 @@ public class AdminService implements ClientService {
 	 */
 	public List<Company> getAllCompanies() throws CouponSystemException {
 		try {
-			lock.readLock();
+//			lock.readLock();
 			return (List<Company>) companyRepository.findAll();
 		} catch (CouponSystemException e) {
 			throw e;
@@ -162,7 +162,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR,"getAllCompanies fail :(" + e.getMessage(), e);
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "Id is null");
 		}
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Company> optCompany = companyRepository.findById(companyId);
 			if (optCompany.isPresent()) {
 				return optCompany.get();
@@ -189,7 +189,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCompany fail :(" + e.getMessage(), e);
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 	}
 	
@@ -198,7 +198,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "name is null");
 		}
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Company> optCompany = companyRepository.findByName(name);
 			if (optCompany.isPresent()) {
 				return optCompany.get();
@@ -211,7 +211,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCompanyByName fail " + e.getMessage(), e);
 		} finally {
-			lock.readLock().lock();
+//			lock.readLock().lock();
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customer is null");
 		}
 		try {
-			lock.writeLock();
+//			lock.writeLock();
 			if(isCustomerEmailExists(customer.getEmail())) {
 				System.out.println("You can't add customer email and password most be unique");
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "You can't add customer email and password most be unique");
@@ -245,7 +245,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "addCustomer fail " + e.getMessage(), e);
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 	
@@ -259,7 +259,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customer is null");
 		}
 		try {
-			lock.writeLock();
+//			lock.writeLock();
 			Optional<Customer> optCustomer = customerRepository.findById(customer.getId());
 			if (!optCustomer.isPresent()) {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "Costomer not found in database");
@@ -278,7 +278,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "updateCustomer fail " + e.getMessage(), e);
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 	
@@ -292,7 +292,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customerId is null");
 		}
 		try {
-			lock.writeLock();
+//			lock.writeLock();
 			Optional<Customer> optCustomer = customerRepository.findById(customerId);
 			if(optCustomer.isPresent()) {
 				customerRepository.deleteById(customerId);
@@ -306,7 +306,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "deleteCustomer fail " + e.getMessage(), e);
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 	
@@ -316,7 +316,7 @@ public class AdminService implements ClientService {
 	 */
 	public List<Customer> getAllCustomer() throws CouponSystemException {
 		try {
-			lock.readLock();
+//			lock.readLock();
 			return (List<Customer>) customerRepository.findAll();
 		} catch (CouponSystemException e) {
 			throw e;
@@ -325,7 +325,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getAllCustomer fail " + e.getMessage(), e);
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 	}
 	
@@ -339,7 +339,7 @@ public class AdminService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "customerId is null");
 		}
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Customer> optCustomer = customerRepository.findById(customerId);
 			if(optCustomer.isPresent()) {
 				return optCustomer.get();
@@ -352,7 +352,7 @@ public class AdminService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCustomer fail " + e.getMessage(), e);
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 	}
 	

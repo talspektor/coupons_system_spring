@@ -29,8 +29,8 @@ public class CustomerService implements ClientService {
 	private CustomerRepository customerRepository;
 	@Autowired
 	private CouponRepository couponRepository;
-	@Autowired
-	private ReentrantReadWriteLock lock;
+//	@Autowired
+//	private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 	private Long id;
 	
 	public CustomerService() {
@@ -76,7 +76,7 @@ public class CustomerService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_FOUND, "couponId is null :(");
 		} 
 		try {
-			lock.writeLock();
+//			lock.writeLock();
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not in database");
@@ -110,7 +110,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "purchaseCoupon fail :(" + e.getMessage(), e); 
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 		
@@ -120,7 +120,7 @@ public class CustomerService implements ClientService {
 	 */
 	public List<Coupon> getCoupons() throws CouponSystemException {
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (optCustomer.isPresent()) {
 				return optCustomer.get().getCoupons();
@@ -133,7 +133,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCoupons fail :(", e); 
 		} finally {
-			lock.readLock().unlock();;
+//			lock.readLock().unlock();;
 		}
 	}
 	
@@ -143,7 +143,7 @@ public class CustomerService implements ClientService {
 	 */
 	public List<Coupon> getAllDatabaseCoupons() throws CouponSystemException {
 		try {
-			lock.readLock();
+//			lock.readLock();
 			List<Coupon> allCoupons = couponRepository.findAllByOrderByCategory();
 			List<Coupon> couponsForSell = new ArrayList<Coupon>();
 			for (Coupon coupon : allCoupons) {
@@ -160,7 +160,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getAllDatabaseCoupons fail :(", e); 
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 	}
 	
@@ -171,7 +171,7 @@ public class CustomerService implements ClientService {
 	 */
 	public List<Coupon> getCouponsByCategory(Category category) throws CouponSystemException {
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
 				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCouponsByCategory fail :(");
@@ -191,7 +191,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCouponsByCategory fail :(", e); 
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 	}
 	
@@ -202,7 +202,7 @@ public class CustomerService implements ClientService {
 	 */
 	public List<Coupon> getCouponsByPriceLessThen(double maxPrice) throws CouponSystemException {
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if (!optCustomer.isPresent()) {
 				throw new CouponSystemException(HttpStatus.SERVICE_UNAVAILABLE, "getCouponsByPriceLessThen fail :(");
@@ -221,7 +221,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCouponsByPriceLessThen fail :(", e);
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 		
 	}
@@ -232,7 +232,7 @@ public class CustomerService implements ClientService {
 	 */
 	public Customer getCustomerDetails() throws CouponSystemException {
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Customer> optCustomer = customerRepository.findById(id);
 			if(optCustomer.isPresent()) {
 				return optCustomer.get();
@@ -245,7 +245,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCustomerDetails fail :(", e);
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 	}
 	
@@ -258,7 +258,7 @@ public class CustomerService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "couponId is null :(");
 		}
 		try {
-			lock.readLock();
+//			lock.readLock();
 			Optional<Coupon> optCoupon = couponRepository.findById(couponId);
 			if (!optCoupon.isPresent()) {
 				throw new CouponSystemException(HttpStatus.BAD_REQUEST, "coupon is not in database");
@@ -271,7 +271,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "getCoupon fail :(", e);
 		} finally {
-			lock.readLock().unlock();
+//			lock.readLock().unlock();
 		}
 		
 	}
@@ -284,7 +284,7 @@ public class CustomerService implements ClientService {
 			throw new CouponSystemException(HttpStatus.NOT_ACCEPTABLE, "Coupon is null :(");
 		}
 		try {
-			lock.writeLock();
+//			lock.writeLock();
 			int amount = coupon.getAmount();
 			coupon.setAmount(amount-1);
 			couponRepository.save(coupon);
@@ -296,7 +296,7 @@ public class CustomerService implements ClientService {
 		} catch (Exception e) {
 			throw new CouponSystemException(HttpStatus.INTERNAL_SERVER_ERROR, "addCoupon fail :(", e);
 		} finally {
-			lock.writeLock().unlock();
+//			lock.writeLock().unlock();
 		}
 	}
 }
